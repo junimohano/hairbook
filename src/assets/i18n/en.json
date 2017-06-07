@@ -1,0 +1,18 @@
+{
+    "HELLO": "hello {{value}}",
+    "MENU": {
+        "HOME": "Home",
+        "BOARD": "Board",
+        "FIGHTER": "Fighter",
+        "OCTAGON_GIRL": "OctagonGirl",
+        "LOGIN": "Login",
+        "LOGOUT": "Logout"
+    },
+    "PORTFOLIO": "Portfolio",
+    "GITHUB": "GitHub",
+    "SEARCH": "Search",
+    "CHAT": "Chat",
+    "CHAT_MESSAGE": "Chat here...",
+    "FIGHTERS": "Fighters",
+    "OCTAGON_GIRLS": "OctagonGirls"
+}

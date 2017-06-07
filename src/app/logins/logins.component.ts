@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Auth } from '../shared/auth/auth.service';
 
 @Component({
   selector: 'hb-logins',
@@ -8,13 +9,18 @@ import { Router } from '@angular/router';
 })
 export class LoginsComponent implements OnInit {
 
-  constructor(public router: Router) { }
+  constructor(public router: Router, private auth: Auth) {
 
-  ngOnInit() {
   }
 
   login() {
-    this.router.navigate(['/posts']);
+    this.auth.login();
+  }
+
+  ngOnInit() {
+    if (this.auth.authenticated()) {
+      this.router.navigate(['/posts']);
+    }
   }
 
 }

@@ -7,8 +7,8 @@ export class PostService {
 
   constructor(private http: Http) { }
 
-  getPosts() {
-    return this.http.get(`${environment.webApiUrl}/api/v1/posts`)
+  getPosts(index: number) {
+    return this.http.get(`${environment.webApiUrl}/api/v1/posts?index=${index}`)
       .map(res => res.json());
   }
 

@@ -1,0 +1,18 @@
+{
+    "HELLO": "안녕 {{value}}",
+    "MENU": {
+        "HOME": "홈",
+        "BOARD": "게시판",
+        "FIGHTER": "파이터",
+        "OCTAGON_GIRL": "옥타곤걸",
+        "LOGIN": "로그인",
+        "LOGOUT": "로그아웃"
+    },
+    "PORTFOLIO": "포트폴리오",
+    "GITHUB": "깃허브",
+    "SEARCH": "검색",
+    "CHAT": "채팅",
+    "CHAT_MESSAGE": "여기에 적어주세요...",
+    "FIGHTERS": "파이터즈",
+    "OCTAGON_GIRLS": "옥타곤걸즈"
+}

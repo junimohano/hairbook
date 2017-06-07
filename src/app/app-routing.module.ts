@@ -9,6 +9,11 @@ const routes: Routes = [
   // { path: 'logins', component: './logins/logins.module#LoginsModule' },
   // { path: 'fighters', loadChildren: './fighters/fighters.module#FightersModule' },
   // { path: 'octagonGirls', loadChildren: './octagon-girls/octagon-girls.module#OctagonGirlsModule' },
+  // {
+  //     path: '',
+  //     loadChildren: './layout/layout.module#LayoutModule',
+  //     canActivate: [AuthGuard]
+  // },
   { path: '**', redirectTo: '' }
 ];
 
