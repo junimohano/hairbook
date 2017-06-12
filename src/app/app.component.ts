@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Auth } from './shared/auth/auth.service';
 
 @Component({
   selector: 'hb-root',
@@ -7,14 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  constructor(public auth: Auth) {
 
-  param = { value: 'world' };
-
-  constructor(private translate: TranslateService) {
-
-  }
-
-  setLanguage(lang) {
-    this.translate.use(lang);
   }
 }

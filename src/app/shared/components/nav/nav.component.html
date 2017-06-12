@@ -1,3 +1,21 @@
-<p>
-  nav works!
-</p>
+<md-toolbar color="primary">
+
+    <button md-button routerLink="/users">Hairbook</button>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="fill-remaining-space"></span>
+    <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+        <button md-button routerLink="/explorers" mdTooltip="Explorers"><md-icon>share</md-icon></button>
+        <button md-button routerLink="/users" mdTooltip="Users"><md-icon>person</md-icon></button>
+        <button md-button routerLink="/logins" mdTooltip="Logout"><md-icon>clear</md-icon></button>
+    </div>
+    <button md-button [md-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+      <md-icon>menu</md-icon>
+    </button>
+
+</md-toolbar>
+<md-menu x-position="before" #menu="mdMenu">
+    <button md-menu-item routerLink="/explorers"><md-icon>share</md-icon>Explorers</button>
+    <button md-menu-item routerLink="/users"><md-icon>person</md-icon>Users</button>
+    <button md-menu-item routerLink="/logins"><md-icon>clear</md-icon>Logout</button>
+</md-menu>

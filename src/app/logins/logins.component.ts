@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Auth } from '../shared/auth/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'hb-logins',
@@ -9,7 +10,9 @@ import { Auth } from '../shared/auth/auth.service';
 })
 export class LoginsComponent implements OnInit {
 
-  constructor(public router: Router, private auth: Auth) {
+  param = { value: 'world' };
+
+  constructor(public router: Router, private auth: Auth, private translate: TranslateService) {
 
   }
 
@@ -18,9 +21,11 @@ export class LoginsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.auth.authenticated()) {
-      this.router.navigate(['/posts']);
-    }
+    this.auth.logout();
+  }
+
+  setLanguage(lang) {
+    this.translate.use(lang);
   }
 
 }

@@ -1,0 +1,60 @@
+<!--<md-tab-group>
+    <md-tab label="memos" [routerLink]="['/memos']"></md-tab>
+    <md-tab label="posts" [routerLink]="['/posts']"></md-tab>
+</md-tab-group>-->
+
+<!--<p>
+    posts works! {{currentPostCount | async}}
+</p>
+
+<div *ngFor="let post of posts | async">
+    {{post | json}}
+</div>
+-->
+
+<!---->
+<!--fxFlexAlign="center"-->
+
+<!--fxLayoutGap="10px"-->
+
+<div fxLayout="row" fxLayoutWrap fxLayoutAlign="center">
+    <div *ngFor="let post of posts | async; let postIndex = index;">
+        <div fxFlex.xs="50" fxFlex="300px" fxFlexOffset="10px">
+
+            <div *ngIf="post.postUploads.length > 0" class="post-image">
+                <img [src]="post.postUploads[0].path" width="100%" height="300" (click)="openPost(post)">
+            </div>
+        </div>
+
+    </div>
+
+    <!--<md-card fxFlex.xs="100" fxFlex="200px" fxFlexOffset="10px">
+            <md-card-header>
+                <md-card-title>{{post.customer?.name}}</md-card-title>
+                <md-card-subtitle>{{post.date | date }}</md-card-subtitle>
+            </md-card-header>
+
+            <md-card-content>
+
+                <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
+                    <div *ngIf="post.currentUploadIndex === uploadIndex">
+                        <img [src]="upload.path" width="100%" height="150px">
+                        <p>
+                            {{upload.memo}}
+                        </p>
+                    </div>
+                </div>
+
+                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="previous(postIndex)"><</button>
+                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="next(postIndex)">></button>
+
+                <p>
+                    {{post.memo}}
+                </p>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button>LIKE</button>
+                <button md-button>SHARE</button>
+            </md-card-actions>
+        </md-card>-->
+</div>

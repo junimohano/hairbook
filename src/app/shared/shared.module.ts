@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-// Angular materials
-import { MdButtonModule, MdCheckboxModule } from '@angular/material';
 
 // i18n
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -17,6 +15,22 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Auth } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
+
+// Flex layout
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+// Angular materials
+import {
+  MdButtonModule,
+  MdCheckboxModule,
+  MdCardModule,
+  MdToolbarModule,
+  MdMenuModule,
+  MdIconModule,
+  MdTabsModule,
+  MdTooltipModule,
+  MdDialogModule
+} from '@angular/material';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
@@ -33,9 +47,19 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 const modules = [
   CommonModule,
   HttpModule,
+  FormsModule,
+
+  FlexLayoutModule,
 
   MdButtonModule,
-  MdCheckboxModule
+  MdCheckboxModule,
+  MdCardModule,
+  MdToolbarModule,
+  MdMenuModule,
+  MdIconModule,
+  MdTabsModule,
+  MdTooltipModule,
+  MdDialogModule
 ];
 
 @NgModule({

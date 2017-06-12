@@ -46,7 +46,7 @@ export class Auth {
         // Add callback for lock `authenticated` event
         this.lock.on('authenticated', (authResult) => {
             localStorage.setItem('id_token', authResult.idToken);
-            // this.router.navigate(['/']);
+            this.router.navigate(['/users']);
 
             // Fetch profile information
             this.lock.getProfile(authResult.idToken, (error, profile) => {

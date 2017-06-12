@@ -1,15 +1,5 @@
-<hb-nav></hb-nav>
+<hb-nav *ngIf="auth.authenticated()"></hb-nav>
 
 <router-outlet></router-outlet>
 
-<hb-footer></hb-footer>
-
-<div>{{ 'HELLO' | translate:param }}</div>
-
-<button class="btn btn-default" (click)="setLanguage('en')">
-    <span class="flag-icon flag-icon-us"></span>  ENGLISH
-</button>
-
-<button class="btn btn-default" (click)="setLanguage('kr')">
-    <span class="flag-icon flag-icon-no"></span> KOREAN
-</button>
+<hb-footer *ngIf="auth.authenticated()"></hb-footer>
