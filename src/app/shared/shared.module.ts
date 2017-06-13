@@ -29,7 +29,12 @@ import {
   MdIconModule,
   MdTabsModule,
   MdTooltipModule,
-  MdDialogModule
+  MdDialogModule,
+  MdInputModule,
+  MdDatepickerModule,
+  MdNativeDateModule,
+  MdChipsModule,
+  MdListModule
 } from '@angular/material';
 
 // AoT requires an exported function for factories
@@ -59,7 +64,12 @@ const modules = [
   MdIconModule,
   MdTabsModule,
   MdTooltipModule,
-  MdDialogModule
+  MdDialogModule,
+  MdInputModule,
+  MdDatepickerModule,
+  MdNativeDateModule,
+  MdChipsModule,
+  MdListModule
 ];
 
 @NgModule({

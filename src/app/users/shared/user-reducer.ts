@@ -3,12 +3,14 @@ import * as Actions from './user-actions';
 export interface State {
   currentPostCount: number;
   posts: Post[];
+  post: Post;
   isLast: boolean;
 }
 
 const initialState: State = {
   currentPostCount: 0,
   posts: [],
+  post: null,
   isLast: false
 };
 
@@ -30,7 +32,8 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.PREVIOUS_UPLOAD_INDEX:
       {
-        const post = state.posts[action.payload];
+        const post = state.posts.find(x => x.postId === action.payload );
+
         if (post.currentUploadIndex > 0) {
           post.currentUploadIndex--;
         }
@@ -38,12 +41,19 @@ export function reducer(state = initialState, action: Actions.All): State {
       }
     case Actions.NEXT_UPLOAD_INDEX:
       {
-        const post = state.posts[action.payload];
+        const post = state.posts.find(x => x.postId === action.payload );
         if (post.currentUploadIndex < post.postUploads.length - 1) {
           post.currentUploadIndex++;
         }
         return { ...state };
       }
+
+       case Actions.GET_POST:
+      {
+        const post = state.posts.find(x => x.postId === action.payload );
+        return { ...state, post: post };
+      }
+
     default:
       return state;
   }

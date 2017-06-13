@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { PostDetailComponent } from 'app/users/post-detail/post-detail.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'hb-post-list',
@@ -17,7 +18,7 @@ export class PostListComponent implements OnInit {
   posts: Observable<Post[]>;
   currentPostCount: Observable<number>;
 
-  constructor(private store: Store<Reducers.State>, public dialog: MdDialog) {
+  constructor(private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.posts = store.select(Reducers.selectPosts);
     this.currentPostCount = store.select(Reducers.selectCurrentPostCount);
   }
@@ -35,23 +36,18 @@ export class PostListComponent implements OnInit {
     //   }, error => alert(error));
   }
 
-  previous(i: number) {
-    this.store.dispatch(new PostActions.PreviousUploadIndex(i));
-  }
-
-  next(i: number) {
-    this.store.dispatch(new PostActions.NextUploadIndex(i));
-  }
-
   openPost(post: Post) {
-    const dialogRef = this.dialog.open(PostDetailComponent, {
-      // height: '400px',
-      // width: '600px',
-      data: post
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      // this.selectedOption = result;
-    });
+
+    this.router.navigate(['/users', 'detail', post.postId]);
+
+    // const dialogRef = this.dialog.open(PostDetailComponent, {
+    //   height: '700px',
+    //   width: '500px',
+    //   data: post
+    // });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   // this.selectedOption = result;
+    // });
   }
 
 }

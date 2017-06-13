@@ -1,5 +1,13 @@
-<hb-nav *ngIf="auth.authenticated()"></hb-nav>
-
-<router-outlet></router-outlet>
-
-<hb-footer *ngIf="auth.authenticated()"></hb-footer>
+<div fxLayout="column" fxLayoutAlign="space-between stretch">
+    <div>
+        <hb-nav fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-nav>
+    </div>
+    <div>
+        <div fxFlexOffset.gt-md="20" fxFlex.gt-md="60">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div>
+        <hb-footer fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-footer>
+    </div>
+</div>

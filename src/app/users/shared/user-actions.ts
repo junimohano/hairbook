@@ -4,6 +4,7 @@ export const SEARCH_POST = '[Posts] Post';
 export const SUCCESS_POST = '[Posts] Success Post';
 export const PREVIOUS_UPLOAD_INDEX = '[Posts] Previous Upload Index';
 export const NEXT_UPLOAD_INDEX = '[Posts] Next Upload Index';
+export const GET_POST = '[Posts] Get Post';
 
 export class SearchPost implements Action {
   readonly type = SEARCH_POST;
@@ -25,8 +26,14 @@ export class NextUploadIndex implements Action {
   constructor(public payload: number) { }
 }
 
+export class GetPost implements Action {
+  readonly type = GET_POST;
+  constructor(public payload: number) { }
+}
+
 export type All
   = SearchPost
   | SuccessPost
   | PreviousUploadIndex
-  | NextUploadIndex;
+  | NextUploadIndex
+  | GetPost;

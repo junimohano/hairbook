@@ -5,11 +5,33 @@
 //     // background-image: url('../../../assets/img/examples/shiba1.jpg');
 //     background-size: cover;
 // }
-.test {
-    width: 100%;
+.post-wrapper {
+    display: block;
+    position: relative;
+    top: 0;
 }
 
-.post-image:hover {
+.post-inside {
+    position: relative;
+    // clear: both;
+}
+
+.post-back {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+}
+
+.post-back:hover {
+    background-color: black;
     opacity: 0.5;
+    color: white;
     filter: alpha(opacity=50);
 }
+
+// .comment {
+//     position: relative;
+//     top: 50%;
+//     transform: translateY(-50%);
+//     text-align: center;
+// }

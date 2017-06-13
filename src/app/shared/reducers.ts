@@ -15,3 +15,7 @@ export function selectPosts(state: State) {
 export function selectCurrentPostCount(state: State): number {
   return state.user.posts.length;
 }
+
+export function selectPost(state: State): Post {
+  return state.user.post;
+}

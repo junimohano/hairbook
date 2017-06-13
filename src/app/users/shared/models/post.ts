@@ -10,11 +10,11 @@ interface Post {
   hairType: HairType;
   hairMemo: string;
   accessType: AccessType;
-  postHairMenus: (PostHairMenu | null)[];
-  postHairTypes: (PostHairType | null)[];
-  postEvaluations: (PostEvaluation | null)[];
-  postComments: (PostComment | null)[];
-  postUploads: (PostUpload | null)[];
+  postHairMenus: PostHairMenu[] | null;
+  postHairTypes: PostHairType[] | null;
+  postEvaluations: PostEvaluation[] | null;
+  postComments: PostComment[] | null;
+  postUploads: PostUpload[] | null;
 
   createdUserId: number | null;
   updatedUserId: number | null;
