@@ -3,6 +3,9 @@
         <hb-nav fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-nav>
     </div>
     <div>
+        <hb-progress fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-progress>
+    </div>
+    <div>
         <div fxFlexOffset.gt-md="20" fxFlex.gt-md="60">
             <router-outlet></router-outlet>
         </div>

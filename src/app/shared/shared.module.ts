@@ -3,21 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 
-import { StoreModule } from '@ngrx/store';
-import { reducers } from './reducers';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { SharedEffects } from './shared-effects';
+
+// Auth0
+import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
+import { Auth } from '../shared/auth/auth.service';
+import { AuthGuard } from '../shared/auth/auth.guard';
 
 // i18n
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-// Auth0
-import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
-import { Auth } from './auth/auth.service';
-import { AuthGuard } from './auth/auth.guard';
-
-// Flex layout
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 // Angular materials
 import {
@@ -34,14 +30,15 @@ import {
   MdDatepickerModule,
   MdNativeDateModule,
   MdChipsModule,
-  MdListModule
+  MdListModule,
+  MdProgressSpinnerModule,
+  MdProgressBarModule
 } from '@angular/material';
 
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: Http) {
-  return new TranslateHttpLoader(http);
-  // return new TranslateHttpLoader(http, 'i18n/', '.json');
-}
+// Flex layout
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+import { SharedService } from 'app/shared/shared.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -49,11 +46,16 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   }), http, options);
 }
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: Http) {
+  return new TranslateHttpLoader(http);
+  // return new TranslateHttpLoader(http, 'i18n/', '.json');
+}
+
 const modules = [
   CommonModule,
   HttpModule,
   FormsModule,
-
   FlexLayoutModule,
 
   MdButtonModule,
@@ -69,16 +71,15 @@ const modules = [
   MdDatepickerModule,
   MdNativeDateModule,
   MdChipsModule,
-  MdListModule
+  MdListModule,
+  MdProgressSpinnerModule,
+  MdProgressBarModule
 ];
 
 @NgModule({
   imports: [
     modules,
-
-    // ngrx
-    StoreModule.provideStore(reducers),
-    StoreDevtoolsModule.instrumentOnlyWithExtension(),
+    EffectsModule.run(SharedEffects),
     // i18n
     TranslateModule.forRoot({
       loader: {
@@ -90,10 +91,8 @@ const modules = [
   ],
   exports: [
     modules,
-
-    StoreModule,
-    StoreDevtoolsModule,
-    TranslateModule,
+    EffectsModule,
+    TranslateModule
   ],
   declarations: [],
   providers: [
@@ -103,7 +102,8 @@ const modules = [
       deps: [Http, RequestOptions]
     },
     Auth,
-    AuthGuard
+    AuthGuard,
+    SharedService
   ]
 })
 export class SharedModule { }

@@ -1,0 +1,18 @@
+<div *ngIf="auth.authenticated() && auth.userProfile">
+    <div fxLayout="column">
+        <div fxFlex="60">
+            <h3>Profile</h3>
+            <img [src]="auth.userProfile.picture" alt="">
+            <form (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <md-input-container fxFlex="50">
+                        <input mdInput placeholder="Address" value="test" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
+                    </md-input-container>
+                </div>
+
+                <button md-button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>

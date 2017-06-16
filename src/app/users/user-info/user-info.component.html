@@ -1,0 +1,17 @@
+<div *ngIf="auth.authenticated() && auth.userProfile">
+    <div fxLayout="column">
+        <div fxFlex="60">
+            <h3>Profile</h3>
+            <img [src]="auth.userProfile.picture" alt="" width="100px" height="100px">
+            <p><strong>Name: </strong> {{auth.userProfile.name}}</p>
+            <p><strong>Email: </strong> {{auth.userProfile.email}}</p>
+            <p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>
+            <p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
+            <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>
+            <p><strong>Address: </strong> {{auth.userProfile.user_metadata.address}}</p>
+        </div>
+    </div>
+
+    <button md-button type="submit" [routerLink]="['/users/edit']">Edit address</button>
+</div>
+<h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import * as PostActions from '../shared/user-actions';
+import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
 import { Observable } from 'rxjs/Observable';
 
@@ -21,14 +22,23 @@ export class PostListComponent implements OnInit {
   constructor(private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.posts = store.select(Reducers.selectPosts);
     this.currentPostCount = store.select(Reducers.selectCurrentPostCount);
+    // this.store.dispatch(new SharedActions.SetProgress(true));
   }
 
   ngOnInit() {
+
     this.currentPostCount.subscribe(result => {
       console.log('currentPostCount : ' + result);
     });
 
     this.store.dispatch(new PostActions.SearchPost());
+
+    this.posts.subscribe(() => {
+      setTimeout(() => {
+        this.store.dispatch(new SharedActions.SetProgress(false));
+      }, 1000);
+
+    });
 
     // this.postService.getPosts()
     //   .subscribe(result => {
@@ -38,7 +48,7 @@ export class PostListComponent implements OnInit {
 
   openPost(post: Post) {
 
-    this.router.navigate(['/users', 'detail', post.postId]);
+    this.router.navigate(['/users', 'post', post.postId]);
 
     // const dialogRef = this.dialog.open(PostDetailComponent, {
     //   height: '700px',

@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as Reducers from '../../reducers';
+import * as SharedActions from '../../shared-actions';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'hb-nav',
@@ -7,9 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store<Reducers.State>) { }
 
   ngOnInit() {
   }
+
+
+
 
 }
