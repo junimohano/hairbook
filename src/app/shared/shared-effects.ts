@@ -9,8 +9,6 @@ import { Action, Store } from '@ngrx/store';
 import { SharedService } from './shared.service';
 import * as SharedActions from './shared-actions';
 
-import * as Reducers from './reducers';
-
 @Injectable()
 export class SharedEffects {
 
@@ -23,7 +21,7 @@ export class SharedEffects {
   //   .map((action: SharedActions.SetProgress) => action.payload)
   //   .map(results => new SharedActions.(results));
 
-  constructor(private actions$: Actions, private sharedService: SharedService, private store: Store<Reducers.State>) {
+  constructor(private actions$: Actions, private sharedService: SharedService) {
 
   }
 }

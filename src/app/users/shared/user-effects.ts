@@ -22,8 +22,10 @@ export class UserEffects {
   @Effect() specialEffect$ = this.actions$.ofType(UserActions.SEARCH_POST)
     .withLatestFrom(this.store, (payload, state) => state.user.isLast)
     .filter(x => !x)
-    .withLatestFrom(this.store, (payload, state) => state.user.currentPostCount)
-    .switchMap((index) => this.userService.getPosts(index))
+    .withLatestFrom(this.store, (payload, state) => {
+      return ({ currentPostCount: state.user.currentPostCount, userId: state.shared.user.userId });
+    })
+    .switchMap((results) => this.userService.getPosts(results.currentPostCount, results.userId))
     .map(results => new UserActions.SuccessPost(results));
 
   constructor(private actions$: Actions, private userService: UserService, private store: Store<Reducers.State>) {

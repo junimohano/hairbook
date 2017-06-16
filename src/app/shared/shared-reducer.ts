@@ -17,7 +17,7 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.GET_USER:
       return { ...state, userKey: action.payload };
 
-    case Actions.SUCCESST_USER:
+    case Actions.SUCCESS_USER:
       return { ...state, user: action.payload };
 
     case Actions.SET_PROGRESS:

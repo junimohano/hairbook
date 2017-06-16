@@ -8,8 +8,8 @@ export class UserService {
 
   constructor(private authHttp: AuthHttp) { }
 
-  getPosts(index: number) {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}`)
+  getPosts(index: number, userId: number) {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userId=${userId}`)
       .map(res => res.json())
       .map((results: Post[]) => {
         results.forEach((p: Post) => {

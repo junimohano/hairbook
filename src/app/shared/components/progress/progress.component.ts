@@ -7,7 +7,8 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'hb-progress',
   templateUrl: './progress.component.html',
-  styleUrls: ['./progress.component.scss']
+  styleUrls: ['./progress.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgressComponent implements OnInit {
   isAppProgress: Observable<boolean>;

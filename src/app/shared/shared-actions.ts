@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 export const GET_USER = '[Shared] Get User';
-export const SUCCESST_USER = '[Shared] Success User';
+export const SUCCESS_USER = '[Shared] Success User';
 export const SET_PROGRESS = '[Shared] Set Progress';
 
 export class GetUser implements Action {
@@ -10,7 +10,7 @@ export class GetUser implements Action {
 }
 
 export class SuccessUser implements Action {
-  readonly type = SUCCESST_USER;
+  readonly type = SUCCESS_USER;
   constructor(public payload: User) { }
 }
 
