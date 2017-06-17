@@ -40,6 +40,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SharedService } from 'app/shared/shared.service';
 
+// // components
+// import { NavComponent } from './components/nav/nav.component';
+// import { FooterComponent } from './components/footer/footer.component';
+// import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+// import { ProgressComponent } from './components/progress/progress.component';
+import { ProgressCircleComponent } from './components/progress-circle/progress-circle.component';
+
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
     tokenName: 'id_token',
@@ -51,6 +58,14 @@ export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http);
   // return new TranslateHttpLoader(http, 'i18n/', '.json');
 }
+
+const components = [
+  // NavComponent,
+  // FooterComponent,
+  // PageNotFoundComponent,
+  // ProgressComponent,
+  ProgressCircleComponent
+];
 
 const modules = [
   CommonModule,
@@ -92,9 +107,12 @@ const modules = [
   exports: [
     modules,
     EffectsModule,
-    TranslateModule
+    TranslateModule,
+    components
   ],
-  declarations: [],
+  declarations: [
+    components
+  ],
   providers: [
     {
       provide: AuthHttp,

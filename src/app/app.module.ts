@@ -12,6 +12,7 @@ import { reducers } from './shared/reducers';
 
 // components
 import { AppComponent } from './app.component';
+
 import { NavComponent } from './shared/components/nav/nav.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';

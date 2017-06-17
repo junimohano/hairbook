@@ -13,7 +13,7 @@ export class LoginsComponent implements OnInit {
   param = { value: 'world' };
 
   constructor(public router: Router, private auth: Auth, private translate: TranslateService) {
-
+    this.auth.logout();
   }
 
   login() {
@@ -21,7 +21,7 @@ export class LoginsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.logout();
+
   }
 
   setLanguage(lang) {

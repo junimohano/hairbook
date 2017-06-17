@@ -23,16 +23,16 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.SUCCESS_POST:
       let isLast = false;
       if (state.currentPostCount === state.posts.length) {
-        isLast = true;
+        isLast = false;
       }
 
       action.payload.forEach(x => x.currentUploadIndex = 0);
-
-      return { ...state, posts: action.payload, isLast: isLast };
+      state.posts = state.posts.concat(action.payload);
+      return { ...state, isLast: isLast };
 
     case Actions.PREVIOUS_UPLOAD_INDEX:
       {
-        const post = state.posts.find(x => x.postId === action.payload );
+        const post = state.posts.find(x => x.postId === action.payload);
 
         if (post.currentUploadIndex > 0) {
           post.currentUploadIndex--;
@@ -41,16 +41,16 @@ export function reducer(state = initialState, action: Actions.All): State {
       }
     case Actions.NEXT_UPLOAD_INDEX:
       {
-        const post = state.posts.find(x => x.postId === action.payload );
+        const post = state.posts.find(x => x.postId === action.payload);
         if (post.currentUploadIndex < post.postUploads.length - 1) {
           post.currentUploadIndex++;
         }
         return { ...state };
       }
 
-       case Actions.GET_POST:
+    case Actions.GET_POST:
       {
-        const post = state.posts.find(x => x.postId === action.payload );
+        const post = state.posts.find(x => x.postId === action.payload);
         return { ...state, post: post };
       }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, Inject } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 import * as PostActions from '../shared/user-actions';
@@ -22,7 +22,30 @@ export class PostListComponent implements OnInit {
   constructor(private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.posts = store.select(Reducers.selectPosts);
     this.currentPostCount = store.select(Reducers.selectCurrentPostCount);
-    // this.store.dispatch(new SharedActions.SetProgress(true));
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      // console.log('22');
+      this.store.dispatch(new PostActions.SearchPost());
+    }
+
+
+    // if (document.documentElement.scrollTop + document.documentElement.offsetHeight > document.documentElement.scrollHeight) {
+    //   console.log('111');
+    // }
+
+    // // In chrome and some browser scroll is given to body tag
+    // const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
+    // const max = document.documentElement.scrollHeight;
+    // // pos/max will give you the distance between scroll bottom and and bottom of screen in percentage.
+    // if (pos === max) {
+    //   // Do your action here
+    //   console.log('reach');
+
+    // }
   }
 
   ngOnInit() {
@@ -33,12 +56,14 @@ export class PostListComponent implements OnInit {
 
     this.store.dispatch(new PostActions.SearchPost());
 
-    this.posts.subscribe(() => {
-      setTimeout(() => {
-        this.store.dispatch(new SharedActions.SetProgress(false));
-      }, 1000);
+    // this.posts.subscribe(() => {
+    //   setTimeout(() => {
+    //     // this.store.dispatch(new SharedActions.SetProgress(false));
+    //     // this.store.dispatch(new SharedActions.SetCircleProgress(false));
 
-    });
+    //   }, 1000);
+
+    // });
 
     // this.postService.getPosts()
     //   .subscribe(result => {

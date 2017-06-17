@@ -66,8 +66,8 @@ export class Auth {
 
         this.store.dispatch(new SharedActions.GetUser(profile.identities[0].user_id));
 
-        this.store.select(Reducers.selectUser).subscribe(user => {
-          if (user != null) {
+        this.store.select(Reducers.selectUserId).subscribe(userId => {
+          if (userId != null) {
             this.router.navigate(['/users']);
           }
         });
@@ -96,6 +96,6 @@ export class Auth {
     localStorage.removeItem('redirect_url');
     this.userProfile = undefined;
 
-    this.router.navigate(['/']);
+    // this.router.navigate(['/']);
   };
 }

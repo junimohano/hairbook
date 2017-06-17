@@ -1,9 +1,9 @@
-<div fxLayout="column" fxLayoutAlign="space-between stretch">
+<div class="main" fxLayout="column">
     <div>
-        <hb-nav fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-nav>
+        <hb-progress class="progress-fixed" fxFlexOffset.gt-md="20" fxFlex.gt-md="60"></hb-progress>
     </div>
     <div>
-        <hb-progress fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-progress>
+        <hb-nav class="menu-fixed" fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-nav>
     </div>
     <div>
         <div fxFlexOffset.gt-md="20" fxFlex.gt-md="60">

@@ -1,0 +1,17 @@
+.menu-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.progress-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+.main {
+    margin-top: 64px;
+}

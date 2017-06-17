@@ -1,15 +1,17 @@
 import * as Actions from './shared-actions';
 
 export interface State {
-  user: User;
+  userId: number;
   userKey: string;
   isAppProgress: boolean;
+  isCircleProgress: boolean;
 }
 
 const initialState: State = {
-  user: null,
+  userId: 0,
   userKey: '',
-  isAppProgress: true
+  isAppProgress: false,
+  isCircleProgress: false
 };
 
 export function reducer(state = initialState, action: Actions.All): State {
@@ -18,10 +20,13 @@ export function reducer(state = initialState, action: Actions.All): State {
       return { ...state, userKey: action.payload };
 
     case Actions.SUCCESS_USER:
-      return { ...state, user: action.payload };
+      return { ...state, userId: action.payload };
 
     case Actions.SET_PROGRESS:
-      return {...state, isAppProgress: action.payload }
+      return { ...state, isAppProgress: action.payload }
+
+    case Actions.SET_CIRCLE_PROGRESS:
+      return { ...state, isCircleProgress: action.payload }
 
     default:
       return state;

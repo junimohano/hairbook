@@ -23,11 +23,14 @@ export function selectPost(state: State): Post {
   return state.user.post;
 }
 
-export function selectUser(state: State): User {
-  return state.shared.user;
+export function selectUserId(state: State): number {
+  return state.shared.userId;
 }
 
 export function selectAppProgress(state: State): boolean {
   return state.shared.isAppProgress;
 }
 
+export function selectCircleProgress(state: State): boolean {
+  return state.shared.isCircleProgress;
+}

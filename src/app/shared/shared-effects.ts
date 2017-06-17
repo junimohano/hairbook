@@ -6,8 +6,9 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 
-import { SharedService } from './shared.service';
+import * as Reducers from './reducers';
 import * as SharedActions from './shared-actions';
+import { SharedService } from './shared.service';
 
 @Injectable()
 export class SharedEffects {
@@ -15,13 +16,12 @@ export class SharedEffects {
   @Effect() specialEffect1$ = this.actions$.ofType(SharedActions.GET_USER)
     .map((action: SharedActions.GetUser) => action.payload)
     .switchMap((userKey) => this.sharedService.getUser(userKey))
-    .map(results => new SharedActions.SuccessUser(results));
+    .map((user: User) => {
+      sessionStorage.setItem('userId', String(user.userId));
+      return new SharedActions.SuccessUser(user.userId);
+    });
 
-  // @Effect() specialEffect2$ = this.actions$.ofType(SharedActions.SET_PROGRESS)
-  //   .map((action: SharedActions.SetProgress) => action.payload)
-  //   .map(results => new SharedActions.(results));
-
-  constructor(private actions$: Actions, private sharedService: SharedService) {
+  constructor(private actions$: Actions, private sharedService: SharedService, private store: Store<Reducers.State>) {
 
   }
 }

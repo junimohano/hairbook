@@ -1,17 +1,24 @@
 <div *ngIf="auth.authenticated() && auth.userProfile">
-    <div fxLayout="column">
-        <div fxFlex="60">
-            <h3>Profile</h3>
-            <img [src]="auth.userProfile.picture" alt="" width="100px" height="100px">
-            <p><strong>Name: </strong> {{auth.userProfile.name}}</p>
-            <p><strong>Email: </strong> {{auth.userProfile.email}}</p>
-            <p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>
-            <p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
-            <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>
-            <p><strong>Address: </strong> {{auth.userProfile.user_metadata.address}}</p>
-        </div>
-    </div>
+    <div fxLayout="column" fxLayoutGap="50px" fxLayoutGap.xs="30px">
+        <div></div>
+        <div fxLayout="row" fxLayoutWrap fxLayoutGap="50px">
+            <div></div>
+            <div fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px" fxFlexOffset="50px" fxLayoutGap.xs="30px">
+                <div fxFlexFill fxLayout="column">
+                    <img class="img-circle" [src]="auth.userProfile.picture" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
+                </div>
+            </div>
 
-    <button md-button type="submit" [routerLink]="['/users/edit']">Edit address</button>
+            <div fxFlex="70" fxLayout="column" fxLayoutAlign="start start">
+                <p>{{auth.userProfile.nickname}} ({{auth.userProfile.email}})</p>
+                <p>{{auth.userProfile.user_metadata.address}}</p>
+                <!--auth.userProfile.name-->
+                <!--<p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
+                <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>-->
+                <button md-button type="submit" [routerLink]="['/users/edit']">Edit address</button>
+            </div>
+        </div>
+        <div></div>
+    </div>
 </div>
 <h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>
