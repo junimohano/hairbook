@@ -1,11 +1,11 @@
 import { Action } from '@ngrx/store';
 import { Post } from 'app/users/shared/models/post';
 
-export const SEARCH_POST = '[Users] Post';
-export const SUCCESS_POST = '[Users] Success Post';
-export const PREVIOUS_UPLOAD_INDEX = '[Users] Previous Upload Index';
-export const NEXT_UPLOAD_INDEX = '[Users] Next Upload Index';
-export const GET_POST = '[Users] Get Post';
+export const SEARCH_POST = '[Explorer] Post';
+export const SUCCESS_POST = '[Explorer] Success Post';
+export const PREVIOUS_UPLOAD_INDEX = '[Explorer] Previous Upload Index';
+export const NEXT_UPLOAD_INDEX = '[Explorer] Next Upload Index';
+export const GET_POST = '[Explorer] Get Post';
 
 export class SearchPost implements Action {
   readonly type = SEARCH_POST;

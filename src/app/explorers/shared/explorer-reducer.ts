@@ -1,4 +1,4 @@
-import * as Actions from './user-actions';
+import * as Actions from './explorer-actions';
 import { Post } from 'app/users/shared/models/post';
 
 export interface State {

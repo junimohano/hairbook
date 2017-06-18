@@ -7,6 +7,8 @@ import * as Reducers from '../../shared/reducers';
 
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { PostHairMenu } from 'app/users/shared/models/post-hair-menu';
+import { Post } from 'app/users/shared/models/post';
 
 @Component({
   selector: 'hb-post-detail',
@@ -19,27 +21,42 @@ export class PostDetailComponent implements OnInit {
   postMenuColor: PostHairMenu;
   postMenuParm: PostHairMenu;
 
-  // constructor( @Inject(MD_DIALOG_DATA) public data: any, private store: Store<Reducers.State>) {
-  constructor(private store: Store<Reducers.State>, private route: ActivatedRoute) {
+  // constructor(private route: ActivatedRoute) {
+  constructor( @Inject(MD_DIALOG_DATA) public data: any, private store: Store<Reducers.State>) {
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      console.log('aaaaaaaaaaaaaaaaaaa:', params['id']);
-      this.store.dispatch(new PostActions.GetPost(Number(params['id'])));
 
-      this.store.select(Reducers.selectPost).subscribe((p: Post) => {
-        this.post = p;
-        console.log('bbbbbbbbbbbbbbbb:', this.post);
+    this.store.dispatch(new PostActions.GetPost(this.data));
 
-        if (this.post) {
-          this.postMenuColor = this.post.postHairMenus.find(x => x.hairMenuId === 2);
-          this.postMenuParm = this.post.postHairMenus.find(x => x.hairMenuId === 3);
-        }
+    this.store.select(Reducers.selectPost).subscribe((p: Post) => {
+      this.post = p;
+      console.log('bbbbbbbbbbbbbbbb:', this.post);
 
-      });
+      if (this.post) {
+        this.postMenuColor = this.post.postHairMenus.find(x => x.hairMenuId === 2);
+        this.postMenuParm = this.post.postHairMenus.find(x => x.hairMenuId === 3);
+      }
 
     });
+
+
+    // this.route.params.subscribe(params => {
+    //   console.log('aaaaaaaaaaaaaaaaaaa:', params['id']);
+    //   this.store.dispatch(new PostActions.GetPost(Number(params['id'])));
+
+    //   this.store.select(Reducers.selectPost).subscribe((p: Post) => {
+    //     this.post = p;
+    //     console.log('bbbbbbbbbbbbbbbb:', this.post);
+
+    //     if (this.post) {
+    //       this.postMenuColor = this.post.postHairMenus.find(x => x.hairMenuId === 2);
+    //       this.postMenuParm = this.post.postHairMenus.find(x => x.hairMenuId === 3);
+    //     }
+
+    //   });
+
+    // });
   }
 
   previous() {

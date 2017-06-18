@@ -1,4 +1,6 @@
-interface Tag {
+import { User } from 'app/users/shared/models/user';
+
+export interface Tag {
   tagId: number;
   tagName: string;
 

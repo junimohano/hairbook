@@ -6,39 +6,41 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 
-import { UserService } from './user.service';
-import * as UserActions from './user-actions';
+import { ExplorerService } from './explorer.service';
+import * as ExplorerActions from './explorer-actions';
 import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
+import { AccessType } from 'app/shared/enums/access-type';
+import { state } from "@angular/core/src/animation/dsl";
 
 @Injectable()
-export class UserEffects {
+export class ExplorerEffects {
   // @Effect()
   // search$: Observable<Action> = this.actions$.ofType(PostActions.SEARCH)
   //   .map((action: PostActions.Search) => action.payload)
   //   .switchMap(terms => this.postService.getPosts())
   //   .map(results => new PostActions.SearchSuccess(results));
 
-  @Effect() specialEffect$ = this.actions$.ofType(UserActions.SEARCH_POST)
+  @Effect() specialEffect$ = this.actions$.ofType(ExplorerActions.SEARCH_POST)
     .debounceTime(100)
     .withLatestFrom(this.store, (payload, state) => {
-      if (state.user.posts.length === 0) {
+      if (state.explorer.posts.length === 0) {
         this.store.dispatch(new SharedActions.SetProgress(true));
       }
       this.store.dispatch(new SharedActions.SetCircleProgress(true));
-      return state.user.isLast;
+      return state.explorer.isLast;
     })
     .filter(x => !x)
     .filter(() => sessionStorage.getItem('userId') !== undefined)
-    .withLatestFrom(this.store, (payload, state) => ({ currentPostCount: state.user.currentPostCount, search: state.user.search }))
-    .switchMap((results) => this.userService.getPosts(results.currentPostCount, Number(sessionStorage.getItem('userId')), results.search))
+    .withLatestFrom(this.store, (payload, state) => ({ currentPostCount: state.explorer.currentPostCount, search: state.explorer.search }))
+    .switchMap((results) => this.explorerService.getPosts(results.currentPostCount, Number(sessionStorage.getItem('userId')), AccessType.Public, results.search))
     .map(results => {
       this.store.dispatch(new SharedActions.SetCircleProgress(false));
       this.store.dispatch(new SharedActions.SetProgress(false));
-      return new UserActions.SuccessPost(results);
+      return new ExplorerActions.SuccessPost(results);
     });
 
-  constructor(private actions$: Actions, private userService: UserService, private store: Store<Reducers.State>) {
+  constructor(private actions$: Actions, private explorerService: ExplorerService, private store: Store<Reducers.State>) {
 
   }
 }

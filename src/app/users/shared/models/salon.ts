@@ -1,4 +1,6 @@
-interface Salon {
+import { User } from 'app/users/shared/models/user';
+
+export interface Salon {
   salonId: number;
   name: string;
   address: string;

@@ -1,18 +1,38 @@
 <div *ngIf="auth.authenticated() && auth.userProfile">
-    <div fxLayout="column">
-        <div fxFlex="60">
-            <h3>Profile</h3>
-            <img [src]="auth.userProfile.picture" alt="">
+    <div fxLayout="column" fxLayoutGap="50px" fxLayoutGap.xs="10px">
+        <div></div>
+        <div fxLayout="row" fxLayoutGap="50px" fxLayoutGap.xs="20px" fxLayoutAlign="center ceter">
+            <div></div>
+            <div fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
+                <div fxFlexFill fxLayout="column">
+                    <img class="img-circle" [src]="auth.userProfile.picture" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
+                </div>
+            </div>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div class="user-name"> {{auth.userProfile.nickname}} </div>
+                <div><strong>{{auth.userProfile.given_name}} {{auth.userProfile.family_name}}</strong> ({{auth.userProfile.gender}})</div>
+                <div>{{auth.userProfile.email}}</div>
+                <div>created date : {{auth.userProfile.created_at | date}}</div>
+                <div>updated date : {{auth.userProfile.updated_at | date}}</div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center ceter">
             <form (ngSubmit)="onSubmit()">
                 <div class="form-group">
-                    <md-input-container fxFlex="50">
-                        <input mdInput placeholder="Address" value="test" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
+                    <md-input-container>
+                        <input mdInput placeholder="Address" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
                     </md-input-container>
                 </div>
-
-                <button md-button type="submit">Submit</button>
+                <div class="form-group">
+                    <md-input-container>
+                        <input mdInput placeholder="Memo" [(ngModel)]="memo" [ngModelOptions]="{standalone: true}">
+                    </md-input-container>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="50px">
+                    <button md-raised-button type="submit" color="primary">Save</button>
+                    <button md-raised-button (click)="onBack()" color="accent">Cancel</button>
+                </div>
             </form>
         </div>
     </div>
 </div>
-<h4 *ngIf="!auth.authenticated()">You are not logged in, please click 'Log in' button to login</h4>

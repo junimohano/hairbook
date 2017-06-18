@@ -1,4 +1,4 @@
-enum UploadFileType {
+export enum UploadFileType {
   Image,
   Video,
   Gif

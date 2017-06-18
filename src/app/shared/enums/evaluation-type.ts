@@ -1,3 +1,3 @@
-enum EvaluationType {
+export enum EvaluationType {
   Like
 }

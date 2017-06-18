@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { PostDetailComponent } from 'app/users/post-detail/post-detail.component';
 import { Router } from '@angular/router';
+import { Post } from 'app/users/shared/models/post';
 
 @Component({
   selector: 'hb-post-list',
@@ -28,40 +29,14 @@ export class PostListComponent implements OnInit {
   onWindowScroll() {
 
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      // console.log('22');
       this.store.dispatch(new PostActions.SearchPost());
     }
 
-
-    // if (document.documentElement.scrollTop + document.documentElement.offsetHeight > document.documentElement.scrollHeight) {
-    //   console.log('111');
-    // }
-
-    // // In chrome and some browser scroll is given to body tag
-    // const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
-    // const max = document.documentElement.scrollHeight;
-    // // pos/max will give you the distance between scroll bottom and and bottom of screen in percentage.
-    // if (pos === max) {
-    //   // Do your action here
-    //   console.log('reach');
-
-    // }
   }
 
   ngOnInit() {
 
-    this.currentPostCount.subscribe(result => {
-      console.log('currentPostCount : ' + result);
-    });
-
     this.store.dispatch(new PostActions.SearchPost());
-
-    // this.posts.subscribe(() => {
-    //   setTimeout(() => {
-    //     // this.store.dispatch(new SharedActions.SetProgress(false));
-    //     // this.store.dispatch(new SharedActions.SetCircleProgress(false));
-
-    //   }, 1000);
 
     // });
 
@@ -73,16 +48,16 @@ export class PostListComponent implements OnInit {
 
   openPost(post: Post) {
 
-    this.router.navigate(['/users', 'post', post.postId]);
+    // this.router.navigate(['/users', 'post', post.postId]);
 
-    // const dialogRef = this.dialog.open(PostDetailComponent, {
-    //   height: '700px',
-    //   width: '500px',
-    //   data: post
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   // this.selectedOption = result;
-    // });
+    const dialogRef = this.dialog.open(PostDetailComponent, {
+      height: '700px',
+      width: '500px',
+      data: post.postId
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // this.selectedOption = result;
+    });
   }
 
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 
 import { EffectsModule } from '@ngrx/effects';
@@ -71,6 +71,7 @@ const modules = [
   CommonModule,
   HttpModule,
   FormsModule,
+  ReactiveFormsModule,
   FlexLayoutModule,
 
   MdButtonModule,

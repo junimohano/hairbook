@@ -1,4 +1,9 @@
-interface PostHairMenu {
+import { Post } from 'app/users/shared/models/post';
+import { HairMenu } from 'app/users/shared/models/hair-menu';
+import { HairSubMenu } from 'app/users/shared/models/hair-sub-menu';
+import { User } from 'app/users/shared/models/user';
+
+export interface PostHairMenu {
   postHairMenuId: number;
   postId: number;
   post: Post;

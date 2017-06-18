@@ -1,4 +1,4 @@
-enum UploadCategoryType {
+export enum UploadCategoryType {
   Before,
   After,
   RoleModel

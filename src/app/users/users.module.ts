@@ -14,6 +14,7 @@ import { PostDetailComponent } from './post-detail/post-detail.component';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { UserMainComponent } from './user-main/user-main.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { PostSearchComponent } from './post-search/post-search.component';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { UserEditComponent } from './user-edit/user-edit.component';
     PostDetailComponent,
     UserInfoComponent,
     UserMainComponent,
-    UserEditComponent
+    UserEditComponent,
+    PostSearchComponent
   ],
   providers: [
     UserService

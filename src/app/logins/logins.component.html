@@ -1,13 +1,13 @@
-<div fxLayout="column" fxLayoutAlign="center center">
+<div class="max-height" fxLayout="column" fxLayoutAlign="center center">
 
     <div>{{ 'HELLO' | translate:param }}</div>
 
     <div fxLayout="row" fxLayoutAlign="center center">
-
         <button class="btn btn-default " (click)="setLanguage( 'en') ">    <span class="flag-icon flag-icon-us "></span>  ENGLISH</button>
 
         <button class="btn btn-default " (click)="setLanguage( 'kr') ">    <span class="flag-icon flag-icon-no "></span> KOREAN</button>
     </div>
 
     <button md-button (click)="login()">Login</button>
+
 </div>

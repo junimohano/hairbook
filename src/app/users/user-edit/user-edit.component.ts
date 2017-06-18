@@ -11,17 +11,21 @@ import { Router } from '@angular/router';
 })
 export class UserEditComponent implements OnInit {
 
-  address: String;
+  address: string;
+  memo: string;
   constructor(public auth: Auth, private authHttp: AuthHttp, private router: Router) {
-    if (auth.userProfile.user_metadata && auth.userProfile.user_metadata.address) {
+    if (auth.userProfile.user_metadata) {
       this.address = auth.userProfile.user_metadata.address;
+      this.memo = auth.userProfile.user_metadata.memo;
     }
   }
 
   ngOnInit() {
 
   }
-
+  onBack() {
+    this.router.navigate(['/users']);
+  }
   onSubmit() {
     const headers: any = {
       'Accept': 'application/json',
@@ -30,7 +34,8 @@ export class UserEditComponent implements OnInit {
 
     const data: any = JSON.stringify({
       user_metadata: {
-        address: this.address
+        address: this.address,
+        memo: this.memo
       }
     });
 
@@ -41,7 +46,7 @@ export class UserEditComponent implements OnInit {
       response => {
         this.auth.userProfile = response;
         localStorage.setItem('profile', JSON.stringify(response));
-        this.router.navigate(['/profile']);
+        this.router.navigate(['/users']);
       },
       error => alert(error.json().message)
       );

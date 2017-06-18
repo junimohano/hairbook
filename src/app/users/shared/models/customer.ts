@@ -1,4 +1,7 @@
-interface Customer {
+import { GenderType } from 'app/shared/enums/gender-type';
+import { User } from 'app/users/shared/models/user';
+
+export interface Customer {
   customerId: number;
   name: string;
   gender: GenderType;
