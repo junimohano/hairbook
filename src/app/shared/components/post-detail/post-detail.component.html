@@ -1,0 +1,100 @@
+<!--<md-list>
+    <h3 md-subheader>Picture Galary</h3>
+    <md-divider></md-divider>
+    <md-list-item>
+    </md-list-item>
+    </md-list>-->
+
+<div fxLayout="column" fxLayoutAlign="center center">
+
+    <div>
+        <div fxLayout="row">
+            <md-input-container fxFlex="50">
+                <input mdInput placeholder="Name" value="test" [(ngModel)]="post.customer.name">
+            </md-input-container>
+
+            <p>{{post.customerId}}</p>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="row">
+            <md-input-container fxFlex="50">
+                <input mdInput [mdDatepicker]="picker" placeholder="When" [(ngModel)]="post.date">
+                <button mdSuffix [mdDatepickerToggle]="picker"></button>
+            </md-input-container>
+            <md-datepicker #picker></md-datepicker>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="row" fxLayoutAlign="center stretch" *ngIf="post.postHairMenus">
+            <h5>Menu </h5>
+            <md-chip-list>
+                <div *ngFor="let postHairMenu of post.postHairMenus; let i = index;">
+                    <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
+                        {{postHairMenu.hairMenu?.name}}
+                    </md-chip>
+                </div>
+            </md-chip-list>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="column">
+            <h3>Picture Galary</h3>
+            <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
+                <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="250px" fxLayout="column">
+                    <img [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="250px">
+                    <p fxFill>{{upload.memo}}</p>
+                </div>
+            </div>
+
+            <div fxLayout="row">
+                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="previous.emit(this.post.postId)"><</button>
+                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="next.emit(this.post.postId)">></button>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="row" fxLayoutAlign="center stretch">
+            <h5>HairType </h5>
+            <md-chip-list>
+                <div *ngFor="let postHairType of post.postHairTypes; let i = index;">
+                    <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
+                        {{postHairType.hairType?.name}}
+                    </md-chip>
+                </div>
+            </md-chip-list>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="column">
+            <md-input-container fxFill>
+                <textarea mdInput placeholder="Hair Memo" [(ngModel)]="post.hairMemo"></textarea>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="column" *ngIf="postMenuColor">
+            <!--<h3>Information for color</h3>-->
+            <md-input-container>
+                <textarea mdInput placeholder="Color Memo" [(ngModel)]="postMenuColor.memo">1600 Amphitheatre Pkwy</textarea>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div>
+        <div fxLayout="column" *ngIf="postMenuParm">
+            <!--<h3>Information for parm</h3>-->
+            <md-input-container>
+                <textarea mdInput placeholder="Parm Memo" [(ngModel)]="postMenuParm.memo"></textarea>
+            </md-input-container>
+        </div>
+
+    </div>
+
+</div>

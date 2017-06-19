@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { environment } from 'environments/environment';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
-import { Post } from 'app/users/shared/models/post';
+import { Post } from 'app/shared/models/post';
 
 @Injectable()
 export class UserService {

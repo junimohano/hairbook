@@ -38,14 +38,13 @@ import {
 // Flex layout
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { SharedService } from 'app/shared/shared.service';
+import { SharedService } from './shared.service';
 
-// // components
-// import { NavComponent } from './components/nav/nav.component';
-// import { FooterComponent } from './components/footer/footer.component';
-// import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-// import { ProgressComponent } from './components/progress/progress.component';
-import { ProgressCircleComponent } from './components/progress-circle/progress-circle.component';
+// components
+import { ProgressSpinnerComponent } from './components/progress-spinner/progress-spinner.component';
+import { PostListComponent } from './components/post-list/post-list.component';
+import { PostDetailComponent } from './components/post-detail/post-detail.component';
+import { PostSearchComponent } from './components/post-search/post-search.component';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -60,11 +59,10 @@ export function HttpLoaderFactory(http: Http) {
 }
 
 const components = [
-  // NavComponent,
-  // FooterComponent,
-  // PageNotFoundComponent,
-  // ProgressComponent,
-  ProgressCircleComponent
+  ProgressSpinnerComponent,
+  PostListComponent,
+  PostDetailComponent,
+  PostSearchComponent
 ];
 
 const modules = [
@@ -123,6 +121,9 @@ const modules = [
     Auth,
     AuthGuard,
     SharedService
-  ]
+  ],
+  // entryComponents: [
+  //   PostDetailComponent
+  // ],
 })
 export class SharedModule { }

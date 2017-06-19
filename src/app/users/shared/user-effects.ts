@@ -23,9 +23,10 @@ export class UserEffects {
     .debounceTime(100)
     .withLatestFrom(this.store, (payload, state) => {
       if (state.user.posts.length === 0) {
-        this.store.dispatch(new SharedActions.SetProgress(true));
+        this.store.dispatch(new SharedActions.SetProgressBar(true));
+      } else {
+        this.store.dispatch(new SharedActions.SetProgressSpinner(true));
       }
-      this.store.dispatch(new SharedActions.SetCircleProgress(true));
       return state.user.isLast;
     })
     .filter(x => !x)
@@ -33,8 +34,8 @@ export class UserEffects {
     .withLatestFrom(this.store, (payload, state) => ({ currentPostCount: state.user.currentPostCount, search: state.user.search }))
     .switchMap((results) => this.userService.getPosts(results.currentPostCount, Number(sessionStorage.getItem('userId')), results.search))
     .map(results => {
-      this.store.dispatch(new SharedActions.SetCircleProgress(false));
-      this.store.dispatch(new SharedActions.SetProgress(false));
+      this.store.dispatch(new SharedActions.SetProgressBar(false));
+      this.store.dispatch(new SharedActions.SetProgressSpinner(false));
       return new UserActions.SuccessPost(results);
     });
 

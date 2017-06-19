@@ -66,7 +66,7 @@ export class Auth {
 
         this.store.dispatch(new SharedActions.GetUser(profile.identities[0].user_id));
 
-        this.store.select(Reducers.selectUserId).subscribe(userId => {
+        this.store.select(Reducers.sharedUserId).subscribe(userId => {
           if (userId != null) {
             this.router.navigate(['/users']);
           }

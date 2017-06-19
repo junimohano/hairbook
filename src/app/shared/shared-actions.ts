@@ -2,8 +2,8 @@ import { Action } from '@ngrx/store';
 
 export const GET_USER = '[Shared] Get User';
 export const SUCCESS_USER = '[Shared] Success User';
-export const SET_PROGRESS = '[Shared] Set Progress';
-export const SET_CIRCLE_PROGRESS = '[Shared] Set Circle Progress';
+export const SET_PROGRESS_BAR = '[Shared] Set Progress Bar';
+export const SET_PROGRESS_SPINNER = '[Shared] Set Progress Spinner';
 
 export class GetUser implements Action {
   readonly type = GET_USER;
@@ -15,18 +15,18 @@ export class SuccessUser implements Action {
   constructor(public payload: number) { }
 }
 
-export class SetProgress implements Action {
-  readonly type = SET_PROGRESS;
+export class SetProgressBar implements Action {
+  readonly type = SET_PROGRESS_BAR;
   constructor(public payload: boolean) { }
 }
 
-export class SetCircleProgress implements Action {
-  readonly type = SET_CIRCLE_PROGRESS;
+export class SetProgressSpinner implements Action {
+  readonly type = SET_PROGRESS_SPINNER;
   constructor(public payload: boolean) { }
 }
 
 export type All
   = GetUser
   | SuccessUser
-  | SetProgress
-  | SetCircleProgress;
+  | SetProgressBar
+  | SetProgressSpinner;

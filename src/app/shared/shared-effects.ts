@@ -9,7 +9,7 @@ import { Action, Store } from '@ngrx/store';
 import * as Reducers from './reducers';
 import * as SharedActions from './shared-actions';
 import { SharedService } from './shared.service';
-import { User } from 'app/users/shared/models/user';
+import { User } from 'app/shared/models/user';
 
 @Injectable()
 export class SharedEffects {

@@ -16,7 +16,7 @@ import { AppComponent } from './app.component';
 import { NavComponent } from './shared/components/nav/nav.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import { ProgressComponent } from './shared/components/progress/progress.component';
+import { ProgressBarComponent } from './shared/components/progress-bar/progress-bar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { ProgressComponent } from './shared/components/progress/progress.compone
     NavComponent,
     FooterComponent,
     PageNotFoundComponent,
-    ProgressComponent
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,

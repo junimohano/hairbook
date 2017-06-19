@@ -1,11 +1,10 @@
 import * as Actions from './user-actions';
-import { Post } from 'app/users/shared/models/post';
+import { Post } from 'app/shared/models/post';
 
 export interface State {
   search: string;
   currentPostCount: number;
   posts: Post[];
-  post: Post;
   isLast: boolean;
 }
 
@@ -13,7 +12,6 @@ const initialState: State = {
   search: '',
   currentPostCount: 0,
   posts: [],
-  post: null,
   isLast: false
 };
 
@@ -23,6 +21,9 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(`search_post : ${state.posts.length}`);
       if (state.search !== action.payload && action.payload !== null) {
         state.posts = []
+      }
+      if (action.payload === null) {
+        action.payload = state.search;
       }
       return { ...state, currentPostCount: state.posts.length, search: action.payload };
 
@@ -52,12 +53,6 @@ export function reducer(state = initialState, action: Actions.All): State {
           post.currentUploadIndex++;
         }
         return { ...state };
-      }
-
-    case Actions.GET_POST:
-      {
-        const post = state.posts.find(x => x.postId === action.payload);
-        return { ...state, post: post };
       }
 
     default:

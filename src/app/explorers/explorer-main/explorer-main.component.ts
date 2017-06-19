@@ -1,46 +1,51 @@
-import { Component, OnInit, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Auth } from '../../shared/auth/auth.service';
 
 import { Store } from '@ngrx/store';
-import * as UserActions from '../shared/user-actions';
+import * as ExplorerActions from '../shared/explorer-actions';
 import * as Reducers from '../../shared/reducers';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
-import { Post } from 'app/shared/models/post';
-import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
+import { Post } from '../../shared/models/post';
+import { PostDetailComponent } from '../../shared/components/post-detail/post-detail.component';
 
 @Component({
-  selector: 'hb-user-main',
-  templateUrl: './user-main.component.html',
-  styleUrls: ['./user-main.component.scss'],
+  selector: 'hb-explorer-main',
+  templateUrl: './explorer-main.component.html',
+  styleUrls: ['./explorer-main.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserMainComponent implements OnInit {
+export class ExplorerMainComponent implements OnInit {
 
   search$: Observable<string>;
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog) {
-    this.search$ = store.select(Reducers.userSearch);
-    this.posts$ = store.select(Reducers.userPosts);
+    this.search$ = store.select(Reducers.explorerSearch);
+    this.posts$ = store.select(Reducers.explorerPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
   }
 
   ngOnInit() {
-    this.store.dispatch(new UserActions.SearchPost());
+    this.store.dispatch(new ExplorerActions.SearchPost());
   }
+
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
+
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
       console.log('bottom');
-      this.store.dispatch(new UserActions.SearchPost());
+      this.store.dispatch(new ExplorerActions.SearchPost());
     }
+
+    //    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    //  }
   }
 
   searchChange(search: string) {
-    this.store.dispatch(new UserActions.SearchPost(search));
+    this.store.dispatch(new ExplorerActions.SearchPost(search));
   }
 
   openDetail(post: Post) {
@@ -58,11 +63,11 @@ export class UserMainComponent implements OnInit {
     dialogRef.componentInstance.postMenuParm = post.postHairMenus.find(x => x.hairMenuId === 3);
 
     dialogRef.componentInstance.previous.subscribe((postId: number) => {
-      this.store.dispatch(new UserActions.PreviousUploadIndex(postId));
+      this.store.dispatch(new ExplorerActions.PreviousUploadIndex(postId));
     });
 
     dialogRef.componentInstance.next.subscribe((postId: number) => {
-      this.store.dispatch(new UserActions.NextUploadIndex(postId));
+      this.store.dispatch(new ExplorerActions.NextUploadIndex(postId));
     });
 
     dialogRef.afterClosed().subscribe(result => {

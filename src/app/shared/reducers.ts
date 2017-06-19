@@ -1,7 +1,6 @@
 import * as ExplorerReducer from '../explorers/shared/explorer-reducer';
 import * as UserReducer from '../users/shared/user-reducer';
 import * as SharedReducer from './shared-reducer';
-import { Post } from 'app/users/shared/models/post';
 
 export interface State {
   explorer: ExplorerReducer.State;
@@ -15,34 +14,41 @@ export const reducers = {
   shared: SharedReducer.reducer
 };
 
-export function selectPosts(state: State) {
+// user
+export function userPosts(state: State) {
   return state.user.posts;
 }
 
-export function selectCurrentPostCount(state: State): number {
+export function userPostsLength(state: State): number {
   return state.user.posts.length;
 }
 
-export function selectPost(state: State): Post {
-  return state.user.post;
+export function userSearch(state: State): string {
+  return state.user.search;
 }
 
-export function selectUserId(state: State): number {
+// shared
+export function sharedUserId(state: State): number {
   return state.shared.userId;
 }
 
-export function selectAppProgress(state: State): boolean {
-  return state.shared.isAppProgress;
+export function sharedIsProgressBar(state: State): boolean {
+  return state.shared.isProgressBar;
 }
 
-export function selectCircleProgress(state: State): boolean {
-  return state.shared.isCircleProgress;
+export function sharedIsProgressSpinner(state: State): boolean {
+  return state.shared.isProgressSpinner;
 }
 
-export function selectExplorerPosts(state: State) {
+// explorer
+export function explorerPosts(state: State) {
   return state.explorer.posts;
 }
 
-export function selectCurrentExplorerPostCount(state: State): number {
+export function explorerPostsLength(state: State): number {
   return state.explorer.posts.length;
+}
+
+export function explorerSearch(state: State): string {
+  return state.explorer.search;
 }

@@ -10,8 +10,7 @@ import { ExplorerService } from './explorer.service';
 import * as ExplorerActions from './explorer-actions';
 import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
-import { AccessType } from 'app/shared/enums/access-type';
-import { state } from "@angular/core/src/animation/dsl";
+import { AccessType } from 'app/shared/models/enums/access-type';
 
 @Injectable()
 export class ExplorerEffects {
@@ -25,9 +24,9 @@ export class ExplorerEffects {
     .debounceTime(100)
     .withLatestFrom(this.store, (payload, state) => {
       if (state.explorer.posts.length === 0) {
-        this.store.dispatch(new SharedActions.SetProgress(true));
+        this.store.dispatch(new SharedActions.SetProgressBar(true));
       }
-      this.store.dispatch(new SharedActions.SetCircleProgress(true));
+      this.store.dispatch(new SharedActions.SetProgressSpinner(true));
       return state.explorer.isLast;
     })
     .filter(x => !x)
@@ -35,8 +34,8 @@ export class ExplorerEffects {
     .withLatestFrom(this.store, (payload, state) => ({ currentPostCount: state.explorer.currentPostCount, search: state.explorer.search }))
     .switchMap((results) => this.explorerService.getPosts(results.currentPostCount, Number(sessionStorage.getItem('userId')), AccessType.Public, results.search))
     .map(results => {
-      this.store.dispatch(new SharedActions.SetCircleProgress(false));
-      this.store.dispatch(new SharedActions.SetProgress(false));
+      this.store.dispatch(new SharedActions.SetProgressBar(false));
+      this.store.dispatch(new SharedActions.SetProgressSpinner(false));
       return new ExplorerActions.SuccessPost(results);
     });
 
