@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
 import { Post } from 'app/shared/models/post';
 import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
+import { go, replace, search, show, back, forward } from '@ngrx/router-store';
 
 @Component({
   selector: 'hb-user-main',
@@ -47,11 +48,19 @@ export class UserMainComponent implements OnInit {
 
     //   // this.router.navigate(['/users', 'post', post.postId]);
 
+    const height = window.outerHeight > 600 ? 600 : window.outerHeight;
+    const width = window.outerHeight > 935 ? 935 : window.outerHeight;
+
     const dialogRef = this.dialog.open(PostDetailComponent, {
-      height: '700px',
-      width: '500px',
+      height: `${height}px`,
+      width: `${width}px`,
       data: post.postId
     });
+
+
+    // dialogRef.updateSize(width + 'px', height + 'px');
+    // dialogRef.updatePosition({ top: '50px', left: '50px' });
+
 
     dialogRef.componentInstance.post = post;
     dialogRef.componentInstance.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
@@ -70,4 +79,7 @@ export class UserMainComponent implements OnInit {
     });
   }
 
+  test() {
+    this.store.dispatch(back());
+  }
 }

@@ -1,0 +1,38 @@
+<div fxLayout="row" fxLayoutAlign="space-around center">
+
+    <div fxLayout="column" fxLayoutGap="10px">
+        <button md-raised-button color="warn" (click)="signIn('google')">google</button>
+        <button md-raised-button color="primary" (click)="signIn('facebook')">facebook</button>
+    </div>
+
+    <div fxLayout="column" fxLayoutGap="10px">
+
+        <form [formGroup]="loginForm" novalidate>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput placeholder="Username" formControlName="userName">
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput type="password" placeholder="Password" formControlName="password">
+                </md-input-container>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <div class="form-group">
+                    <button md-raised-button color="primary" (click)="signIn('google')">Login</button>
+                </div>
+                <div class="form-group">
+                    <button md-raised-button color="accent" (click)="signUp()">Sign Up</button>
+                </div>
+            </div>
+
+        </form>
+
+        <p>Form value: {{ loginForm.value | json }}</p>
+        <p>Form status: {{ loginForm.status | json }}</p>
+
+    </div>
+</div>
+
+{{user$ | async | json}}

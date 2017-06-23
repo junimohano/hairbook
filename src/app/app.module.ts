@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // ngrx
 import { StoreModule } from '@ngrx/store';
+import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './shared/reducers';
 
@@ -33,6 +34,7 @@ import { ProgressBarComponent } from './shared/components/progress-bar/progress-
     AppRoutingModule,
     // ngrx
     StoreModule.provideStore(reducers),
+    RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension()
   ],
   providers: [
@@ -40,3 +42,4 @@ import { ProgressBarComponent } from './shared/components/progress-bar/progress-
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
