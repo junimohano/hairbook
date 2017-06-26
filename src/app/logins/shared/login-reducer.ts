@@ -4,16 +4,16 @@ import { UserSecret } from 'app/logins/shared/user-secret';
 
 export interface State {
   userKey: string;
-  existUser: boolean;
   user: User;
   userSecret: UserSecret;
+  existUserName: boolean;
 }
 
 const initialState: State = {
   userKey: '',
-  existUser: false,
   user: null,
-  userSecret: null
+  userSecret: null,
+  existUserName: false
 };
 
 export function reducer(state = initialState, action: Actions.All): State {
@@ -21,14 +21,14 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.EXIST_USER:
       return { ...state, userKey: action.payload };
 
-    case Actions.SUCCESS_EXIST_USER:
-      return { ...state, existUser: action.payload };
-
     case Actions.GET_TOKEN:
       return { ...state, userSecret: action.payload };
 
-    case Actions.SUCCESS_USER:
+    case Actions.SET_USER:
       return { ...state, user: action.payload };
+
+    case Actions.EXIST_USER_NAME_SUCCESS:
+      return { ...state, existUserName: action.payload }
 
     default:
       return state;

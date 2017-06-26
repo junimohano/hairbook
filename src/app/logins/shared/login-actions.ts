@@ -2,14 +2,16 @@ import { Action } from '@ngrx/store';
 import { User } from 'app/shared/models/user';
 import { UserSecret } from 'app/logins/shared/user-secret';
 
-export const LOGIN = '[Login] Login';
+export const LOGIN_SOCIAL = '[Login] Login Social';
 export const EXIST_USER = '[Login] Exist User';
-export const SUCCESS_EXIST_USER = '[Login] Success Exist User';
 export const GET_TOKEN = '[Login] Get Token';
-export const SUCCESS_USER = '[Login] Success User';
+export const SET_USER = '[Login] Success User';
+export const REGISTER = '[Login] Register';
+export const EXIST_USER_NAME = '[Login] Exist UserName';
+export const EXIST_USER_NAME_SUCCESS = '[Login] Exist UserName Success';
 
-export class Login implements Action {
-  readonly type = LOGIN;
+export class LoginSocial implements Action {
+  readonly type = LOGIN_SOCIAL;
   constructor(public payload: string) { }
 }
 
@@ -18,24 +20,36 @@ export class ExistUser implements Action {
   constructor(public payload: string) { }
 }
 
-export class SuccessExistUser implements Action {
-  readonly type = SUCCESS_EXIST_USER;
-  constructor(public payload: boolean) { }
-}
-
 export class GetToken implements Action {
   readonly type = GET_TOKEN;
   constructor(public payload: UserSecret) { }
 }
 
-export class SuccessUser implements Action {
-  readonly type = SUCCESS_USER;
+export class SetUser implements Action {
+  readonly type = SET_USER;
   constructor(public payload: User) { }
 }
 
+export class Register implements Action {
+  readonly type = REGISTER;
+  constructor(public payload: User) { }
+}
+
+export class ExistUserName implements Action {
+  readonly type = EXIST_USER_NAME;
+  constructor(public payload: string) { }
+}
+
+export class ExistUserNameSuccess implements Action {
+  readonly type = EXIST_USER_NAME_SUCCESS;
+  constructor(public payload: boolean) { }
+}
+
 export type All
-  = Login
+  = LoginSocial
   | ExistUser
-  | SuccessExistUser
   | GetToken
-  | SuccessUser;
+  | SetUser
+  | Register
+  | ExistUserName
+  | ExistUserNameSuccess;

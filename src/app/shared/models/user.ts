@@ -1,4 +1,5 @@
 import { Salon } from 'app/shared/models/salon';
+import { GenderType } from 'app/shared/models/enums/gender-type';
 
 export interface User {
   userId: number;
@@ -8,6 +9,10 @@ export interface User {
   email: string;
   image: string;
   name: string;
+
+  gender: GenderType;
+  birthday: Date | null;
+  phone: string;
 
   salonId: number | null;
   salon: Salon | null;

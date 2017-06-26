@@ -10,6 +10,7 @@ import { Token } from 'app/shared/models/token';
 
 import { Store } from '@ngrx/store';
 import * as LoginActions from '../shared/login-actions';
+import * as UserActions from '../../users/shared/user-actions';
 import * as Reducers from '../../shared/reducers';
 import { Observable } from 'rxjs/Observable';
 import { LoginService } from 'app/logins/shared/login.service';
@@ -19,8 +20,7 @@ import { go } from '@ngrx/router-store';
 @Component({
   selector: 'hb-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
 
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   userKey = '';
   user$: Observable<User>;
 
-  constructor(private fb: FormBuilder, public auth: Auth, private store: Store<Reducers.State>, private translate: TranslateService) {
+  constructor(private fb: FormBuilder, public auth: Auth, private store: Store<Reducers.State>, private translate: TranslateService, private loginService: LoginService) {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],
@@ -44,14 +44,26 @@ export class LoginComponent implements OnInit {
   }
 
   signIn(provider) {
-    this.store.dispatch(new LoginActions.Login(provider));
+    this.store.dispatch(new LoginActions.LoginSocial(provider));
+  }
+
+  login() {
+    if (this.loginForm.valid) {
+      const userSecret = <UserSecret>{
+        userName: this.loginForm.get('userName').value,
+        password: this.loginForm.get('password').value
+      }
+
+      this.store.dispatch(new LoginActions.GetToken(userSecret));
+    }
   }
 
   signUp() {
-    this.store.dispatch(go(['logins', 'create']));
+    this.store.dispatch(go(['logins', 'register']));
   }
 
   logout() {
+    this.store.dispatch(new UserActions.ResetState());
     this.auth.logout();
   }
 

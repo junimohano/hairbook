@@ -1,18 +1,21 @@
 import * as Actions from './user-actions';
 import { Post } from 'app/shared/models/post';
+import { User } from 'app/shared/models/user';
 
 export interface State {
   search: string;
   currentPostCount: number;
   posts: Post[];
   isLast: boolean;
+  user: User;
 }
 
 const initialState: State = {
   search: '',
   currentPostCount: 0,
   posts: [],
-  isLast: false
+  isLast: false,
+  user: null
 };
 
 export function reducer(state = initialState, action: Actions.All): State {
@@ -46,6 +49,7 @@ export function reducer(state = initialState, action: Actions.All): State {
         }
         return { ...state };
       }
+
     case Actions.NEXT_UPLOAD_INDEX:
       {
         const post = state.posts.find(x => x.postId === action.payload);
@@ -54,6 +58,12 @@ export function reducer(state = initialState, action: Actions.All): State {
         }
         return { ...state };
       }
+
+    case Actions.RESET_STATE:
+      return initialState;
+
+    case Actions.GET_USER_SUCCESS:
+      return { ...state, user: action.payload };
 
     default:
       return state;

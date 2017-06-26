@@ -9,7 +9,7 @@ import { LoginEffects } from './shared/login-effects';
 
 import { LoginsComponent } from './logins.component';
 import { LoginComponent } from './login/login.component';
-import { CreateComponent } from './create/create.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   imports: [
@@ -20,7 +20,7 @@ import { CreateComponent } from './create/create.component';
   declarations: [
     LoginsComponent,
     LoginComponent,
-    CreateComponent
+    RegisterComponent
   ],
   providers: [
     LoginService

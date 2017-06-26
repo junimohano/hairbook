@@ -7,6 +7,8 @@ import { User } from 'app/shared/models/user';
 import { Observable } from 'rxjs/Observable';
 import { Token } from 'app/shared/models/token';
 import { UserSecret } from 'app/logins/shared/user-secret';
+import { of } from 'rxjs/observable/of';
+import * as SharedActions from '../../shared/shared-actions';
 
 @Injectable()
 export class LoginService {
@@ -23,18 +25,19 @@ export class LoginService {
       .map(res => res.json());
   }
 
+  existUserName(userName: string): Observable<boolean> {
+    return this.http.get(`${environment.webApiUrl}/api/v1/users/ExistUserName/${userName}`)
+      .map(res => res.json());
+  }
+
   getToken(userSecret: UserSecret): Observable<Token> {
     return this.http.post(`${environment.webApiUrl}/api/v1/users/GetToken`, userSecret, this.headers)
       .map(res => res.json());
   }
 
-  // getUser(userId: string) {
-  //   return this.authHttp.get(`${environment.webApiUrl}/api/v1/users/${userId}`)
-  //     .map(res => res.json());
-  // }
+  postUser(user: User): Observable<User> {
+    return this.http.post(`${environment.webApiUrl}/api/v1/users`, user, this.headers)
+      .map(res => res.json());
+  }
 
-  // postUser(userKey: string) {
-  //   return this.authHttp.post(`${environment.webApiUrl}/api/v1/users`, this.auth.userProfile, { headers: this.headers })
-  //     .map(res => res.json());
-  // }
 }

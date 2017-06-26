@@ -50,6 +50,8 @@
     },
     "defaults": {
         "styleExt": "scss",
-        "component": {}
+        "component": {
+            "changeDetection": "Default"
+        }
     }
 }

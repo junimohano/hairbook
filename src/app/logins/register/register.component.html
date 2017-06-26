@@ -1,0 +1,43 @@
+<div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
+    <h3>Register</h3>
+    <form [formGroup]="registerForm" novalidate>
+        <div class="form-group">
+            <md-input-container>
+                <input mdInput type="text" placeholder="Username" formControlName="userName" (ngModelChange)="valueChange($event)">
+            </md-input-container>
+        </div>
+        <div class="form-group">
+            <md-input-container>
+                <input mdInput type="password" placeholder="Password" formControlName="password">
+            </md-input-container>
+        </div>
+        <div class="form-group">
+            <md-input-container>
+                <input mdInput type="password" placeholder="Confirm Password" formControlName="password_confirm">
+            </md-input-container>
+        </div>
+        <div class="form-group">
+            <md-input-container>
+                <input mdInput type="text" placeholder="Name" formControlName="name">
+            </md-input-container>
+        </div>
+        <div class="form-group">
+            <md-input-container>
+                <input mdInput type="email" placeholder="Email" formControlName="email">
+            </md-input-container>
+        </div>
+        <div fxLayout="row" fxLayoutGap="20px">
+            <div class="form-group">
+                <button md-raised-button color="primary" type="submit" [disabled]="!registerForm.valid" (click)="register()">Register</button>
+            </div>
+            <div class="form-group">
+                <button md-raised-button color="accent" type="button" (click)="cancel()">Cancel</button>
+            </div>
+        </div>
+
+    </form>
+    <!--<p>Form Value: {{ registerForm.value | json }}</p>
+    <p>Form Status: {{ registerForm.status | json }}</p>-->
+    <p>Message : {{ registerForm.errors | json }}</p>
+
+</div>

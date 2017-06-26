@@ -43,6 +43,9 @@ export function userPostsLength(state: State): number {
 export function userSearch(state: State): string {
   return state.user.search;
 }
+export function userUser(state: State): User {
+  return state.user.user;
+}
 
 // login
 export function loginUser(state: State): User {
@@ -51,8 +54,8 @@ export function loginUser(state: State): User {
 export function loginUserSecret(state: State): UserSecret {
   return state.login.userSecret;
 }
-export function loginExistUser(state: State): boolean {
-  return state.login.existUser;
+export function existUserName(state: State): boolean {
+  return state.login.existUserName;
 }
 
 // shared

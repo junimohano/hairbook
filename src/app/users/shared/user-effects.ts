@@ -10,14 +10,10 @@ import { UserService } from './user.service';
 import * as UserActions from './user-actions';
 import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
+import { User } from 'app/shared/models/user';
 
 @Injectable()
 export class UserEffects {
-  // @Effect()
-  // search$: Observable<Action> = this.actions$.ofType(PostActions.SEARCH)
-  //   .map((action: PostActions.Search) => action.payload)
-  //   .switchMap(terms => this.postService.getPosts())
-  //   .map(results => new PostActions.SearchSuccess(results));
 
   @Effect() specialEffect$ = this.actions$.ofType(UserActions.SEARCH_POST)
     .debounceTime(100)
@@ -32,12 +28,17 @@ export class UserEffects {
     .filter(x => !x)
     .filter(() => sessionStorage.getItem('userId') !== undefined)
     .withLatestFrom(this.store, (payload, state) => ({ currentPostCount: state.user.currentPostCount, search: state.user.search }))
-    .switchMap((results) => this.userService.getPosts(results.currentPostCount, Number(sessionStorage.getItem('userId')), results.search))
+    .switchMap((results) => this.userService.getPosts(results.currentPostCount, String(sessionStorage.getItem('userName')), results.search))
     .map(results => {
       this.store.dispatch(new SharedActions.SetProgressBar(false));
       this.store.dispatch(new SharedActions.SetProgressSpinner(false));
       return new UserActions.SuccessPost(results);
     });
+
+  @Effect() getUserEffect$ = this.actions$.ofType(UserActions.GET_USER)
+    .map((action: UserActions.GetUser) => action.payload)
+    .switchMap((userName: string) => this.userService.getUser(userName))
+    .map((user: User) => new UserActions.GetUserSuccess(user));
 
   constructor(private actions$: Actions, private userService: UserService, private store: Store<Reducers.State>) {
 

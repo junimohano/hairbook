@@ -9,27 +9,36 @@ import { MdDialog } from '@angular/material';
 import { Post } from 'app/shared/models/post';
 import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
 import { go, replace, search, show, back, forward } from '@ngrx/router-store';
+import { ActivatedRoute } from '@angular/router';
+import { User } from 'app/shared/models/user';
 
 @Component({
   selector: 'hb-user-main',
   templateUrl: './user-main.component.html',
-  styleUrls: ['./user-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./user-main.component.scss']
 })
 export class UserMainComponent implements OnInit {
 
   search$: Observable<string>;
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
+  user$: Observable<User>;
 
-  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog) {
+  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activaedRoute: ActivatedRoute) {
     this.search$ = store.select(Reducers.userSearch);
     this.posts$ = store.select(Reducers.userPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
+    this.user$ = store.select(Reducers.userUser);
   }
 
   ngOnInit() {
-    this.store.dispatch(new UserActions.SearchPost());
+    this.activaedRoute.params.subscribe(params => {
+      const userName = params['userName'];
+      this.store.dispatch(new UserActions.SearchPost());
+      this.store.dispatch(new UserActions.GetUser(userName));
+      // this.id = +params['id']; // (+) converts string 'id' to a number
+    });
+
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -79,7 +88,4 @@ export class UserMainComponent implements OnInit {
     });
   }
 
-  test() {
-    this.store.dispatch(back());
-  }
 }
