@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { Auth } from '../../shared/auth/auth.service';
 
 import { Store } from '@ngrx/store';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
 import { Post } from '../../shared/models/post';
 import { PostDetailComponent } from '../../shared/components/post-detail/post-detail.component';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'hb-explorer-main',
@@ -15,11 +16,13 @@ import { PostDetailComponent } from '../../shared/components/post-detail/post-de
   styleUrls: ['./explorer-main.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerMainComponent implements OnInit {
+export class ExplorerMainComponent implements OnInit, OnDestroy {
 
   search$: Observable<string>;
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
+  previousSubscription: Subscription;
+  nextSubscription: Subscription;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog) {
     this.search$ = store.select(Reducers.explorerSearch);
@@ -31,6 +34,14 @@ export class ExplorerMainComponent implements OnInit {
     this.store.dispatch(new ExplorerActions.SearchPost());
   }
 
+  ngOnDestroy(): void {
+    if (this.previousSubscription) {
+      this.previousSubscription.unsubscribe();
+    }
+    if (this.nextSubscription) {
+      this.nextSubscription.unsubscribe();
+    }
+  }
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
@@ -62,17 +73,17 @@ export class ExplorerMainComponent implements OnInit {
     dialogRef.componentInstance.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
     dialogRef.componentInstance.postMenuParm = post.postHairMenus.find(x => x.hairMenuId === 3);
 
-    dialogRef.componentInstance.previous.subscribe((postId: number) => {
+    this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
       this.store.dispatch(new ExplorerActions.PreviousUploadIndex(postId));
     });
 
-    dialogRef.componentInstance.next.subscribe((postId: number) => {
+    this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
       this.store.dispatch(new ExplorerActions.NextUploadIndex(postId));
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // this.selectedOption = result;
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    // this.selectedOption = result;
+    // });
   }
 
 }

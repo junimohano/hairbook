@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Post } from 'app/shared/models/post';
 import { User } from 'app/shared/models/user';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 export const SEARCH_POST = '[Users] Post';
 export const SUCCESS_POST = '[Users] Success Post';
@@ -9,10 +10,11 @@ export const NEXT_UPLOAD_INDEX = '[Users] Next Upload Index';
 export const RESET_STATE = '[Users] Reset State';
 export const GET_USER = '[Users] Get User';
 export const GET_USER_SUCCESS = '[Users] Get User Success';
+export const EDIT_USER = '[Users] Edit User';
 
 export class SearchPost implements Action {
   readonly type = SEARCH_POST;
-  constructor(public payload: string = null) { }
+  constructor(public payload: PostSearchInfo) { }
 }
 
 export class SuccessPost implements Action {
@@ -45,6 +47,11 @@ export class GetUserSuccess implements Action {
   constructor(public payload: User) { }
 }
 
+export class EditUser implements Action {
+  readonly type = EDIT_USER;
+  constructor(public payload: User) { }
+}
+
 export type All
   = SearchPost
   | SuccessPost
@@ -52,4 +59,5 @@ export type All
   | NextUploadIndex
   | ResetState
   | GetUser
-  | GetUserSuccess;
+  | GetUserSuccess
+  | EditUser;

@@ -9,10 +9,15 @@ import { User } from 'app/shared/models/user';
 @Injectable()
 export class UserService {
 
-  constructor(private authHttp: AuthHttp) { }
+  headers: Headers = new Headers();
 
-  getPosts(index: number, userName: string, search: string): Observable<Post[]> {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&search=${search}`)
+  constructor(private authHttp: AuthHttp) {
+    this.headers.append('Accept', 'application/json');
+    this.headers.append('Content-Type', 'application/json');
+  }
+
+  getPosts(index: number, userName: string, userNameParam: string, search: string): Observable<Post[]> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&userNameParam=${userNameParam}&search=${search}`)
       .map(res => res.json())
       .map((results: Post[]) => {
         results.forEach((p: Post) => {
@@ -26,6 +31,11 @@ export class UserService {
 
   getUser(userName: string): Observable<User> {
     return this.authHttp.get(`${environment.webApiUrl}/api/v1/users/GetByUserName/${userName}`)
+      .map(res => res.json());
+  }
+
+  putUser(user: User): Observable<User> {
+    return this.authHttp.put(`${environment.webApiUrl}/api/v1/users/${user.userId}`, user, this.headers)
       .map(res => res.json());
   }
 }

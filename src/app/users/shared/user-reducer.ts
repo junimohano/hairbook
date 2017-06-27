@@ -1,9 +1,10 @@
 import * as Actions from './user-actions';
 import { Post } from 'app/shared/models/post';
 import { User } from 'app/shared/models/user';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 export interface State {
-  search: string;
+  postSearchInfo: PostSearchInfo;
   currentPostCount: number;
   posts: Post[];
   isLast: boolean;
@@ -11,7 +12,7 @@ export interface State {
 }
 
 const initialState: State = {
-  search: '',
+  postSearchInfo: null,
   currentPostCount: 0,
   posts: [],
   isLast: false,
@@ -22,13 +23,15 @@ export function reducer(state = initialState, action: Actions.All): State {
   switch (action.type) {
     case Actions.SEARCH_POST:
       console.log(`search_post : ${state.posts.length}`);
-      if (state.search !== action.payload && action.payload !== null) {
-        state.posts = []
+      if (state.postSearchInfo) {
+        if (state.postSearchInfo.search !== action.payload.search && action.payload !== null) {
+          state.posts = []
+        }
+        if (action.payload === null) {
+          action.payload.search = state.postSearchInfo.search;
+        }
       }
-      if (action.payload === null) {
-        action.payload = state.search;
-      }
-      return { ...state, currentPostCount: state.posts.length, search: action.payload };
+      return { ...state, currentPostCount: state.posts.length, postSearchInfo: action.payload };
 
     case Actions.SUCCESS_POST:
       let isLast = false;

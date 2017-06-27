@@ -10,7 +10,7 @@
 
         <div fxLayout="column" fxLayoutGap="10px">
             <div class="user-name">
-                {{user?.userName}} <button md-button type="submit" [routerLink]="['/users', 'edit']"><md-icon>brightness_low</md-icon></button>
+                {{user?.userName}} <button *ngIf="isMe" md-button type="submit" [routerLink]="['/users', 'edit']"><md-icon>brightness_low</md-icon></button>
             </div>
             <div><strong>{{user?.name}}</strong></div>
             <div><span fxHide.xs>{{user?.email}}</span></div>

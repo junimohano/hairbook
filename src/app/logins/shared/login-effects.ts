@@ -24,7 +24,7 @@ export class LoginEffects {
   @Effect() loginSocialEffect$ = this.actions$.ofType(LoginActions.LOGIN_SOCIAL)
     .switchMap((action: LoginActions.LoginSocial) => this.auth.login(action.payload)
       .map(x => x)
-      .catch(() => of(new SharedActions.SetSnackBar('Facebook login error')))
+      .catch(() => of(new SharedActions.SetSnackBar('Social Login Error')))
     )
     .mergeMap((data) => {
       console.log(LoginActions.LOGIN_SOCIAL, data);
@@ -43,7 +43,7 @@ export class LoginEffects {
       .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
     )
     .withLatestFrom(this.store)
-    .map(([existUser, state]) => {
+    .mergeMap(([existUser, state]) => {
       state.shared.isProgressBar = true;
 
       console.log(LoginActions.EXIST_USER);
@@ -52,9 +52,9 @@ export class LoginEffects {
         const userSecret = <UserSecret>{
           userKey: state.login.userKey
         }
-        return new LoginActions.GetToken(userSecret);
+        return [new LoginActions.GetToken(userSecret)];
       } else {
-        return go(['logins', 'register']);
+        return [go(['logins', 'register']), new SharedActions.SetProgressBar(false)];
       }
     });
 
@@ -78,7 +78,7 @@ export class LoginEffects {
     .mergeMap((user: User) => {
       console.log(LoginActions.SET_USER);
 
-      return [go(['users', user.userName]), new SharedActions.SetProgressBar(false)]
+      return [go(['/users', user.userName]), new SharedActions.SetProgressBar(false)]
     });
 
   @Effect() registerEffect$ = this.actions$.ofType(LoginActions.REGISTER)

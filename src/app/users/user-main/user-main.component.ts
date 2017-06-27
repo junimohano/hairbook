@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, HostListener } from '@angular/core';
 import { Auth } from '../../shared/auth/auth.service';
 
 import { Store } from '@ngrx/store';
@@ -11,46 +11,82 @@ import { PostDetailComponent } from 'app/shared/components/post-detail/post-deta
 import { go, replace, search, show, back, forward } from '@ngrx/router-store';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/shared/models/user';
+import { Subscription } from 'rxjs/Subscription';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 @Component({
   selector: 'hb-user-main',
   templateUrl: './user-main.component.html',
   styleUrls: ['./user-main.component.scss']
 })
-export class UserMainComponent implements OnInit {
+export class UserMainComponent implements OnInit, OnDestroy {
 
-  search$: Observable<string>;
+  postSearchInfo$: Observable<PostSearchInfo>;
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
   user$: Observable<User>;
+  isMe = false;
+  activatedRouteSubscription: Subscription;
+  userSubscription: Subscription;
+  previousSubscription: Subscription;
+  nextSubscription: Subscription;
 
-  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activaedRoute: ActivatedRoute) {
-    this.search$ = store.select(Reducers.userSearch);
+  postSearchInfo: PostSearchInfo;
+
+  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activatedRoute: ActivatedRoute) {
+    this.postSearchInfo$ = store.select(Reducers.userPostSearchInfo);
     this.posts$ = store.select(Reducers.userPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
   }
 
   ngOnInit() {
-    this.activaedRoute.params.subscribe(params => {
-      const userName = params['userName'];
-      this.store.dispatch(new UserActions.SearchPost());
-      this.store.dispatch(new UserActions.GetUser(userName));
+    this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
+      const userNameParam = params['userName'];
+      this.store.dispatch(new UserActions.GetUser(userNameParam));
+      this.postSearchInfo = <PostSearchInfo>{
+        search: '',
+        userNameParam: userNameParam
+      }
+      this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
       // this.id = +params['id']; // (+) converts string 'id' to a number
     });
 
+    this.userSubscription = this.user$.subscribe(user => {
+      if (user) {
+        this.isMe = user.userName === sessionStorage.getItem('userName');
+      }
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    this.activatedRouteSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    if (this.previousSubscription) {
+      this.previousSubscription.unsubscribe();
+    }
+    if (this.nextSubscription) {
+      this.nextSubscription.unsubscribe();
+    }
   }
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
       console.log('bottom');
-      this.store.dispatch(new UserActions.SearchPost());
+      if (this.postSearchInfo) {
+        this.postSearchInfo.search = '';
+        this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
+      }
     }
   }
 
   searchChange(search: string) {
-    this.store.dispatch(new UserActions.SearchPost(search));
+    if (this.postSearchInfo) {
+      this.postSearchInfo.search = search;
+      this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
+    }
   }
 
   openDetail(post: Post) {
@@ -75,17 +111,17 @@ export class UserMainComponent implements OnInit {
     dialogRef.componentInstance.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
     dialogRef.componentInstance.postMenuParm = post.postHairMenus.find(x => x.hairMenuId === 3);
 
-    dialogRef.componentInstance.previous.subscribe((postId: number) => {
+    this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
       this.store.dispatch(new UserActions.PreviousUploadIndex(postId));
     });
 
-    dialogRef.componentInstance.next.subscribe((postId: number) => {
+    this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
       this.store.dispatch(new UserActions.NextUploadIndex(postId));
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      // this.selectedOption = result;
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    // this.selectedOption = result;
+    // })
   }
 
 }

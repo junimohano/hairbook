@@ -5,6 +5,7 @@ import * as SharedReducer from './shared-reducer';
 import { User } from 'app/shared/models/user';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { routerReducer, RouterState } from '@ngrx/router-store';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 export interface State {
   router: RouterState;
@@ -40,8 +41,8 @@ export function userPosts(state: State) {
 export function userPostsLength(state: State): number {
   return state.user.posts.length;
 }
-export function userSearch(state: State): string {
-  return state.user.search;
+export function userPostSearchInfo(state: State): PostSearchInfo {
+  return state.user.postSearchInfo;
 }
 export function userUser(state: State): User {
   return state.user.user;

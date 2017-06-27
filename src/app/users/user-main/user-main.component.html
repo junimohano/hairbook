@@ -1,4 +1,4 @@
-<hb-user-info [user]="user$ | async"></hb-user-info>
+<hb-user-info [isMe]="isMe" [user]="user$ | async"></hb-user-info>
 <div fxLayout="row" fxLayoutAlign="center center">
     <hb-post-search [search]="search$ | async" (searchChange)="searchChange($event)"></hb-post-search>
 </div>

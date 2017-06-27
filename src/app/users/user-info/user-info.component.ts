@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Auth } from 'app/shared/auth/auth.service';
 import { User } from 'app/shared/models/user';
 
@@ -7,13 +7,24 @@ import { User } from 'app/shared/models/user';
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss']
 })
-export class UserInfoComponent implements OnInit {
+export class UserInfoComponent implements OnInit, OnChanges {
 
   @Input() user: User;
+  @Input() isMe: boolean;
 
-  constructor(public auth: Auth) { }
+  constructor(public auth: Auth) {
+  }
 
   ngOnInit() {
+
+  }
+
+  ngOnChanges() {
+    // if (this.user) {
+    //   if (this.user.userName === sessionStorage.getItem('userName')) {
+    //     this.isMe = true;
+    //   }
+    // }
   }
 
 }

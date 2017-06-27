@@ -1,39 +1,76 @@
-111111111111
-<!--<div *ngIf="auth.authenticated() && auth.userProfile">
-    <div fxLayout="column" fxLayoutGap="50px" fxLayoutGap.xs="10px">
+<div fxLayout="column" fxLayoutGap="50px" fxLayoutGap.xs="10px">
+    <div></div>
+    <div fxLayout="row" fxLayoutGap="50px" fxLayoutGap.xs="20px" fxLayoutAlign="center ceter">
         <div></div>
-        <div fxLayout="row" fxLayoutGap="50px" fxLayoutGap.xs="20px" fxLayoutAlign="center ceter">
-            <div></div>
-            <div fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
-                <div fxFlexFill fxLayout="column">
-                    <img class="img-circle" [src]="auth.userProfile.picture" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
-                </div>
-            </div>
-            <div fxLayout="column" fxLayoutGap="10px">
-                <div class="user-name"> {{auth.userProfile.nickname}} </div>
-                <div><strong>{{auth.userProfile.given_name}} {{auth.userProfile.family_name}}</strong> ({{auth.userProfile.gender}})</div>
-                <div>{{auth.userProfile.email}}</div>
-                <div>created date : {{auth.userProfile.created_at | date}}</div>
-                <div>updated date : {{auth.userProfile.updated_at | date}}</div>
+        <div fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
+            <div *ngIf="user?.image" fxFlexFill fxLayout="column">
+                <img class="img-circle" [src]="user?.image" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
             </div>
         </div>
-        <div fxLayout="row" fxLayoutAlign="center ceter">
-            <form (ngSubmit)="onSubmit()">
-                <div class="form-group">
-                    <md-input-container>
-                        <input mdInput placeholder="Address" [(ngModel)]="address" [ngModelOptions]="{standalone: true}">
-                    </md-input-container>
-                </div>
-                <div class="form-group">
-                    <md-input-container>
-                        <input mdInput placeholder="Memo" [(ngModel)]="memo" [ngModelOptions]="{standalone: true}">
-                    </md-input-container>
-                </div>
-                <div fxLayout="row" fxLayoutAlign="space-around center" fxLayoutGap="50px">
-                    <button md-raised-button type="submit" color="primary">Save</button>
-                    <button md-raised-button (click)="onBack()" color="accent">Cancel</button>
-                </div>
-            </form>
-        </div>
+        <!--<div fxLayout="column" fxLayoutGap="10px">
+            <div class="user-name"> {{user?.userName}} </div>
+            <div><strong>{{auth.userProfile.given_name}} {{auth.userProfile.family_name}}</strong> ({{auth.userProfile.gender}})</div>
+            <div>{{auth.userProfile.email}}</div>
+            <div>created date : {{auth.userProfile.created_at | date}}</div>
+            <div>updated date : {{auth.userProfile.updated_at | date}}</div>
+        </div>-->
     </div>
-</div>-->
+    <div fxLayout="row" fxLayoutAlign="center ceter">
+
+        <form [formGroup]="editForm" novalidate>
+            <div *ngIf="user" class="form-group">
+                <md-input-container>
+                    <input mdInput placeholder="UserName" [value]="user?.userName" disabled>
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput type="password" placeholder="Password" formControlName="password">
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput type="password" placeholder="Confirm Password" formControlName="password_confirm">
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput type="email" placeholder="Email" formControlName="email">
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput type="text" placeholder="Name" formControlName="name">
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="picker" placeholder="Birthday (optional)" formControlName="birthday">
+                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                </md-input-container>
+                <md-datepicker #picker></md-datepicker>
+            </div>
+            <div class="form-group">
+                <md-input-container>
+                    <input mdInput type="text" placeholder="Phone (optional)" formControlName="phone">
+                </md-input-container>
+            </div>
+            <div class="form-group">
+                <md-select placeholder="Gender" formControlName="gender">
+                    <md-option *ngFor="let key of genderKeys" [value]="key">
+                        {{genders[key]}}
+                    </md-option>
+                </md-select>
+            </div>
+            <div fxLayout="row" fxLayoutGap="20px">
+                <div class="form-group">
+                    <button md-raised-button color="primary" type="submit" [disabled]="!editForm.valid" (click)="confirm()">Confirm</button>
+                </div>
+                <div class="form-group">
+                    <button md-raised-button color="accent" type="button" (click)="onBack()">Back</button>
+                </div>
+            </div>
+        </form>
+        <!--<p>{{editForm.status}}</p>-->
+    </div>
+</div>
