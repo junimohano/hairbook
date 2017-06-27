@@ -1,6 +1,6 @@
 <hb-user-info [isMe]="isMe" [user]="user$ | async"></hb-user-info>
 <div fxLayout="row" fxLayoutAlign="center center">
-    <hb-post-search [search]="search$ | async" (searchChange)="searchChange($event)"></hb-post-search>
+    <hb-post-search [search]="(postSearchInfo$ | async).search" (searchChange)="searchChange($event)"></hb-post-search>
 </div>
 <hb-post-list [posts]="posts$ | async" (openDetail)="openDetail($event)"></hb-post-list>
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>
