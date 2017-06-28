@@ -11,6 +11,8 @@ import * as ExplorerActions from './explorer-actions';
 import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
 import { AccessType } from 'app/shared/models/enums/access-type';
+import { Post } from 'app/shared/models/post';
+import { of } from "rxjs/observable/of";
 
 @Injectable()
 export class ExplorerEffects {
@@ -38,6 +40,13 @@ export class ExplorerEffects {
       this.store.dispatch(new SharedActions.SetProgressSpinner(false));
       return new ExplorerActions.SuccessPost(results);
     });
+
+  @Effect() getPostEffect$ = this.actions$.ofType(ExplorerActions.GET_POST)
+    .map((action: ExplorerActions.GetPost) => action.payload)
+    .switchMap((postId: number) => this.explorerService.getPost(postId)
+      .map((post: Post) => new ExplorerActions.GetPostSuccess(post))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
+    );
 
   constructor(private actions$: Actions, private explorerService: ExplorerService, private store: Store<Reducers.State>) {
 

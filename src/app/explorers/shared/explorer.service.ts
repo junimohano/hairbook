@@ -4,6 +4,7 @@ import { environment } from 'environments/environment';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
 import { Post } from 'app/shared/models/post';
 import { AccessType } from 'app/shared/models/enums/access-type';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ExplorerService {
@@ -22,4 +23,16 @@ export class ExplorerService {
         return results;
       });
   }
+
+  getPost(postId: number): Observable<Post> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts/${postId}`)
+      .map(res => res.json())
+      .map((post: Post) => {
+        post.postUploads.forEach(u => {
+          u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
+        });
+        return post;
+      });
+  }
+
 }

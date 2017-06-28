@@ -2,5 +2,20 @@
 <div fxLayout="row" fxLayoutAlign="center center">
     <hb-post-search [search]="(postSearchInfo$ | async).search" (searchChange)="searchChange($event)"></hb-post-search>
 </div>
-<hb-post-list [posts]="posts$ | async" (openDetail)="openDetail($event)"></hb-post-list>
+<md-tab-group>
+    <md-tab>
+        <ng-template md-tab-label>
+            <md-icon>view_module</md-icon>
+        </ng-template>
+        <hb-post-list [posts]="posts$ | async" (openDetail)="openDetail($event)"></hb-post-list>
+    </md-tab>
+
+    <md-tab>
+        <ng-template md-tab-label>
+            <md-icon>view_stream</md-icon>
+        </ng-template>
+        <hb-post-list-all [posts]="posts$ | async"></hb-post-list-all>
+    </md-tab>
+</md-tab-group>
+
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>

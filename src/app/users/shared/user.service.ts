@@ -38,4 +38,15 @@ export class UserService {
     return this.authHttp.put(`${environment.webApiUrl}/api/v1/users/${user.userId}`, user, this.headers)
       .map(res => res.json());
   }
+
+  getPost(postId: number): Observable<Post> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts/${postId}`)
+      .map(res => res.json())
+      .map((post: Post) => {
+        post.postUploads.forEach(u => {
+          u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
+        });
+        return post;
+      });
+  }
 }

@@ -6,13 +6,15 @@ export interface State {
   currentPostCount: number;
   posts: Post[];
   isLast: boolean;
+  post: Post;
 }
 
 const initialState: State = {
   search: '',
   currentPostCount: 0,
   posts: [],
-  isLast: false
+  isLast: false,
+  post: null
 };
 
 export function reducer(state = initialState, action: Actions.All): State {

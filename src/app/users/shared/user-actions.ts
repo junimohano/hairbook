@@ -11,6 +11,8 @@ export const RESET_STATE = '[Users] Reset State';
 export const GET_USER = '[Users] Get User';
 export const GET_USER_SUCCESS = '[Users] Get User Success';
 export const EDIT_USER = '[Users] Edit User';
+export const GET_POST = '[Users] Get Post';
+export const GET_POST_SUCCESS = '[Users] Get Post Success';
 
 export class SearchPost implements Action {
   readonly type = SEARCH_POST;
@@ -52,6 +54,16 @@ export class EditUser implements Action {
   constructor(public payload: User) { }
 }
 
+export class GetPost implements Action {
+  readonly type = GET_POST;
+  constructor(public payload: number) { }
+}
+
+export class GetPostSuccess implements Action {
+  readonly type = GET_POST_SUCCESS;
+  constructor(public payload: Post) { }
+}
+
 export type All
   = SearchPost
   | SuccessPost
@@ -60,4 +72,6 @@ export type All
   | ResetState
   | GetUser
   | GetUserSuccess
-  | EditUser;
+  | EditUser
+  | GetPost
+  | GetPostSuccess;

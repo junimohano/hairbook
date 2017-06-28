@@ -1,0 +1,29 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.xs="5px" fxLayoutGap="20px">
+    <md-card *ngFor="let post of posts; let postIndex = index;">
+        <md-card-header>
+            <!--<div md-card-avatar class="example-header-image"></div>-->
+            <md-card-title>{{post.createdUser.userName}}</md-card-title>
+            <md-card-subtitle>{{post.createdUser.name}}</md-card-subtitle>
+        </md-card-header>
+        <div *ngIf="post.postUploads.length > 0; else test" fxLayout="column">
+            <img [src]="post.postUploads[0]?.path" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px">
+        </div>
+        <ng-template #test>
+            <div fxLayout="column">
+                <div fxFlexAlign="center" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px">
+                    no image
+                </div>
+            </div>
+        </ng-template>
+        <!--<img md-card-image src="assets/img/examples/shiba2.jpg">-->
+        <md-card-content>
+            <p>
+                {{post.memo}}
+            </p>
+        </md-card-content>
+        <md-card-actions>
+            <button md-button>LIKE</button>
+            <button md-button>SHARE</button>
+        </md-card-actions>
+    </md-card>
+</div>

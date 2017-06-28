@@ -59,12 +59,14 @@ import { ProgressSpinnerComponent } from './components/progress-spinner/progress
 import { PostListComponent } from './components/post-list/post-list.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { PostSearchComponent } from './components/post-search/post-search.component';
+import { PostListAllComponent } from './components/post-list-all/post-list-all.component';
 
 const components = [
   ProgressSpinnerComponent,
   PostListComponent,
   PostDetailComponent,
-  PostSearchComponent
+  PostSearchComponent,
+  PostListAllComponent
 ];
 
 const modules = [

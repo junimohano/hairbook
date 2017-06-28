@@ -9,7 +9,7 @@ import { MdDialog } from '@angular/material';
 import { Post } from 'app/shared/models/post';
 import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
 import { go, replace, search, show, back, forward } from '@ngrx/router-store';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'app/shared/models/user';
 import { Subscription } from 'rxjs/Subscription';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
@@ -33,7 +33,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
 
   postSearchInfo: PostSearchInfo;
 
-  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activatedRoute: ActivatedRoute) {
+  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activatedRoute: ActivatedRoute, private router: Router) {
     this.postSearchInfo$ = store.select(Reducers.userPostSearchInfo);
     this.posts$ = store.select(Reducers.userPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
@@ -76,7 +76,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
       console.log('bottom');
       if (this.postSearchInfo) {
-        this.postSearchInfo.search = '';
+        // this.postSearchInfo.search = '';
         this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
       }
     }
@@ -91,37 +91,35 @@ export class UserMainComponent implements OnInit, OnDestroy {
 
   openDetail(post: Post) {
 
-    //   // this.router.navigate(['/users', 'post', post.postId]);
+    if (window.outerWidth > 600) {
+      // const height = window.outerHeight > 600 ? 600 : window.outerHeight;
+      // const width = window.outerHeight > 935 ? 935 : window.outerHeight;
+      const height = window.outerHeight > 768 ? 768 : window.outerHeight;
+      const width = window.outerHeight > 1024 ? 1024 : window.outerHeight;
 
-    const height = window.outerHeight > 600 ? 600 : window.outerHeight;
-    const width = window.outerHeight > 935 ? 935 : window.outerHeight;
+      const dialogRef = this.dialog.open(PostDetailComponent, {
+        height: `${height}px`,
+        width: `${width}px`,
+        data: post
+      });
 
-    const dialogRef = this.dialog.open(PostDetailComponent, {
-      height: `${height}px`,
-      width: `${width}px`,
-      data: post.postId
-    });
+      // dialogRef.updateSize(width + 'px', height + 'px');
+      // dialogRef.updatePosition({ top: '50px', left: '50px' });
 
+      this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
+        this.store.dispatch(new UserActions.PreviousUploadIndex(postId));
+      });
 
-    // dialogRef.updateSize(width + 'px', height + 'px');
-    // dialogRef.updatePosition({ top: '50px', left: '50px' });
+      this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
+        this.store.dispatch(new UserActions.NextUploadIndex(postId));
+      });
 
-
-    dialogRef.componentInstance.post = post;
-    dialogRef.componentInstance.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
-    dialogRef.componentInstance.postMenuParm = post.postHairMenus.find(x => x.hairMenuId === 3);
-
-    this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
-      this.store.dispatch(new UserActions.PreviousUploadIndex(postId));
-    });
-
-    this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
-      this.store.dispatch(new UserActions.NextUploadIndex(postId));
-    });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    // this.selectedOption = result;
-    // })
+      // dialogRef.afterClosed().subscribe(result => {
+      // this.selectedOption = result;
+      // })
+    } else {
+      this.router.navigate(['/users', 'post', post.postId]);
+    }
   }
 
 }

@@ -9,6 +9,7 @@ export interface State {
   posts: Post[];
   isLast: boolean;
   user: User;
+  post: Post;
 }
 
 const initialState: State = {
@@ -16,13 +17,15 @@ const initialState: State = {
   currentPostCount: 0,
   posts: [],
   isLast: false,
-  user: null
+  user: null,
+  post: null
 };
 
 export function reducer(state = initialState, action: Actions.All): State {
   switch (action.type) {
     case Actions.SEARCH_POST:
       console.log(`search_post : ${state.posts.length}`);
+
       if (state.postSearchInfo) {
         if (state.postSearchInfo.search !== action.payload.search && action.payload !== null) {
           state.posts = []
@@ -31,7 +34,13 @@ export function reducer(state = initialState, action: Actions.All): State {
           action.payload.search = state.postSearchInfo.search;
         }
       }
-      return { ...state, currentPostCount: state.posts.length, postSearchInfo: action.payload };
+
+      state.postSearchInfo = <PostSearchInfo>{
+        search: action.payload.search,
+        userNameParam: action.payload.userNameParam
+      }
+
+      return { ...state, currentPostCount: state.posts.length };
 
     case Actions.SUCCESS_POST:
       let isLast = false;
@@ -67,6 +76,9 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.GET_USER_SUCCESS:
       return { ...state, user: action.payload };
+
+    case Actions.GET_POST_SUCCESS:
+      return { ...state, post: action.payload };
 
     default:
       return state;

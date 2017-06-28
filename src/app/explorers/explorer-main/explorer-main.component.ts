@@ -9,6 +9,7 @@ import { MdDialog } from '@angular/material';
 import { Post } from '../../shared/models/post';
 import { PostDetailComponent } from '../../shared/components/post-detail/post-detail.component';
 import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'hb-explorer-main',
@@ -24,7 +25,7 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
   previousSubscription: Subscription;
   nextSubscription: Subscription;
 
-  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog) {
+  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.search$ = store.select(Reducers.explorerSearch);
     this.posts$ = store.select(Reducers.explorerPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
@@ -61,29 +62,34 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
 
   openDetail(post: Post) {
 
-    //   // this.router.navigate(['/users', 'post', post.postId]);
+    if (window.outerWidth > 600) {
+      const height = window.outerHeight > 600 ? 600 : window.outerHeight;
+      const width = window.outerHeight > 935 ? 935 : window.outerHeight;
 
-    const dialogRef = this.dialog.open(PostDetailComponent, {
-      height: '700px',
-      width: '500px',
-      data: post.postId
-    });
+      const dialogRef = this.dialog.open(PostDetailComponent, {
+        height: `${height}px`,
+        width: `${width}px`,
+        data: post
+      });
 
-    dialogRef.componentInstance.post = post;
-    dialogRef.componentInstance.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
-    dialogRef.componentInstance.postMenuParm = post.postHairMenus.find(x => x.hairMenuId === 3);
+      // dialogRef.updateSize(width + 'px', height + 'px');
+      // dialogRef.updatePosition({ top: '50px', left: '50px' });
 
-    this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
-      this.store.dispatch(new ExplorerActions.PreviousUploadIndex(postId));
-    });
+      this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
+        this.store.dispatch(new ExplorerActions.PreviousUploadIndex(postId));
+      });
 
-    this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
-      this.store.dispatch(new ExplorerActions.NextUploadIndex(postId));
-    });
+      this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
+        this.store.dispatch(new ExplorerActions.NextUploadIndex(postId));
+      });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    // this.selectedOption = result;
-    // });
+      // dialogRef.afterClosed().subscribe(result => {
+      // this.selectedOption = result;
+      // })
+    } else {
+      this.router.navigate(['/explorers', 'post', post.postId]);
+    }
+
   }
 
 }

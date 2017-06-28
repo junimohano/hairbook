@@ -51,6 +51,13 @@ export class UserEffects {
       .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
     );
 
+  @Effect() getPostEffect$ = this.actions$.ofType(UserActions.GET_POST)
+    .map((action: UserActions.GetPost) => action.payload)
+    .switchMap((postId: number) => this.userService.getPost(postId)
+      .map((post: Post) => new UserActions.GetPostSuccess(post))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
+    );
+
   constructor(private actions$: Actions, private userService: UserService, private store: Store<Reducers.State>) {
 
   }
