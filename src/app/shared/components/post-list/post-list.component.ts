@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Post } from 'app/shared/models/post';
+import { MdDialog } from '@angular/material';
+import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
 
 @Component({
   selector: 'hb-post-list',
@@ -11,13 +13,41 @@ export class PostListComponent implements OnInit {
   posts: Post[];
 
   @Output()
-  openDetail = new EventEmitter<string>();
+  goDetail = new EventEmitter<Post>();
 
-  constructor() {
+  constructor(public dialog: MdDialog) {
   }
 
   ngOnInit() {
 
+  }
+
+  onOpenDetail(post: Post) {
+    if (window.outerWidth > 600) {
+      const height = window.outerHeight > 768 ? 768 : window.outerHeight;
+      const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
+
+      const dialogRef = this.dialog.open(PostDetailComponent, {
+        height: `${height}px`,
+        width: `${width}px`,
+        data: post
+      });
+
+      // dialogRef.updateSize(width + 'px', height + 'px');
+      // dialogRef.updatePosition({ top: '50px', left: '50px' });
+
+      // this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
+      // });
+
+      // this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
+      // });
+
+      // dialogRef.afterClosed().subscribe(result => {
+      // this.selectedOption = result;
+      // })
+    } else {
+      this.goDetail.emit(post);
+    }
   }
 
 }

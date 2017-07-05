@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
   selector: 'hb-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
 

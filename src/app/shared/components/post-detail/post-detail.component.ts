@@ -21,9 +21,15 @@ import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 })
 export class PostDetailComponent implements OnInit, OnDestroy {
 
-  @Input() post: Post;
-  @Input() postMenuColor: PostHairMenu;
-  @Input() postMenuPerm: PostHairMenu;
+  post: Post;
+  postMenuColor: PostHairMenu;
+  postMenuPerm: PostHairMenu;
+
+  @Output() showMoreComments = new EventEmitter<Post>();
+  @Output() addPostComment = new EventEmitter<PostComment>();
+  @Output() delPostComment = new EventEmitter<number>();
+  @Output() addPostEvalution = new EventEmitter<PostEvaluation>();
+  @Output() delPostEvalution = new EventEmitter<number>();
 
   @Output() previous = new EventEmitter<number>();
   @Output() next = new EventEmitter<number>();
@@ -85,7 +91,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         this.post.currentUploadIndex--;
       }
     } else {
-      this.previous.emit(this.post.postId);
+      this.store.dispatch(new SharedActions.PreviousUploadIndex(this.post.postId));
     }
   }
 
@@ -95,11 +101,11 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         this.post.currentUploadIndex++;
       }
     } else {
-      this.next.emit(this.post.postId);
+      this.store.dispatch(new SharedActions.NextUploadIndex(this.post.postId));
     }
   }
 
-  swipe(action = this.SWIPE_ACTION.RIGHT) {
+  onSwipe(action = this.SWIPE_ACTION.RIGHT) {
     if (action === this.SWIPE_ACTION.LEFT) {
       this.onNext();
     } else {
@@ -107,7 +113,11 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  addPostComment(comment: string) {
+  onDelPostComment(postCommentId) {
+    this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
+  }
+
+  onAddPostComment(comment: string) {
     if (comment.length > 0) {
       const postComment = <PostComment>{
         postId: this.post.postId,
@@ -125,15 +135,11 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  delPostComment(postCommentId: number) {
-    this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
-  }
-
-  goToCommentBox() {
+  onGoToCommentBox() {
     this.commentBox.nativeElement.focus();
   }
 
-  setPostEvalution() {
+  onSetPostEvalution() {
     if (this.post.isEvaluation) {
       const postEvaluation = this.post.postEvaluations.find(x => x.createdUserId === this.userId);
       this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluation.postEvaluationId));

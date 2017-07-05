@@ -34,7 +34,7 @@
                     </div>
                 </div>
 
-                <div class="post-inside post-front" (click)="openDetail.emit(post)" fxFlexFill>
+                <div class="post-inside post-front" (click)="onOpenDetail(post)" fxFlexFill>
                     <div class="post-front-text" fxFill fxLayout="row" fxLayoutAlign="center center">
                         <md-icon>favorite</md-icon> {{post.postEvaluations?.length}} &nbsp;
                         <md-icon>chat_bubble</md-icon> {{post.totalPostComments}}

@@ -7,7 +7,7 @@
         <ng-template md-tab-label>
             <md-icon>view_module</md-icon>
         </ng-template>
-        <hb-post-list [posts]="posts$ | async" (openDetail)="openDetail($event)"></hb-post-list>
+        <hb-post-list [posts]="posts$ | async" (goDetail)="goDetail($event)"></hb-post-list>
     </md-tab>
 
     <md-tab>

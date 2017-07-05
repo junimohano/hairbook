@@ -3,7 +3,7 @@
     <div fxLayout="column" fxFlex="60" class="no-scroll" fxLayoutAlign="start center">
         <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
             <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
-                <img (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)" [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
+                <img (swipeleft)="onSwipe($event.type)" (swiperight)="onSwipe($event.type)" [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
                 <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
             </div>
         </div>
@@ -76,8 +76,8 @@
         <div fxLayout="column">
 
             <div fxLayout="row">
-                <md-icon (click)="setPostEvalution()">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon> {{post?.postEvaluations?.length}} &nbsp;
-                <md-icon (click)="goToCommentBox()">message</md-icon> {{post?.totalPostComments}}
+                <md-icon (click)="onSetPostEvalution()">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon> {{post?.postEvaluations?.length}} &nbsp;
+                <md-icon (click)="onGoToCommentBox()">message</md-icon> {{post?.totalPostComments}}
             </div>
 
             <md-list>
@@ -87,7 +87,7 @@
                     <!--<md-icon md-list-icon>folder</md-icon>-->
                     <h4 md-line>{{postComment.createdUser?.name}}</h4>
                     <p md-line> {{postComment.comment}}</p>
-                    <button *ngIf="postComment.createdUserId === userId" md-button class="warn" (click)="delPostComment(postComment.postCommentId)">x</button>
+                    <button *ngIf="postComment.createdUserId === userId" md-button class="warn" (click)="onDelPostComment(postComment.postCommentId)">x</button>
                 </md-list-item>
             </md-list>
 
@@ -95,7 +95,7 @@
                 <md-input-container>
                     <input mdInput placeholder="Comment" [(ngModel)]="comment" #commentBox>
                 </md-input-container>
-                <button md-button class="warn" (click)="addPostComment(comment)">Add</button>
+                <button md-button class="warn" (click)="onAddPostComment(comment)">Add</button>
             </div>
         </div>
     </div>

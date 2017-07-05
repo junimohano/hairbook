@@ -77,36 +77,8 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  openDetail(post: Post) {
-
-    if (window.outerWidth > 600) {
-      const height = window.outerHeight > 768 ? 768 : window.outerHeight;
-      const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
-
-      const dialogRef = this.dialog.open(PostDetailComponent, {
-        height: `${height}px`,
-        width: `${width}px`,
-        data: post
-      });
-
-      // dialogRef.updateSize(width + 'px', height + 'px');
-      // dialogRef.updatePosition({ top: '50px', left: '50px' });
-
-      this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
-        this.store.dispatch(new SharedActions.PreviousUploadIndex(postId));
-      });
-
-      this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
-        this.store.dispatch(new SharedActions.NextUploadIndex(postId));
-      });
-
-      // dialogRef.afterClosed().subscribe(result => {
-      // this.selectedOption = result;
-      // })
-    } else {
-      this.router.navigate(['/explorers', 'post', post.postId]);
-    }
-
+  goDetail(post: Post) {
+    this.router.navigate(['/explorers', 'post', post.postId]); ;
   }
 
   showMoreComments(post: Post) {

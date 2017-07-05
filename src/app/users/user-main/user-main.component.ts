@@ -40,7 +40,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
   postSearchInfo: PostSearchInfo;
   scrollFlag = true;
 
-  constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private router: Router) {
     this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
     this.posts$ = store.select(Reducers.sharedUserPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
@@ -94,44 +94,15 @@ export class UserMainComponent implements OnInit, OnDestroy {
     }
   }
 
-  searchChange(search: string) {
+  searchChange(searchString: string) {
     if (this.postSearchInfo) {
-      this.postSearchInfo.search = search;
+      this.postSearchInfo.search = searchString;
       this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
     }
   }
 
-  openDetail(post: Post) {
-
-    if (window.outerWidth > 600) {
-      // const height = window.outerHeight > 600 ? 600 : window.outerHeight;
-      // const width = window.outerWidth > 935 ? 935 : window.outerWidth;
-      const height = window.outerHeight > 768 ? 768 : window.outerHeight;
-      const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
-
-      const dialogRef = this.dialog.open(PostDetailComponent, {
-        height: `${height}px`,
-        width: `${width}px`,
-        data: post
-      });
-
-      // dialogRef.updateSize(width + 'px', height + 'px');
-      // dialogRef.updatePosition({ top: '50px', left: '50px' });
-
-      this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
-        this.store.dispatch(new SharedActions.PreviousUploadIndex(postId));
-      });
-
-      this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
-        this.store.dispatch(new SharedActions.NextUploadIndex(postId));
-      });
-
-      // dialogRef.afterClosed().subscribe(result => {
-      // this.selectedOption = result;
-      // })
-    } else {
-      this.router.navigate(['/users', 'post', post.postId]);
-    }
+  goDetail(post: Post) {
+    this.router.navigate(['/users', 'post', post.postId]);
   }
 
   showMoreComments(post: Post) {
