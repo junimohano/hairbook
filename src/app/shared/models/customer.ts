@@ -7,8 +7,6 @@ export interface Customer {
   gender: GenderType;
   birthDay: Date;
   phone: string;
-  userId: number;
-  user: User;
 
   createdUserId: number | null;
   updatedUserId: number | null;

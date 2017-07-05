@@ -11,21 +11,85 @@ import * as SharedActions from './shared-actions';
 import { User } from 'app/shared/models/user';
 import { Token } from 'app/shared/models/token';
 import { MdSnackBar } from '@angular/material';
+import { SharedService } from 'app/shared/shared.service';
+import { PostComment } from 'app/shared/models/post-comment';
+import { of } from 'rxjs/observable/of';
+import { go } from '@ngrx/router-store';
+import { Post } from 'app/shared/models/post';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { AccessType } from 'app/shared/models/enums/access-type';
 
 @Injectable()
 export class SharedEffects {
 
   @Effect() setSnackBarEffect$ = this.actions$.ofType(SharedActions.SET_SNACK_BAR)
-    .map((action: SharedActions.SetSnackBar) => {
-      this.snackBar.open(action.payload, 'close', {
+    .mergeMap((action: SharedActions.SetSnackBar) => {
+      this.snackBar.open(action.payload.statusText, 'close', {
         duration: 5000,
       })
       console.log(action.payload);
-
-      return new SharedActions.SetProgressBar(false);
+      if (action.payload.status === 401) {
+        return [new SharedActions.SetProgressBar(false), go(['logins'])];
+      } else {
+        return [new SharedActions.SetProgressBar(false)];
+      }
     });
 
-  constructor(private actions$: Actions, private store: Store<Reducers.State>, private snackBar: MdSnackBar) {
+  @Effect() searchPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POST)
+    .debounceTime(100)
+    // .filter(x => !x)
+    // .filter(() => sessionStorage.getItem('userId') !== undefined)
+    .withLatestFrom(this.store, (payload, state) => {
+      // if (state.shared.posts.length === 0) {
+      //   this.store.dispatch(new SharedActions.SetProgressBar(true));
+      // } else {
+      //   this.store.dispatch(new SharedActions.SetProgressSpinner(true));
+      // }
+      return ({ currentPostCount: state.shared.posts.length, postSearchInfo: state.shared.postSearchInfo })
+    })
+    .switchMap((results) => this.sharedService.getPosts(results.currentPostCount, AccessType.Private, String(sessionStorage.getItem('userName')), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
+      .mergeMap((posts: Post[]) => {
+        return [new SharedActions.SuccessPost(posts), new SharedActions.SetProgressBar(false), new SharedActions.SetProgressSpinner(false)];
+      })
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    )
+
+  @Effect() getPostEffect$ = this.actions$.ofType(SharedActions.GET_POST)
+    .map((action: SharedActions.GetPost) => action.payload)
+    .switchMap((postId: number) => this.sharedService.getPost(postId)
+      .map((post: Post) => new SharedActions.GetPostSuccess(post))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() addPostCommentEffect$ = this.actions$.ofType(SharedActions.ADD_POST_COMMENT)
+    .map((action: SharedActions.AddPostComment) => action.payload)
+    .switchMap((postComment: PostComment) => this.sharedService.addPostComment(postComment)
+      .map((result: PostComment) => new SharedActions.AddPostCommentSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() delPostCommentEffect$ = this.actions$.ofType(SharedActions.DEL_POST_COMMENT)
+    .map((action: SharedActions.DelPostComment) => action.payload)
+    .switchMap((postCommentId: number) => this.sharedService.delPostComment(postCommentId)
+      .map((result: PostComment) => new SharedActions.DelPostCommentSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() addPostEvaluationEffect$ = this.actions$.ofType(SharedActions.ADD_POST_EVALUATION)
+    .map((action: SharedActions.AddPostEvaluation) => action.payload)
+    .switchMap((postEvaluation: PostEvaluation) => this.sharedService.addPostEvaluation(postEvaluation)
+      .map((result: PostEvaluation) => new SharedActions.AddPostEvaluationSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() delPostEvaluationEffect$ = this.actions$.ofType(SharedActions.DEL_POST_EVALUATION)
+    .map((action: SharedActions.DelPostEvaluation) => action.payload)
+    .switchMap((postEvaluationId: number) => this.sharedService.delPostEvaluation(postEvaluationId)
+      .map((result: PostEvaluation) => new SharedActions.DelPostEvaluationSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  constructor(private actions$: Actions, private store: Store<Reducers.State>, private snackBar: MdSnackBar, private sharedService: SharedService) {
 
   }
 }

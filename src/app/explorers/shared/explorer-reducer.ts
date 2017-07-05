@@ -3,17 +3,13 @@ import { Post } from 'app/shared/models/post';
 
 export interface State {
   search: string;
-  currentPostCount: number;
   posts: Post[];
-  isLast: boolean;
   post: Post;
 }
 
 const initialState: State = {
   search: '',
-  currentPostCount: 0,
   posts: [],
-  isLast: false,
   post: null
 };
 
@@ -27,17 +23,21 @@ export function reducer(state = initialState, action: Actions.All): State {
       if (action.payload === null) {
         action.payload = state.search;
       }
-      return { ...state, currentPostCount: state.posts.length, search: action.payload };
+      return { ...state, search: action.payload };
 
     case Actions.SUCCESS_POST:
-      let isLast = false;
-      if (state.currentPostCount === state.posts.length) {
-        isLast = false;
-      }
-
       action.payload.forEach(x => x.currentUploadIndex = 0);
       state.posts = state.posts.concat(action.payload);
-      return { ...state, isLast: isLast };
+
+      state.posts.forEach(x => {
+        if (x.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+          x.isEvaluation = true;
+        } else {
+          x.isEvaluation = false;
+        }
+      });
+
+      return { ...state };
 
     case Actions.PREVIOUS_UPLOAD_INDEX:
       {
@@ -56,6 +56,46 @@ export function reducer(state = initialState, action: Actions.All): State {
         }
         return { ...state };
       }
+
+    case Actions.ADD_POST_COMMENT_SUCCESS: {
+      console.log(action.payload);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
+      post.postComments.push(action.payload);
+      post.totalPostComments++;
+      return { ...state }
+    }
+
+    case Actions.DEL_POST_COMMENT_SUCCESS: {
+      console.log(action.payload);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
+      post.postComments = post.postComments.filter(x => x.postCommentId !== action.payload.postCommentId);
+      post.totalPostComments--;
+      return { ...state }
+    }
+
+    case Actions.ADD_POST_EVALUATION_SUCCESS: {
+      console.log(action.payload);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
+      post.postEvaluations.push(action.payload);
+      if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+        post.isEvaluation = true;
+      } else {
+        post.isEvaluation = false;
+      }
+      return { ...state }
+    }
+
+    case Actions.DEL_POST_EVALUATION_SUCCESS: {
+      console.log(action.payload);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
+      post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
+      if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+        post.isEvaluation = true;
+      } else {
+        post.isEvaluation = false;
+      }
+      return { ...state }
+    }
 
     default:
       return state;

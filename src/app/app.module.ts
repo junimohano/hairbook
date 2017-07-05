@@ -7,6 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 // ngrx
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { SharedEffects } from './shared/shared-effects';
 import { RouterStoreModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './shared/reducers';
@@ -33,6 +35,7 @@ import { ProgressBarComponent } from './shared/components/progress-bar/progress-
     SharedModule,
     AppRoutingModule,
     // ngrx
+    EffectsModule.run(SharedEffects),
     StoreModule.provideStore(reducers),
     RouterStoreModule.connectRouter(),
     StoreDevtoolsModule.instrumentOnlyWithExtension()

@@ -17,9 +17,7 @@ export interface Post {
   memo: string;
   salonId: number | null;
   salon: Salon | null;
-  hairTypeId: number;
-  hairType: HairType;
-  hairMemo: string;
+  hairTypeMemo: string;
   accessType: AccessType;
   postHairMenus: PostHairMenu[] | null;
   postHairTypes: PostHairType[] | null;
@@ -34,7 +32,11 @@ export interface Post {
   createdDate: Date | null;
   updatedDate: Date | null;
 
+  totalPostComments: number;
+
   currentUploadIndex: number;
+  comment: string;
+  isEvaluation: boolean;
 }
 
 

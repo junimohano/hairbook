@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 
-import { EffectsModule } from '@ngrx/effects';
-import { SharedEffects } from './shared-effects';
-
 // Auth
 import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Auth } from '../shared/auth/auth.service';
@@ -28,6 +25,8 @@ export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http);
   // return new TranslateHttpLoader(http, 'i18n/', '.json');
 }
+
+import 'hammerjs/hammer';
 
 // Angular materials
 import {
@@ -60,6 +59,7 @@ import { PostListComponent } from './components/post-list/post-list.component';
 import { PostDetailComponent } from './components/post-detail/post-detail.component';
 import { PostSearchComponent } from './components/post-search/post-search.component';
 import { PostListAllComponent } from './components/post-list-all/post-list-all.component';
+import { SharedService } from 'app/shared/shared.service';
 
 const components = [
   ProgressSpinnerComponent,
@@ -102,7 +102,6 @@ const modules = [
 @NgModule({
   imports: [
     modules,
-    EffectsModule.run(SharedEffects),
     // i18n
     TranslateModule.forRoot({
       loader: {
@@ -114,7 +113,6 @@ const modules = [
   ],
   exports: [
     modules,
-    EffectsModule,
     TranslateModule,
     components
   ],
@@ -128,7 +126,8 @@ const modules = [
       deps: [Http, RequestOptions]
     },
     Auth,
-    AuthGuard
+    AuthGuard,
+    SharedService
   ],
   // entryComponents: [
   //   PostDetailComponent

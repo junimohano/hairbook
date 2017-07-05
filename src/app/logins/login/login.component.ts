@@ -10,6 +10,7 @@ import { Token } from 'app/shared/models/token';
 
 import { Store } from '@ngrx/store';
 import * as LoginActions from '../shared/login-actions';
+import * as SharedActions from '../../shared/shared-actions';
 import * as UserActions from '../../users/shared/user-actions';
 import * as Reducers from '../../shared/reducers';
 import { Observable } from 'rxjs/Observable';
@@ -63,7 +64,7 @@ export class LoginComponent implements OnInit {
   }
 
   logout() {
-    this.store.dispatch(new UserActions.ResetState());
+    this.store.dispatch(new SharedActions.ResetState());
     this.auth.logout();
   }
 

@@ -1,29 +1,72 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.xs="5px" fxLayoutGap="20px">
-    <md-card *ngFor="let post of posts; let postIndex = index;">
-        <md-card-header>
-            <!--<div md-card-avatar class="example-header-image"></div>-->
-            <md-card-title>{{post.createdUser.userName}}</md-card-title>
-            <md-card-subtitle>{{post.createdUser.name}}</md-card-subtitle>
-        </md-card-header>
-        <div *ngIf="post.postUploads.length > 0; else test" fxLayout="column">
-            <img [src]="post.postUploads[0]?.path" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px">
-        </div>
-        <ng-template #test>
-            <div fxLayout="column">
-                <div fxFlexAlign="center" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px">
-                    no image
+    <md-card *ngFor="let post of posts; let postIndex = index;" class="example-card" fxFlexFill fxLayout="row" fxLayoutWrap.xs fxLayoutAlign="center start">
+        <div fxFlex="60" fxFlex.xs="100" fxLayout="column" fxLayoutGap="10px">
+            <md-card-header>
+                <div *ngIf="post.createdUser.image" md-card-avatar class="example-header-image">
+                    <img md-card-avatar [src]="post.createdUser.image">
+                </div>
+                <md-card-title>{{post.createdUser.userName}}</md-card-title>
+                <md-card-subtitle>{{post.createdUser.name}}</md-card-subtitle>
+            </md-card-header>
+            <div>
+                <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
+                    <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
+                        <img md-card-image (swipeleft)="onSwipe(post.postId, $event.type)" (swiperight)="onSwipe(post.postId, $event.type)" [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
+                        <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center stretch">
+                    <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onPrevious(post.postId)"><</button>
+                    <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onNext(post.postId)">></button>
                 </div>
             </div>
-        </ng-template>
-        <!--<img md-card-image src="assets/img/examples/shiba2.jpg">-->
-        <md-card-content>
-            <p>
-                {{post.memo}}
-            </p>
-        </md-card-content>
-        <md-card-actions>
-            <button md-button>LIKE</button>
-            <button md-button>SHARE</button>
-        </md-card-actions>
+        </div>
+        <div fxFlex="30" fxFlex.xs="100">
+            <md-card-content>
+                <p>{{post.customer.name}}</p>
+                <p>{{post.date | date}}</p>
+
+                <h5>Menu</h5>
+                <md-chip-list>
+                    <div *ngFor="let postHairMenu of post.postHairMenus; let i = index;">
+                        <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
+                            {{postHairMenu?.hairMenu?.name}}
+                        </md-chip>
+                    </div>
+                </md-chip-list>
+
+                <h5>HairType</h5>
+                <md-chip-list>
+                    <div *ngFor="let postHairType of post.postHairTypes; let i = index;">
+                        <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
+                            {{postHairType.hairType?.name}}
+                        </md-chip>
+                    </div>
+                </md-chip-list>
+                <p>{{post.hairTypeMemo}}</p>
+
+
+            </md-card-content>
+            <md-card-actions>
+                <div fxLayout="row">
+                    <md-icon (click)="onSetPostEvalution(post)">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon> {{post?.postEvaluations?.length}} &nbsp;
+                    <md-icon (click)="onGoToCommentBox()">message</md-icon> {{post?.totalPostComments}}
+                </div>
+                <md-list>
+                    <h3 md-subheader>Comments</h3>
+                    <button *ngIf="post?.totalPostComments !== post?.postComments.length" md-button class="primary" (click)="showMoreComments.emit(post)">Show more comments</button>
+                    <md-list-item *ngFor="let postComment of post.postComments">
+                        <span md-line><strong>{{postComment.createdUser?.userName}}</strong> &nbsp;&nbsp; {{postComment.comment}}</span>
+                        <button *ngIf="postComment.createdUserId === userId" md-button class="warn" (click)="delPostComment.emit(postComment.postCommentId)">x</button>
+                    </md-list-item>
+                </md-list>
+                <div fxLayout="row">
+                    <md-input-container>
+                        <input mdInput placeholder="Comment" [(ngModel)]="post.comment" #commentBox>
+                    </md-input-container>
+                    <button md-button class="warn" (click)="onAddPostComment(post)">Add</button>
+                </div>
+            </md-card-actions>
+        </div>
     </md-card>
 </div>

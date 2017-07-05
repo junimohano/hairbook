@@ -10,6 +10,9 @@ import { Post } from '../../shared/models/post';
 import { PostDetailComponent } from '../../shared/components/post-detail/post-detail.component';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
+import { PostComment } from 'app/shared/models/post-comment';
 
 @Component({
   selector: 'hb-explorer-main',
@@ -24,6 +27,7 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
   isProgressSpinner$: Observable<boolean>;
   previousSubscription: Subscription;
   nextSubscription: Subscription;
+  scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.search$ = store.select(Reducers.explorerSearch);
@@ -46,14 +50,15 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
-
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
-      console.log('bottom');
-      this.store.dispatch(new ExplorerActions.SearchPost());
+      if (this.scrollFlag) {
+        console.log('bottom');
+        this.store.dispatch(new ExplorerActions.SearchPost());
+      }
+      this.scrollFlag = false;
+    } else {
+      this.scrollFlag = true;
     }
-
-    //    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-    //  }
   }
 
   searchChange(search: string) {
@@ -63,8 +68,8 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
   openDetail(post: Post) {
 
     if (window.outerWidth > 600) {
-      const height = window.outerHeight > 600 ? 600 : window.outerHeight;
-      const width = window.outerHeight > 935 ? 935 : window.outerHeight;
+      const height = window.outerHeight > 768 ? 768 : window.outerHeight;
+      const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
 
       const dialogRef = this.dialog.open(PostDetailComponent, {
         height: `${height}px`,
@@ -90,6 +95,22 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
       this.router.navigate(['/explorers', 'post', post.postId]);
     }
 
+  }
+
+  addPostComment(postComment: PostComment) {
+    this.store.dispatch(new ExplorerActions.AddPostComment(postComment));
+  }
+
+  delPostComment(postCommentId: number) {
+    this.store.dispatch(new ExplorerActions.DelPostComment(postCommentId));
+  }
+
+  addPostEvalution(postEvaluation: PostEvaluation) {
+    this.store.dispatch(new ExplorerActions.AddPostEvaluation(postEvaluation));
+  }
+
+  delPostEvalution(postEvaluationId: number) {
+    this.store.dispatch(new ExplorerActions.DelPostEvaluation(postEvaluationId));
   }
 
 }

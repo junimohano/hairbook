@@ -13,7 +13,7 @@
         <ng-template md-tab-label>
             <md-icon>view_stream</md-icon>
         </ng-template>
-        <hb-post-list-all [posts]="posts$ | async"></hb-post-list-all>
+        <hb-post-list-all [posts]="posts$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)"></hb-post-list-all>
     </md-tab>
 </md-tab-group>
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>

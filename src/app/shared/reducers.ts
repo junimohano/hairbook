@@ -7,6 +7,7 @@ import { UserSecret } from 'app/logins/shared/user-secret';
 import { routerReducer, RouterState } from '@ngrx/router-store';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { Post } from 'app/shared/models/post';
+import { PostComment } from 'app/shared/models/post-comment';
 
 export interface State {
   router: RouterState;
@@ -25,7 +26,7 @@ export const reducers = {
 };
 
 // explorer
-export function explorerPosts(state: State) {
+export function explorerPosts(state: State): Post[] {
   return state.explorer.posts;
 }
 export function explorerPostsLength(state: State): number {
@@ -36,20 +37,8 @@ export function explorerSearch(state: State): string {
 }
 
 // user
-export function userPosts(state: State) {
-  return state.user.posts;
-}
-export function userPostsLength(state: State): number {
-  return state.user.posts.length;
-}
-export function userPostSearchInfo(state: State): PostSearchInfo {
-  return state.user.postSearchInfo;
-}
 export function userUser(state: State): User {
   return state.user.user;
-}
-export function userPost(state: State): Post {
-  return state.user.post;
 }
 
 // login
@@ -70,4 +59,18 @@ export function sharedIsProgressBar(state: State): boolean {
 export function sharedIsProgressSpinner(state: State): boolean {
   return state.shared.isProgressSpinner;
 }
-
+export function sharedUserPosts(state: State): Post[] {
+  return state.shared.posts;
+}
+export function sharedUserPostsLength(state: State): number {
+  return state.shared.posts.length;
+}
+export function sharedUserPostSearchInfo(state: State): PostSearchInfo {
+  return state.shared.postSearchInfo;
+}
+export function sharedUserSelectedPost(state: State): Post {
+  return state.shared.selectedPost;
+}
+export function sharedUserPostComment(state: State): PostComment {
+  return state.shared.postComment;
+}

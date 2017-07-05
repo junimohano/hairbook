@@ -1,9 +1,9 @@
 <div *ngIf="post" fxLayout="row" fxLayoutWrap class="no-scroll">
 
-    <div fxLayout="column" fxFlex="60" class="no-scroll" fxLayoutAlign="center center">
+    <div fxLayout="column" fxFlex="60" class="no-scroll" fxLayoutAlign="start center">
         <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
             <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
-                <img [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
+                <img (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)" [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
                 <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
             </div>
         </div>
@@ -55,23 +55,48 @@
 
         <div fxLayout="column">
             <md-input-container fxFill>
-                <textarea mdInput placeholder="Hair Memo" [(ngModel)]="post.hairMemo"></textarea>
+                <textarea mdInput placeholder="Hair Memo" [(ngModel)]="post.hairTypeMemo"></textarea>
             </md-input-container>
         </div>
 
         <div fxLayout="column" *ngIf="postMenuColor">
-            <!--<h3>Information for color</h3>-->
+            <h3>Information for color ({{postMenuColor.hairSubMenu?.name}})</h3>
             <md-input-container>
                 <textarea mdInput placeholder="Color Memo" [(ngModel)]="postMenuColor.memo">1600 Amphitheatre Pkwy</textarea>
             </md-input-container>
         </div>
 
-        <div fxLayout="column" *ngIf="postMenuParm">
-            <!--<h3>Information for parm</h3>-->
+        <div fxLayout="column" *ngIf="postMenuPerm">
+            <h3>Information for perm ({{postMenuPerm.hairSubMenu?.name}})</h3>
             <md-input-container>
-                <textarea mdInput placeholder="Parm Memo" [(ngModel)]="postMenuParm.memo"></textarea>
+                <textarea mdInput placeholder="Parm Memo" [(ngModel)]="postMenuPerm.memo"></textarea>
             </md-input-container>
         </div>
 
+        <div fxLayout="column">
+
+            <div fxLayout="row">
+                <md-icon (click)="setPostEvalution()">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon> {{post?.postEvaluations?.length}} &nbsp;
+                <md-icon (click)="goToCommentBox()">message</md-icon> {{post?.totalPostComments}}
+            </div>
+
+            <md-list>
+                <h3 md-subheader>Comments</h3>
+                <!--<button *ngIf="post?.totalPostComments !== post?.postComments.length" md-button class="primary" (click)="showMoreComments(post)">Show more comments</button>-->
+                <md-list-item *ngFor="let postComment of post.postComments">
+                    <!--<md-icon md-list-icon>folder</md-icon>-->
+                    <h4 md-line>{{postComment.createdUser?.name}}</h4>
+                    <p md-line> {{postComment.comment}}</p>
+                    <button *ngIf="postComment.createdUserId === userId" md-button class="warn" (click)="delPostComment(postComment.postCommentId)">x</button>
+                </md-list-item>
+            </md-list>
+
+            <div fxLayout="row">
+                <md-input-container>
+                    <input mdInput placeholder="Comment" [(ngModel)]="comment" #commentBox>
+                </md-input-container>
+                <button md-button class="warn" (click)="addPostComment(comment)">Add</button>
+            </div>
+        </div>
     </div>
 </div>

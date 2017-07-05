@@ -3,6 +3,7 @@ import { Auth } from '../../shared/auth/auth.service';
 
 import { Store } from '@ngrx/store';
 import * as UserActions from '../shared/user-actions';
+import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
@@ -13,6 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'app/shared/models/user';
 import { Subscription } from 'rxjs/Subscription';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { PostComment } from 'app/shared/models/post-comment';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 
 @Component({
   selector: 'hb-user-main',
@@ -31,11 +35,14 @@ export class UserMainComponent implements OnInit, OnDestroy {
   previousSubscription: Subscription;
   nextSubscription: Subscription;
 
+  postCommentSubscription: Subscription;
+
   postSearchInfo: PostSearchInfo;
+  scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activatedRoute: ActivatedRoute, private router: Router) {
-    this.postSearchInfo$ = store.select(Reducers.userPostSearchInfo);
-    this.posts$ = store.select(Reducers.userPosts);
+    this.postSearchInfo$ = store.select(Reducers.sharedUserPostSearchInfo);
+    this.posts$ = store.select(Reducers.sharedUserPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
   }
@@ -48,7 +55,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
         search: '',
         userNameParam: userNameParam
       }
-      this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
+      this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
       // this.id = +params['id']; // (+) converts string 'id' to a number
     });
 
@@ -74,18 +81,22 @@ export class UserMainComponent implements OnInit, OnDestroy {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
-      console.log('bottom');
-      if (this.postSearchInfo) {
-        // this.postSearchInfo.search = '';
-        this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
+      if (this.scrollFlag) {
+        console.log('bottom');
+        if (this.postSearchInfo) {
+          this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+        }
       }
+      this.scrollFlag = false;
+    } else {
+      this.scrollFlag = true;
     }
   }
 
   searchChange(search: string) {
     if (this.postSearchInfo) {
       this.postSearchInfo.search = search;
-      this.store.dispatch(new UserActions.SearchPost(this.postSearchInfo));
+      this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
     }
   }
 
@@ -93,9 +104,9 @@ export class UserMainComponent implements OnInit, OnDestroy {
 
     if (window.outerWidth > 600) {
       // const height = window.outerHeight > 600 ? 600 : window.outerHeight;
-      // const width = window.outerHeight > 935 ? 935 : window.outerHeight;
+      // const width = window.outerWidth > 935 ? 935 : window.outerWidth;
       const height = window.outerHeight > 768 ? 768 : window.outerHeight;
-      const width = window.outerHeight > 1024 ? 1024 : window.outerHeight;
+      const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
 
       const dialogRef = this.dialog.open(PostDetailComponent, {
         height: `${height}px`,
@@ -107,11 +118,11 @@ export class UserMainComponent implements OnInit, OnDestroy {
       // dialogRef.updatePosition({ top: '50px', left: '50px' });
 
       this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
-        this.store.dispatch(new UserActions.PreviousUploadIndex(postId));
+        this.store.dispatch(new SharedActions.PreviousUploadIndex(postId));
       });
 
       this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
-        this.store.dispatch(new UserActions.NextUploadIndex(postId));
+        this.store.dispatch(new SharedActions.NextUploadIndex(postId));
       });
 
       // dialogRef.afterClosed().subscribe(result => {
@@ -120,6 +131,26 @@ export class UserMainComponent implements OnInit, OnDestroy {
     } else {
       this.router.navigate(['/users', 'post', post.postId]);
     }
+  }
+
+  showMoreComments(post: Post) {
+    // this.store.dispatch(new UserActions.GetPostComments(postComment));
+  }
+
+  addPostComment(postComment: PostComment) {
+    this.store.dispatch(new SharedActions.AddPostComment(postComment));
+  }
+
+  delPostComment(postCommentId: number) {
+    this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
+  }
+
+  addPostEvalution(postEvaluation: PostEvaluation) {
+    this.store.dispatch(new SharedActions.AddPostEvaluation(postEvaluation));
+  }
+
+  delPostEvalution(postEvaluationId: number) {
+    this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluationId));
   }
 
 }

@@ -3,7 +3,6 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom'
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 
 import * as Reducers from '../../shared/reducers';
@@ -17,6 +16,7 @@ import { Auth } from 'app/shared/auth/auth.service';
 import { Router } from '@angular/router'
 import { go, replace, search, show, back, forward } from '@ngrx/router-store';
 import { of } from 'rxjs/observable/of';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class LoginEffects {
@@ -24,7 +24,7 @@ export class LoginEffects {
   @Effect() loginSocialEffect$ = this.actions$.ofType(LoginActions.LOGIN_SOCIAL)
     .switchMap((action: LoginActions.LoginSocial) => this.auth.login(action.payload)
       .map(x => x)
-      .catch(() => of(new SharedActions.SetSnackBar('Social Login Error')))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     )
     .mergeMap((data) => {
       console.log(LoginActions.LOGIN_SOCIAL, data);
@@ -40,7 +40,7 @@ export class LoginEffects {
     .map((action: LoginActions.ExistUser) => action.payload)
     .switchMap((userKey: string) => this.loginService.existUser(userKey)
       .map(x => x)
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     )
     .withLatestFrom(this.store)
     .mergeMap(([existUser, state]) => {
@@ -70,7 +70,7 @@ export class LoginEffects {
 
         return [new LoginActions.SetUser(token.user), new SharedActions.SetProgressBar(true)];
       })
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 
   @Effect() setUserEffect$ = this.actions$.ofType(LoginActions.SET_USER)
@@ -85,7 +85,7 @@ export class LoginEffects {
     .map((action: LoginActions.Register) => action.payload)
     .switchMap((user: User) => this.loginService.postUser(user)
       .map(x => x)
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     )
     .map((user: User) => {
       console.log(LoginActions.REGISTER);
@@ -96,7 +96,7 @@ export class LoginEffects {
     .map((action: LoginActions.ExistUserName) => action.payload)
     .switchMap((userName: string) => this.loginService.existUserName(userName)
       .map(x => x)
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(String(res.text()))))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     )
     .map((flag: boolean) => {
       console.log(LoginActions.EXIST_USER_NAME);
