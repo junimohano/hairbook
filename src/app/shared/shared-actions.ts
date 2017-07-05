@@ -8,7 +8,7 @@ import { PostSearchInfo } from 'app/shared/models/post-search-info';
 export const SET_PROGRESS_BAR = '[Shared] Set Progress Bar';
 export const SET_PROGRESS_SPINNER = '[Shared] Set Progress Spinner';
 export const SET_SNACK_BAR = '[Shared] Set Snack Bar';
-export const SEARCH_POST = '[Shared] Post';
+export const SEARCH_POST = '[Shared] Search Post';
 export const SUCCESS_POST = '[Shared] Success Post';
 export const PREVIOUS_UPLOAD_INDEX = '[Shared] Previous Upload Index';
 export const NEXT_UPLOAD_INDEX = '[Shared] Next Upload Index';

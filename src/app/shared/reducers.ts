@@ -1,4 +1,3 @@
-import * as ExplorerReducer from '../explorers/shared/explorer-reducer';
 import * as UserReducer from '../users/shared/user-reducer';
 import * as LoginReducer from '../logins/shared/login-reducer';
 import * as SharedReducer from './shared-reducer';
@@ -11,7 +10,6 @@ import { PostComment } from 'app/shared/models/post-comment';
 
 export interface State {
   router: RouterState;
-  explorer: ExplorerReducer.State;
   user: UserReducer.State;
   login: LoginReducer.State;
   shared: SharedReducer.State;
@@ -19,22 +17,10 @@ export interface State {
 
 export const reducers = {
   router: routerReducer,
-  explorer: ExplorerReducer.reducer,
   user: UserReducer.reducer,
   login: LoginReducer.reducer,
   shared: SharedReducer.reducer
 };
-
-// explorer
-export function explorerPosts(state: State): Post[] {
-  return state.explorer.posts;
-}
-export function explorerPostsLength(state: State): number {
-  return state.explorer.posts.length;
-}
-export function explorerSearch(state: State): string {
-  return state.explorer.search;
-}
 
 // user
 export function userUser(state: State): User {
@@ -59,13 +45,22 @@ export function sharedIsProgressBar(state: State): boolean {
 export function sharedIsProgressSpinner(state: State): boolean {
   return state.shared.isProgressSpinner;
 }
+
 export function sharedUserPosts(state: State): Post[] {
-  return state.shared.posts;
+  return state.shared.userPosts;
 }
 export function sharedUserPostsLength(state: State): number {
-  return state.shared.posts.length;
+  return state.shared.userPosts.length;
 }
-export function sharedUserPostSearchInfo(state: State): PostSearchInfo {
+
+export function sharedExplorerPosts(state: State): Post[] {
+  return state.shared.explorerPosts;
+}
+export function sharedExplorerPostsLength(state: State): number {
+  return state.shared.explorerPosts.length;
+}
+
+export function sharedPostSearchInfo(state: State): PostSearchInfo {
   return state.shared.postSearchInfo;
 }
 export function sharedUserSelectedPost(state: State): Post {

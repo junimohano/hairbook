@@ -41,7 +41,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private activatedRoute: ActivatedRoute, private router: Router) {
-    this.postSearchInfo$ = store.select(Reducers.sharedUserPostSearchInfo);
+    this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
     this.posts$ = store.select(Reducers.sharedUserPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
@@ -53,6 +53,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
       this.store.dispatch(new UserActions.GetUser(userNameParam));
       this.postSearchInfo = <PostSearchInfo>{
         search: '',
+        isUserPost: true,
         userNameParam: userNameParam
       }
       this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));

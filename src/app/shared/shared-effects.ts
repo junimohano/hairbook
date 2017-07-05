@@ -35,24 +35,34 @@ export class SharedEffects {
       }
     });
 
-  @Effect() searchPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POST)
+  @Effect() searchUserPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POST)
     .debounceTime(100)
     // .filter(x => !x)
     // .filter(() => sessionStorage.getItem('userId') !== undefined)
     .withLatestFrom(this.store, (payload, state) => {
-      // if (state.shared.posts.length === 0) {
-      //   this.store.dispatch(new SharedActions.SetProgressBar(true));
-      // } else {
-      //   this.store.dispatch(new SharedActions.SetProgressSpinner(true));
-      // }
-      return ({ currentPostCount: state.shared.posts.length, postSearchInfo: state.shared.postSearchInfo })
+      const totalPosts = state.shared.postSearchInfo.isUserPost ? state.shared.userPosts.length : state.shared.explorerPosts.length;
+      if (totalPosts === 0) {
+        this.store.dispatch(new SharedActions.SetProgressBar(true));
+      } else {
+        this.store.dispatch(new SharedActions.SetProgressSpinner(true));
+      }
+      return ({ currentTotalPosts: totalPosts, postSearchInfo: state.shared.postSearchInfo })
     })
-    .switchMap((results) => this.sharedService.getPosts(results.currentPostCount, AccessType.Private, String(sessionStorage.getItem('userName')), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
-      .mergeMap((posts: Post[]) => {
-        return [new SharedActions.SuccessPost(posts), new SharedActions.SetProgressBar(false), new SharedActions.SetProgressSpinner(false)];
-      })
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
-    )
+    .switchMap((results) => {
+      let getPostsObservable: Observable<Post[]>;
+
+      if (results.postSearchInfo.isUserPost) {
+        getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Private, String(sessionStorage.getItem('userName')), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
+      } else {
+        getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Public, '', '', results.postSearchInfo.search);
+      }
+
+      return getPostsObservable
+        .mergeMap((posts: Post[]) => {
+          return [new SharedActions.SuccessPost(posts), new SharedActions.SetProgressBar(false), new SharedActions.SetProgressSpinner(false)];
+        })
+        .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    });
 
   @Effect() getPostEffect$ = this.actions$.ofType(SharedActions.GET_POST)
     .map((action: SharedActions.GetPost) => action.payload)

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, HostListener, ChangeDetectionStrategy } f
 import { Auth } from '../../shared/auth/auth.service';
 
 import { Store } from '@ngrx/store';
-import * as ExplorerActions from '../shared/explorer-actions';
+import * as SharedActions from '../../shared/shared-actions';
 import * as Reducers from '../../shared/reducers';
 import { Observable } from 'rxjs/Observable';
 import { MdDialog } from '@angular/material';
@@ -13,30 +13,37 @@ import { Router } from '@angular/router';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 import { PostComment } from 'app/shared/models/post-comment';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 @Component({
   selector: 'hb-explorer-main',
   templateUrl: './explorer-main.component.html',
   styleUrls: ['./explorer-main.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExplorerMainComponent implements OnInit, OnDestroy {
 
-  search$: Observable<string>;
+  postSearchInfo$: Observable<PostSearchInfo>;
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
   previousSubscription: Subscription;
   nextSubscription: Subscription;
+
+  postSearchInfo: PostSearchInfo;
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
-    this.search$ = store.select(Reducers.explorerSearch);
-    this.posts$ = store.select(Reducers.explorerPosts);
+    this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
+    this.posts$ = store.select(Reducers.sharedExplorerPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
   }
 
   ngOnInit() {
-    this.store.dispatch(new ExplorerActions.SearchPost());
+    this.postSearchInfo = <PostSearchInfo>{
+      search: '',
+      isUserPost: false
+    }
+    this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
   }
 
   ngOnDestroy(): void {
@@ -53,7 +60,9 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
       if (this.scrollFlag) {
         console.log('bottom');
-        this.store.dispatch(new ExplorerActions.SearchPost());
+        if (this.postSearchInfo) {
+          this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+        }
       }
       this.scrollFlag = false;
     } else {
@@ -62,7 +71,10 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
   }
 
   searchChange(search: string) {
-    this.store.dispatch(new ExplorerActions.SearchPost(search));
+    if (this.postSearchInfo) {
+      this.postSearchInfo.search = search;
+      this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+    }
   }
 
   openDetail(post: Post) {
@@ -81,11 +93,11 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
       // dialogRef.updatePosition({ top: '50px', left: '50px' });
 
       this.previousSubscription = dialogRef.componentInstance.previous.subscribe((postId: number) => {
-        this.store.dispatch(new ExplorerActions.PreviousUploadIndex(postId));
+        this.store.dispatch(new SharedActions.PreviousUploadIndex(postId));
       });
 
       this.nextSubscription = dialogRef.componentInstance.next.subscribe((postId: number) => {
-        this.store.dispatch(new ExplorerActions.NextUploadIndex(postId));
+        this.store.dispatch(new SharedActions.NextUploadIndex(postId));
       });
 
       // dialogRef.afterClosed().subscribe(result => {
@@ -97,20 +109,24 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
 
   }
 
+  showMoreComments(post: Post) {
+    // this.store.dispatch(new UserActions.GetPostComments(postComment));
+  }
+
   addPostComment(postComment: PostComment) {
-    this.store.dispatch(new ExplorerActions.AddPostComment(postComment));
+    this.store.dispatch(new SharedActions.AddPostComment(postComment));
   }
 
   delPostComment(postCommentId: number) {
-    this.store.dispatch(new ExplorerActions.DelPostComment(postCommentId));
+    this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
   }
 
   addPostEvalution(postEvaluation: PostEvaluation) {
-    this.store.dispatch(new ExplorerActions.AddPostEvaluation(postEvaluation));
+    this.store.dispatch(new SharedActions.AddPostEvaluation(postEvaluation));
   }
 
   delPostEvalution(postEvaluationId: number) {
-    this.store.dispatch(new ExplorerActions.DelPostEvaluation(postEvaluationId));
+    this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluationId));
   }
 
 }
