@@ -1,9 +1,11 @@
-<div fxFlexOffset="25" fxFlex="50" fxLayout="row" fxLayoutAlign="space-around center">
+<div fxFlexOffset="25" fxFlex="50" fxLayout="row" fxLayoutWrap fxLayoutAlign="start center" fxLayoutGap="50px">
 
-    <div fxLayout="column" fxLayoutGap="10px">
+    <div fxLayout="column">
         <h3>Social Login</h3>
-        <button md-raised-button color="warn" (click)="signIn('google')">google</button>
-        <button md-raised-button color="primary" (click)="signIn('facebook')">facebook</button>
+        <div fxLayout="row" fxLayoutGap="30px">
+            <button md-raised-button color="warn" (click)="signIn('google')">google</button>
+            <button md-raised-button color="primary" (click)="signIn('facebook')">facebook</button>
+        </div>
     </div>
 
     <div fxLayout="column" fxLayoutGap="10px">
@@ -19,7 +21,7 @@
                     <input mdInput type="password" placeholder="Password" formControlName="password">
                 </md-input-container>
             </div>
-            <div fxLayout="row" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutGap="30px">
                 <div class="form-group">
                     <button md-raised-button color="primary" type="submit" [disabled]="!loginForm.valid" (click)="login()">Login</button>
                 </div>
@@ -32,8 +34,7 @@
 
         <!--<p>Form value: {{ loginForm.value | json }}</p>
         <p>Form status: {{ loginForm.status | json }}</p>-->
-
+        <!--{{user$ | async | json}}-->
     </div>
-</div>
 
-<!--{{user$ | async | json}}-->
+</div>

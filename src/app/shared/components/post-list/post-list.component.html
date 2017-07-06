@@ -1,14 +1,14 @@
 <div fxLayout="row" fxLayoutWrap fxLayoutAlign="center center" fxLayoutGap.xs="5px" fxLayoutGap="30px">
     <div *ngFor="let post of posts; let postIndex = index;">
-        <div fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px" fxLayout="column" fxLayoutGap.xs="5px" fxLayoutGap="30px">
+        <div fxFlex.xs="150px" fxFlex.sm="200px" fxFlex.md="250px" fxFlex="300px" fxLayout="column" fxLayoutGap.xs="5px" fxLayoutGap="30px">
 
             <div class="post-wrapper">
                 <div class="post-inside" *ngIf="post.postUploads.length > 0; else test" fxLayout="column">
-                    <img [src]="post.postUploads[0]?.path" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px">
+                    <img [src]="post.postUploads[0]?.path" fxFlex.xs="150px" fxFlex.sm="200px" fxFlex.md="250px" fxFlex="300px">
                 </div>
                 <ng-template #test>
                     <div class="post-inside" fxLayout="column">
-                        <div fxFlexAlign="center" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="300px">
+                        <div fxFlexAlign="center" fxFlex.xs="150px" fxFlex.sm="200px" fxFlex.md="250px" fxFlex="300px">
                             no image
                         </div>
                     </div>

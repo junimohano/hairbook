@@ -122,12 +122,6 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(new SharedActions.AddPostComment(postComment));
       this.comment = '';
-
-      this.postCommentSubscription = this.store.select(Reducers.sharedPostComment).subscribe(x => {
-        if (x) {
-          this.post.postComments.push(x);
-        }
-      });
     }
   }
 

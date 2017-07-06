@@ -10,8 +10,8 @@
             </md-card-header>
             <div>
                 <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
-                    <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
-                        <img md-card-image (swipeleft)="onSwipe(post.postId, $event.type)" (swiperight)="onSwipe(post.postId, $event.type)" [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
+                    <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="300px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
+                        <img md-card-image (swipeleft)="onSwipe(post.postId, $event.type)" (swiperight)="onSwipe(post.postId, $event.type)" [src]="upload.path" width="100%" fxFlex.xs="300px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
                         <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
                     </div>
                 </div>

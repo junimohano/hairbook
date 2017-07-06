@@ -16,6 +16,6 @@
 </md-toolbar>
 <md-menu x-position="before" #menu="mdMenu">
     <!--<button md-menu-item routerLink="/"><md-icon>share</md-icon>Explorers</button>-->
-    <button md-menu-item routerLink="/users"><md-icon>person</md-icon>Users</button>
+    <button md-menu-item [routerLink]="'/users/' + userName"><md-icon>person</md-icon>Users</button>
     <button md-menu-item routerLink="/logins"><md-icon>clear</md-icon>Logout</button>
 </md-menu>

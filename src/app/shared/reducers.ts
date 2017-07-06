@@ -59,6 +59,3 @@ export function sharedPostSearchInfo(state: State): PostSearchInfo {
 export function sharedSelectedPost(state: State): Post {
   return state.shared.selectedPost;
 }
-export function sharedPostComment(state: State): PostComment {
-  return state.shared.postComment;
-}
