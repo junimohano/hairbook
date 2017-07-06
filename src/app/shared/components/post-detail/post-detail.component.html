@@ -1,7 +1,7 @@
 <div *ngIf="post" fxLayout="row" fxLayoutWrap class="no-scroll">
 
     <div fxLayout="column" fxFlex="60" class="no-scroll" fxLayoutAlign="start center">
-        <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
+        <div *ngFor="let upload of post?.postUploads; let uploadIndex = index;">
             <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
                 <img (swipeleft)="onSwipe($event.type)" (swiperight)="onSwipe($event.type)" [src]="upload.path" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
                 <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
@@ -17,7 +17,7 @@
 
         <div fxLayout="row">
             <md-input-container>
-                <input mdInput placeholder="Name" value="test" [(ngModel)]="post.customer.name">
+                <input mdInput placeholder="Name" value="test" [(ngModel)]="post?.customer.name">
             </md-input-container>
 
             <p>{{post.customerId}}</p>
@@ -31,10 +31,10 @@
             <md-datepicker #picker></md-datepicker>
         </div>
 
-        <div fxLayout="column" *ngIf="post.postHairMenus">
+        <div fxLayout="column" *ngIf="post?.postHairMenus">
             <h5>Menu </h5>
             <md-chip-list>
-                <div *ngFor="let postHairMenu of post.postHairMenus; let i = index;">
+                <div *ngFor="let postHairMenu of post?.postHairMenus; let i = index;">
                     <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
                         {{postHairMenu?.hairMenu?.name}}
                     </md-chip>
@@ -42,10 +42,10 @@
             </md-chip-list>
         </div>
 
-        <div fxLayout="column" *ngIf="post.postHairTypes">
+        <div fxLayout="column" *ngIf="post?.postHairTypes">
             <h5>HairType </h5>
             <md-chip-list>
-                <div *ngFor="let postHairType of post.postHairTypes; let i = index;">
+                <div *ngFor="let postHairType of post?.postHairTypes; let i = index;">
                     <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
                         {{postHairType.hairType?.name}}
                     </md-chip>
@@ -82,8 +82,8 @@
 
             <md-list>
                 <h3 md-subheader>Comments</h3>
-                <!--<button *ngIf="post?.totalPostComments !== post?.postComments.length" md-button class="primary" (click)="showMoreComments(post)">Show more comments</button>-->
-                <md-list-item *ngFor="let postComment of post.postComments">
+                <button *ngIf="post?.totalPostComments !== post?.postComments.length" md-button class="primary" (click)="onShowMoreComments(post)">Show more comments</button>
+                <md-list-item *ngFor="let postComment of post?.postComments">
                     <!--<md-icon md-list-icon>folder</md-icon>-->
                     <h4 md-line>{{postComment.createdUser?.name}}</h4>
                     <p md-line> {{postComment.comment}}</p>

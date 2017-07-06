@@ -34,7 +34,7 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
-    this.posts$ = store.select(Reducers.sharedExplorerPosts);
+    this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
   }
 
@@ -82,7 +82,7 @@ export class ExplorerMainComponent implements OnInit, OnDestroy {
   }
 
   showMoreComments(post: Post) {
-    // this.store.dispatch(new UserActions.GetPostComments(postComment));
+    this.store.dispatch(new SharedActions.GetPostComment(post));
   }
 
   addPostComment(postComment: PostComment) {

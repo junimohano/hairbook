@@ -4,6 +4,7 @@ import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { Post } from 'app/shared/models/post';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { PostCommentInfo } from 'app/shared/models/post-comment-info';
 
 export const SET_PROGRESS_BAR = '[Shared] Set Progress Bar';
 export const SET_PROGRESS_SPINNER = '[Shared] Set Progress Spinner';
@@ -23,6 +24,8 @@ export const ADD_POST_EVALUATION = '[Shared] Add Post Evaluation';
 export const ADD_POST_EVALUATION_SUCCESS = '[Shared] Add Post Evaluation Success';
 export const DEL_POST_EVALUATION = '[Shared] Del Post Evaluation';
 export const DEL_POST_EVALUATION_SUCCESS = '[Shared] Del Post Evaluation Success';
+export const GET_POST_COMMENT = '[Shared] Get Post Comment';
+export const GET_POST_COMMENT_SUCCESS = '[Shared] Get Post Comment Success';
 
 export class SetProgressBar implements Action {
   readonly type = SET_PROGRESS_BAR;
@@ -114,6 +117,16 @@ export class DelPostEvaluationSuccess implements Action {
   constructor(public payload: PostEvaluation) { }
 }
 
+export class GetPostComment implements Action {
+  readonly type = GET_POST_COMMENT;
+  constructor(public payload: Post) { }
+}
+
+export class GetPostCommentSuccess implements Action {
+  readonly type = GET_POST_COMMENT_SUCCESS;
+  constructor(public payload: PostCommentInfo) { }
+}
+
 export type All
   = SetProgressBar
   | SetProgressSpinner
@@ -133,4 +146,6 @@ export type All
   | AddPostEvaluationSuccess
   | DelPostEvaluation
   | DelPostEvaluationSuccess
+  | GetPostComment
+  | GetPostCommentSuccess
   ;

@@ -25,15 +25,6 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   postMenuColor: PostHairMenu;
   postMenuPerm: PostHairMenu;
 
-  @Output() showMoreComments = new EventEmitter<Post>();
-  @Output() addPostComment = new EventEmitter<PostComment>();
-  @Output() delPostComment = new EventEmitter<number>();
-  @Output() addPostEvalution = new EventEmitter<PostEvaluation>();
-  @Output() delPostEvalution = new EventEmitter<number>();
-
-  @Output() previous = new EventEmitter<number>();
-  @Output() next = new EventEmitter<number>();
-
   @ViewChild('commentBox') commentBox;
 
   uploadCategories: any[];
@@ -56,7 +47,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         console.log(params);
 
         const postId = +params['postId'];
-        this.postSubscription = this.store.select(Reducers.sharedUserSelectedPost).subscribe(post => {
+        this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
           if (post) {
             this.setPostData(post);
           }
@@ -113,8 +104,13 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDelPostComment(postCommentId) {
-    this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
+
+  onGoToCommentBox() {
+    this.commentBox.nativeElement.focus();
+  }
+
+  onShowMoreComments(post: Post) {
+    this.store.dispatch(new SharedActions.GetPostComment(post));
   }
 
   onAddPostComment(comment: string) {
@@ -127,7 +123,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       this.store.dispatch(new SharedActions.AddPostComment(postComment));
       this.comment = '';
 
-      this.postCommentSubscription = this.store.select(Reducers.sharedUserPostComment).subscribe(x => {
+      this.postCommentSubscription = this.store.select(Reducers.sharedPostComment).subscribe(x => {
         if (x) {
           this.post.postComments.push(x);
         }
@@ -135,9 +131,10 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onGoToCommentBox() {
-    this.commentBox.nativeElement.focus();
+  onDelPostComment(postCommentId) {
+    this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
   }
+
 
   onSetPostEvalution() {
     if (this.post.isEvaluation) {

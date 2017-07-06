@@ -8,8 +8,9 @@ export interface State {
   isProgressBar: boolean;
   isProgressSpinner: boolean;
   postSearchInfo: PostSearchInfo;
-  userPosts: Post[];
-  explorerPosts: Post[];
+  posts: Post[];
+  // userPosts: Post[];
+  // explorerPosts: Post[];
   selectedPost: Post;
   postComment: PostComment;
 }
@@ -20,15 +21,12 @@ const initialState: State = {
   postSearchInfo: <PostSearchInfo>{
     isUserPost: true
   },
-  userPosts: [],
-  explorerPosts: [],
+  posts: [],
+  // userPosts: [],
+  // explorerPosts: [],
   selectedPost: null,
   postComment: null
 };
-
-function getPosts(state): Post[] {
-  return state.postSearchInfo.isUserPost ? state.userPosts : state.explorerPosts;
-}
 
 export function reducer(state = initialState, action: Actions.All): State {
 
@@ -44,11 +42,10 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.SEARCH_POST: {
       if (state.postSearchInfo) {
         if (state.postSearchInfo.search !== action.payload.search && action.payload !== null) {
-          if (state.postSearchInfo.isUserPost) {
-            state.userPosts = [];
-          } else {
-            state.explorerPosts = [];
-          }
+          state.posts = [];
+        }
+        if (state.postSearchInfo.isUserPost !== action.payload.isUserPost) {
+          state.posts = [];
         }
         if (action.payload === null) {
           action.payload.search = state.postSearchInfo.search;
@@ -64,13 +61,13 @@ export function reducer(state = initialState, action: Actions.All): State {
     }
 
     case Actions.SUCCESS_POST: {
-      let posts = getPosts(state);
       console.log('success post');
 
       action.payload.forEach(x => x.currentUploadIndex = 0);
-      posts = posts.concat(action.payload);
+      state.posts = state.posts.concat(action.payload)
+        .filter((post, index, self) => self.findIndex(x => x.postId === post.postId) === index)
 
-      posts.forEach(x => {
+      state.posts.forEach(x => {
         if (x.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
           x.isEvaluation = true;
         } else {
@@ -78,17 +75,13 @@ export function reducer(state = initialState, action: Actions.All): State {
         }
       });
 
-      console.log(`search_post : ${posts.length}`);
+      console.log(`search_post : ${state.posts.length}`);
 
-      if (state.postSearchInfo.isUserPost) {
-        return { ...state, userPosts: posts };
-      } else {
-        return { ...state, explorerPosts: posts };
-      }
+      return { ...state, posts: state.posts };
     }
 
     case Actions.PREVIOUS_UPLOAD_INDEX: {
-      const post = getPosts(state).find(x => x.postId === action.payload);
+      const post = state.posts.find(x => x.postId === action.payload);
 
       if (post.currentUploadIndex > 0) {
         post.currentUploadIndex--;
@@ -97,7 +90,7 @@ export function reducer(state = initialState, action: Actions.All): State {
     }
 
     case Actions.NEXT_UPLOAD_INDEX: {
-      const post = getPosts(state).find(x => x.postId === action.payload);
+      const post = state.posts.find(x => x.postId === action.payload);
       if (post.currentUploadIndex < post.postUploads.length - 1) {
         post.currentUploadIndex++;
       }
@@ -109,12 +102,13 @@ export function reducer(state = initialState, action: Actions.All): State {
     }
 
     case Actions.GET_POST_SUCCESS: {
+      action.payload.currentUploadIndex = 0;
       return { ...state, selectedPost: action.payload };
     }
 
     case Actions.ADD_POST_COMMENT_SUCCESS: {
       console.log(action.payload);
-      const post = getPosts(state).find(x => x.postId === action.payload.postId);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postComments.push(action.payload);
       post.totalPostComments++;
       return { ...state }
@@ -122,7 +116,7 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.DEL_POST_COMMENT_SUCCESS: {
       console.log(action.payload);
-      const post = getPosts(state).find(x => x.postId === action.payload.postId);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postComments = post.postComments.filter(x => x.postCommentId !== action.payload.postCommentId);
       post.totalPostComments--;
       return { ...state }
@@ -130,7 +124,7 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.ADD_POST_EVALUATION_SUCCESS: {
       console.log(action.payload);
-      const post = getPosts(state).find(x => x.postId === action.payload.postId);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postEvaluations.push(action.payload);
       if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
         post.isEvaluation = true;
@@ -142,7 +136,7 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.DEL_POST_EVALUATION_SUCCESS: {
       console.log(action.payload);
-      const post = getPosts(state).find(x => x.postId === action.payload.postId);
+      const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
       if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
         post.isEvaluation = true;
@@ -152,7 +146,16 @@ export function reducer(state = initialState, action: Actions.All): State {
       return { ...state }
     }
 
+    case Actions.GET_POST_COMMENT_SUCCESS: {
+      const post = state.posts.find(x => x.postId === action.payload.postId);
+      post.postComments = action.payload.postComments.concat(post.postComments)
+        .filter((postComment, index, self) => self.findIndex(x => x.postCommentId === postComment.postCommentId) === index)
+
+      return { ...state }
+    }
+
     default:
       return state;
   }
 }
+

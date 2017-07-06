@@ -18,6 +18,7 @@ import { go } from '@ngrx/router-store';
 import { Post } from 'app/shared/models/post';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { AccessType } from 'app/shared/models/enums/access-type';
+import { PostCommentInfo } from 'app/shared/models/post-comment-info';
 
 @Injectable()
 export class SharedEffects {
@@ -40,7 +41,7 @@ export class SharedEffects {
     // .filter(x => !x)
     // .filter(() => sessionStorage.getItem('userId') !== undefined)
     .withLatestFrom(this.store, (payload, state) => {
-      const totalPosts = state.shared.postSearchInfo.isUserPost ? state.shared.userPosts.length : state.shared.explorerPosts.length;
+      const totalPosts = state.shared.posts.length;
       if (totalPosts === 0) {
         this.store.dispatch(new SharedActions.SetProgressBar(true));
       } else {
@@ -66,9 +67,13 @@ export class SharedEffects {
 
   @Effect() getPostEffect$ = this.actions$.ofType(SharedActions.GET_POST)
     .map((action: SharedActions.GetPost) => action.payload)
-    .switchMap((postId: number) => this.sharedService.getPost(postId)
-      .map((post: Post) => new SharedActions.GetPostSuccess(post))
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    .switchMap((postId: number) => {
+      this.store.dispatch(new SharedActions.SetProgressBar(true));
+
+      return this.sharedService.getPost(postId)
+        .mergeMap((post: Post) => [new SharedActions.SetProgressBar(false), new SharedActions.GetPostSuccess(post)])
+        .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    }
     );
 
   @Effect() addPostCommentEffect$ = this.actions$.ofType(SharedActions.ADD_POST_COMMENT)
@@ -96,6 +101,19 @@ export class SharedEffects {
     .map((action: SharedActions.DelPostEvaluation) => action.payload)
     .switchMap((postEvaluationId: number) => this.sharedService.delPostEvaluation(postEvaluationId)
       .map((result: PostEvaluation) => new SharedActions.DelPostEvaluationSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() getPostCommentEffect$ = this.actions$.ofType(SharedActions.GET_POST_COMMENT)
+    .map((action: SharedActions.GetPostComment) => action.payload)
+    .switchMap((post: Post) => this.sharedService.getPostComments(post.postComments.length, post.postId)
+      .map((result: PostComment[]) => {
+        const postCommentInfo = <PostCommentInfo>{
+          postId: post.postId,
+          postComments: result
+        }
+        return new SharedActions.GetPostCommentSuccess(postCommentInfo)
+      })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 

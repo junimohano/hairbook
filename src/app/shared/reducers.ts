@@ -46,26 +46,19 @@ export function sharedIsProgressSpinner(state: State): boolean {
   return state.shared.isProgressSpinner;
 }
 
-export function sharedUserPosts(state: State): Post[] {
-  return state.shared.userPosts;
+export function sharedPosts(state: State): Post[] {
+  return state.shared.posts;
 }
-export function sharedUserPostsLength(state: State): number {
-  return state.shared.userPosts.length;
-}
-
-export function sharedExplorerPosts(state: State): Post[] {
-  return state.shared.explorerPosts;
-}
-export function sharedExplorerPostsLength(state: State): number {
-  return state.shared.explorerPosts.length;
+export function sharedPostsLength(state: State): number {
+  return state.shared.posts.length;
 }
 
 export function sharedPostSearchInfo(state: State): PostSearchInfo {
   return state.shared.postSearchInfo;
 }
-export function sharedUserSelectedPost(state: State): Post {
+export function sharedSelectedPost(state: State): Post {
   return state.shared.selectedPost;
 }
-export function sharedUserPostComment(state: State): PostComment {
+export function sharedPostComment(state: State): PostComment {
   return state.shared.postComment;
 }

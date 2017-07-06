@@ -42,7 +42,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private router: Router) {
     this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
-    this.posts$ = store.select(Reducers.sharedUserPosts);
+    this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
   }
@@ -106,7 +106,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
   }
 
   showMoreComments(post: Post) {
-    // this.store.dispatch(new UserActions.GetPostComments(postComment));
+    this.store.dispatch(new SharedActions.GetPostComment(post));
   }
 
   addPostComment(postComment: PostComment) {
