@@ -1,6 +1,6 @@
 import { User } from 'app/shared/models/user';
 
-export interface Token {
+export class Token {
   requestedAt: Date;
   expires: Date;
   accessToken: string;

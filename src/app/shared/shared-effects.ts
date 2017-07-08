@@ -1,9 +1,9 @@
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom'
+import 'rxjs';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
 import { Action, Store } from '@ngrx/store';
 
 import * as Reducers from './reducers';
@@ -19,6 +19,7 @@ import { Post } from 'app/shared/models/post';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { AccessType } from 'app/shared/models/enums/access-type';
 import { PostCommentInfo } from 'app/shared/models/post-comment-info';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SharedEffects {

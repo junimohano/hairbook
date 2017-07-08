@@ -64,7 +64,7 @@
             </div>
             <div fxLayout="row" fxLayoutGap="20px">
                 <div class="form-group">
-                    <button md-raised-button color="primary" type="submit" [disabled]="!editForm.valid" (click)="confirm()">Confirm</button>
+                    <button md-raised-button color="primary" type="submit" [disabled]="!editForm.valid" (click)="onSubmit()">Save</button>
                 </div>
                 <div class="form-group">
                     <button md-raised-button color="accent" type="button" (click)="onBack()">Back</button>

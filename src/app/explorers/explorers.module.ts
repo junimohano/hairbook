@@ -1,10 +1,10 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
 import { ExplorersRoutingModule } from './explorers-routing.module';
 import { ExplorersComponent } from './explorers.component';
 
-import { ExplorerMainComponent } from './explorer-main/explorer-main.component';
+import { ExplorerComponent } from './explorer/explorer.component';
 
 @NgModule({
   imports: [
@@ -13,12 +13,11 @@ import { ExplorerMainComponent } from './explorer-main/explorer-main.component';
   ],
   declarations: [
     ExplorersComponent,
-    ExplorerMainComponent
+    ExplorerComponent
   ],
   providers: [
   ],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class ExplorersModule { }

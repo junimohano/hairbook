@@ -16,12 +16,12 @@ import { PostComment } from 'app/shared/models/post-comment';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 @Component({
-  selector: 'hb-explorer-main',
-  templateUrl: './explorer-main.component.html',
-  styleUrls: ['./explorer-main.component.scss'],
+  selector: 'hb-explorer',
+  templateUrl: './explorer.component.html',
+  styleUrls: ['./explorer.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExplorerMainComponent implements OnInit, OnDestroy {
+export class ExplorerComponent implements OnInit, OnDestroy {
 
   postSearchInfo$: Observable<PostSearchInfo>;
   posts$: Observable<Post[]>;

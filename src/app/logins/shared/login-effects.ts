@@ -17,6 +17,7 @@ import { Router } from '@angular/router'
 import { go, replace, search, show, back, forward } from '@ngrx/router-store';
 import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class LoginEffects {
@@ -54,7 +55,7 @@ export class LoginEffects {
         }
         return [new LoginActions.GetToken(userSecret)];
       } else {
-        return [go(['logins', 'register']), new SharedActions.SetProgressBar(false)];
+        return [go(['login', 'register']), new SharedActions.SetProgressBar(false)];
       }
     });
 
@@ -89,7 +90,7 @@ export class LoginEffects {
     )
     .map((user: User) => {
       console.log(LoginActions.REGISTER);
-      return go(['logins']);
+      return go(['login']);
     });
 
   @Effect() existUserNameEffect$ = this.actions$.ofType(LoginActions.EXIST_USER_NAME)

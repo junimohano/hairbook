@@ -1,6 +1,7 @@
 import { User } from 'app/shared/models/user';
+import { Base } from 'app/shared/models/base';
 
-export interface Salon {
+export class Salon extends Base {
   salonId: number;
   name: string;
   address: string;
@@ -8,11 +9,4 @@ export interface Salon {
   longitude: number | null;
   url: string | null;
   phone: string | null;
-
-  createdUserId: number | null;
-  updatedUserId: number | null;
-  createdUser: User | null;
-  updatedUser: User | null;
-  createdDate: Date | null;
-  updatedDate: Date | null;
 }

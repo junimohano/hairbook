@@ -1,6 +1,6 @@
 import { PostComment } from 'app/shared/models/post-comment';
 
-export interface PostCommentInfo {
+export class PostCommentInfo {
   postId: number;
   postComments: PostComment[];
 }

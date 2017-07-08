@@ -8,8 +8,9 @@ import { PostComment } from 'app/shared/models/post-comment';
 import { PostUpload } from 'app/shared/models/post-upload';
 import { User } from 'app/shared/models/user';
 import { AccessType } from 'app/shared/models/enums/access-type';
+import { Base } from 'app/shared/models/base';
 
-export interface Post {
+export class Post extends Base {
   postId: number;
   customerId: number;
   customer: Customer;
@@ -25,15 +26,7 @@ export interface Post {
   postComments: PostComment[] | null;
   postUploads: PostUpload[] | null;
 
-  createdUserId: number | null;
-  updatedUserId: number | null;
-  createdUser: User | null;
-  updatedUser: User | null;
-  createdDate: Date | null;
-  updatedDate: Date | null;
-
   totalPostComments: number;
-
   currentUploadIndex: number;
   comment: string;
   isEvaluation: boolean;

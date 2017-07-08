@@ -1,13 +1,12 @@
-<md-toolbar color="primary">
+<md-toolbar color="primary" class="unicorn-dark-theme">
 
     <button md-button routerLink="/explorers" mdTooltip="Explorers">Hairbook</button>
 
-    <!-- This fills the remaining space of the current row -->
     <span class="fill-remaining-space"></span>
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <!--<button md-button routerLink="/" mdTooltip="Explorers"><md-icon>share</md-icon></button>-->
+        <button md-button routerLink="/posts" mdTooltip="New"><md-icon>note</md-icon></button>
         <button md-button [routerLink]="'/users/' + userName" mdTooltip="Users"><md-icon>person</md-icon></button>
-        <button md-button routerLink="/logins" mdTooltip="Logout"><md-icon>clear</md-icon></button>
+        <button md-button routerLink="/login" mdTooltip="Logout"><md-icon>clear</md-icon></button>
     </div>
     <button md-button [md-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
       <md-icon>menu</md-icon>
@@ -15,7 +14,7 @@
 
 </md-toolbar>
 <md-menu x-position="before" #menu="mdMenu">
-    <!--<button md-menu-item routerLink="/"><md-icon>share</md-icon>Explorers</button>-->
+    <button md-menu-item routerLink="/posts"><md-icon>note</md-icon>New</button>
     <button md-menu-item [routerLink]="'/users/' + userName"><md-icon>person</md-icon>Users</button>
-    <button md-menu-item routerLink="/logins"><md-icon>clear</md-icon>Logout</button>
+    <button md-menu-item routerLink="/login"><md-icon>clear</md-icon>Logout</button>
 </md-menu>

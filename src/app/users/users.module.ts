@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { SharedModule } from '../shared/shared.module';
 import { UsersRoutingModule } from './users-routing.module';
@@ -29,7 +29,6 @@ import { UserEditComponent } from './user-edit/user-edit.component';
     UserService
   ],
   schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class UsersModule { }

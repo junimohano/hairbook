@@ -2,8 +2,9 @@ import { Post } from 'app/shared/models/post';
 import { HairMenu } from 'app/shared/models/hair-menu';
 import { HairSubMenu } from 'app/shared/models/hair-sub-menu';
 import { User } from 'app/shared/models/user';
+import { Base } from 'app/shared/models/base';
 
-export interface PostHairMenu {
+export class PostHairMenu extends Base {
   postHairMenuId: number;
   postId: number;
   post: Post;
@@ -13,13 +14,6 @@ export interface PostHairMenu {
   hairSubMenu: HairSubMenu | null;
   memo: string;
   drawing: ByteString;
-
-  createdUserId: number | null;
-  updatedUserId: number | null;
-  createdUser: User | null;
-  updatedUser: User | null;
-  createdDate: Date | null;
-  updatedDate: Date | null;
 }
 
 

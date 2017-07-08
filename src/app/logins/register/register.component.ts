@@ -81,7 +81,7 @@ export class RegisterComponent implements OnInit {
   }
 
   cancel() {
-    this.store.dispatch(go(['logins']));
+    this.store.dispatch(go(['login']));
   }
 
 }

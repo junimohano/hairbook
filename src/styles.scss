@@ -1,11 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
-// body {
-// padding: 2em 23em;
-// background: lightgray;
-// }
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+// @import '~@angular/material/theming';
+// @include mat-core();
+// $hairbook-primary: mat-palette($mat-teal);
+// $hairbook-accent: mat-palette($mat-amber, A200, A100, A400);
+// $hairbook-warn: mat-palette($mat-light-blue);
+// $hairbook-theme: mat-light-theme($hairbook-primary, $hairbook-accent, $hairbook-warn);
+// @include angular-material-theme($hairbook-theme);
 body {
     font-family: 'Roboto', sans-serif;
-    // font-size: 48px;
 }

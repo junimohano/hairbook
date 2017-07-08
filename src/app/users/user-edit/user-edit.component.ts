@@ -87,7 +87,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
     this.store.dispatch(back());
   }
 
-  confirm() {
+  onSubmit() {
     if (this.editForm.valid) {
       const user = <User>{
         userId: this.user.userId,

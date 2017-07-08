@@ -1,18 +1,12 @@
 import { Post } from 'app/shared/models/post';
 import { Tag } from 'app/shared/models/tag';
 import { User } from 'app/shared/models/user';
+import { Base } from 'app/shared/models/base';
 
-export interface PostComment {
+export class PostComment extends Base {
   postCommentId: number;
   postId: number;
   post: Post;
   comment: string;
   tags: Tag[];
-
-  createdUserId: number | null;
-  updatedUserId: number | null;
-  createdUser: User | null;
-  updatedUser: User | null;
-  createdDate: Date | null;
-  updatedDate: Date | null;
 }

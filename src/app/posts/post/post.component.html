@@ -1,0 +1,108 @@
+<div fxLayout="row" fxLayoutAlign="center ceter">
+
+    <form [formGroup]="postForm" novalidate>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div formGroupName="customer">
+                <md-input-container>
+                    <input mdInput placeholder="Customer" formControlName="name">
+                </md-input-container>
+                {{postForm.controls['customer'].controls.customerId.value}}
+                <small [hidden]="postForm.controls['customer'].controls.name.valid || (postForm.controls['customer'].controls.name.pristine && !isSubmitted)">
+                name required
+            </small>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" formControlName="date">
+                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
+                </md-input-container>
+                <md-datepicker #picker></md-datepicker>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <textarea mdInput placeholder="Memo" formControlName="memo"></textarea>
+                </md-input-container>
+            </div>
+
+            <div formArrayName="hairMenus">
+                <label>Hair Menues</label>
+                <md-chip-list>
+                    <div *ngFor="let hairMenu of hairMenus.controls; let i=index" [formGroupName]="i">
+                        <md-chip selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'" selectable="true">
+                            {{hairMenu.value.name}}
+                        </md-chip>
+                    </div>
+                </md-chip-list>
+            </div>
+
+            <div></div>
+            <div>
+                gallery
+            </div>
+            <div></div>
+
+            <div formArrayName="hairTypes">
+                <label>Hair Types</label>
+                <md-chip-list>
+                    <div *ngFor="let hairType of hairTypes.controls; let i=index" [formGroupName]="i">
+                        <md-chip selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'" selectable="true">
+                            {{hairType.value.name}}
+                        </md-chip>
+                    </div>
+                </md-chip-list>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <textarea mdInput placeholder="HairType Memo" formControlName="hairTypeMemo"></textarea>
+                </md-input-container>
+            </div>
+
+            <div>
+                <label>information for color</label>
+                <md-select placeholder="Color" formControlName="hairSubMenuColor" name="food">
+                    <md-option *ngFor="let color of hairSubMenuColors" [value]="color.hairSubMenuId">
+                        {{color.name}}
+                    </md-option>
+                </md-select>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <textarea mdInput placeholder="Hair Color Memo" formControlName="hairSubMenuColorMemo"></textarea>
+                </md-input-container>
+            </div>
+
+            <div>
+                <label>information for perm</label>
+                <md-select placeholder="Perm" formControlName="hairSubMenuPerm" name="food">
+                    <md-option *ngFor="let perm of hairSubMenuPerms" [value]="perm.hairSubMenuId">
+                        {{perm.name}}
+                    </md-option>
+                </md-select>
+            </div>
+
+            <div>
+                <md-input-container>
+                    <textarea mdInput placeholder="Hair Perm Memo" formControlName="hairSubMenuPermMemo"></textarea>
+                </md-input-container>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="20px">
+                <div class="form-group">
+                    <button md-raised-button color="primary" type="submit" [disabled]="!postForm.valid" (click)="onSubmit()">Save</button>
+                </div>
+                <div class="form-group">
+                    <button md-raised-button color="accent" type="button" (click)="onBack()">Back</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <p>{{postForm.status}}</p>
+    <!--<p>{{postForm.value | json}}</p>-->
+
+</div>

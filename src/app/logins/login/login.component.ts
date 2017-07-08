@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
   }
 
   signUp() {
-    this.store.dispatch(go(['logins', 'register']));
+    this.store.dispatch(go(['login', 'register']));
   }
 
   logout() {

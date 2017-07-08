@@ -1,7 +1,8 @@
 import { Salon } from 'app/shared/models/salon';
 import { GenderType } from 'app/shared/models/enums/gender-type';
+import { Base } from 'app/shared/models/base';
 
-export interface User {
+export class User extends Base {
   userId: number;
   userKey: string;
   userName: string;
@@ -9,18 +10,9 @@ export interface User {
   email: string;
   image: string;
   name: string;
-
   gender: GenderType;
   birthday: Date | null;
   phone: string;
-
   salonId: number | null;
   salon: Salon | null;
-
-  createdUserId: number | null;
-  updatedUserId: number | null;
-  createdUser: User | null;
-  updatedUser: User | null;
-  createdDate: Date | null;
-  updatedDate: Date | null;
 }
