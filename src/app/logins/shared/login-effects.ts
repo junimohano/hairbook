@@ -65,9 +65,7 @@ export class LoginEffects {
       .mergeMap((token: Token) => {
         console.log(LoginActions.GET_TOKEN);
 
-        sessionStorage.setItem('userId', String(token.user.userId));
-        sessionStorage.setItem('userName', String(token.user.userName));
-        localStorage.setItem('id_token', token.accessToken);
+        this.auth.setLoginData(String(token.user.userId), String(token.user.userName), token.accessToken);
 
         return [new LoginActions.SetUser(token.user), new SharedActions.SetProgressBar(true)];
       })

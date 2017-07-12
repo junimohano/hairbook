@@ -5,6 +5,7 @@ export class HairMenu {
   name: string;
   hairSubMenus: HairSubMenu[];
 
+  isChecked: boolean;
   public constructor(init?: Partial<HairMenu>) {
     Object.assign(this, init);
   }

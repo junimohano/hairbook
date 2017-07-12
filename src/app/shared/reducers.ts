@@ -1,3 +1,4 @@
+import * as PostReducer from '../posts/shared/post-reducer';
 import * as UserReducer from '../users/shared/user-reducer';
 import * as LoginReducer from '../logins/shared/login-reducer';
 import * as SharedReducer from './shared-reducer';
@@ -7,9 +8,13 @@ import { routerReducer, RouterState } from '@ngrx/router-store';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
+import { HairMenu } from 'app/shared/models/hair-menu';
+import { HairType } from 'app/shared/models/hair-type';
+import { Customer } from 'app/shared/models/customer';
 
 export interface State {
   router: RouterState;
+  post: PostReducer.State;
   user: UserReducer.State;
   login: LoginReducer.State;
   shared: SharedReducer.State;
@@ -17,10 +22,22 @@ export interface State {
 
 export const reducers = {
   router: routerReducer,
+  post: PostReducer.reducer,
   user: UserReducer.reducer,
   login: LoginReducer.reducer,
   shared: SharedReducer.reducer
 };
+
+// post
+export function postHairMenus(state: State): HairMenu[] {
+  return state.post.hairMenus;
+}
+export function postHairTypes(state: State): HairType[] {
+  return state.post.hairTypes;
+}
+export function postCustomers(state: State): Customer[] {
+  return state.post.customers;
+}
 
 // user
 export function userUser(state: State): User {

@@ -32,4 +32,19 @@ export class Auth {
 
     // this.router.navigate(['/']);
   };
+
+  public setLoginData(userId: string, userName: string, accessToken: string) {
+    sessionStorage.setItem('userId', userId);
+    sessionStorage.setItem('userName', userName);
+    localStorage.setItem('id_token', accessToken);
+  }
+
+  get userId(): number {
+    return +sessionStorage.getItem('userId');
+  };
+
+  get userName(): string {
+    return sessionStorage.getItem('userName');
+  };
+
 }

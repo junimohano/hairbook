@@ -20,6 +20,7 @@ import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { AccessType } from 'app/shared/models/enums/access-type';
 import { PostCommentInfo } from 'app/shared/models/post-comment-info';
 import { Observable } from 'rxjs/Observable';
+import { Auth } from 'app/shared/auth/auth.service';
 
 @Injectable()
 export class SharedEffects {
@@ -31,7 +32,7 @@ export class SharedEffects {
       })
       console.log(action.payload);
       if (action.payload.status === 401) {
-        return [new SharedActions.SetProgressBar(false), go(['logins'])];
+        return [new SharedActions.SetProgressBar(false), go(['login'])];
       } else {
         return [new SharedActions.SetProgressBar(false)];
       }
@@ -40,7 +41,7 @@ export class SharedEffects {
   @Effect() searchUserPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POST)
     .debounceTime(100)
     // .filter(x => !x)
-    // .filter(() => sessionStorage.getItem('userId') !== undefined)
+    // .filter(() => this.auth.userId !== undefined)
     .withLatestFrom(this.store, (payload, state) => {
       const totalPosts = state.shared.posts.length;
       if (totalPosts === 0) {
@@ -118,7 +119,7 @@ export class SharedEffects {
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 
-  constructor(private actions$: Actions, private store: Store<Reducers.State>, private snackBar: MdSnackBar, private sharedService: SharedService) {
+  constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService) {
 
   }
 }

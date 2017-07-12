@@ -2,16 +2,31 @@
 
     <form [formGroup]="postForm" novalidate>
         <div fxLayout="column" fxLayoutGap="10px">
-            <div formGroupName="customer">
-                <md-input-container>
-                    <input mdInput placeholder="Customer" formControlName="name">
-                </md-input-container>
-                {{postForm.controls['customer'].controls.customerId.value}}
-                <small [hidden]="postForm.controls['customer'].controls.name.valid || (postForm.controls['customer'].controls.name.pristine && !isSubmitted)">
-                name required
-            </small>
+            <div>
+                <md-radio-group>
+                    <md-radio-button *ngFor="let accessType of accessTypes; let i = index;" [value]="i" (change)="onChangeAccessType($event)">{{accessType}}</md-radio-button>
+                </md-radio-group>
             </div>
 
+            <!-- <div formGroupName="customer"> -->
+            <div>
+
+                <md-input-container>
+                    <input mdInput placeholder="Customer" [mdAutocomplete]="auto" formControlName="customer" (ngModelChange)="onChangedCustomer($event)">
+                </md-input-container>
+
+                <md-autocomplete #auto="mdAutocomplete" [displayWith]="onDisplayCustomer">
+                    <md-option *ngFor="let customer of filteredCustomers$ | async" [value]="customer" (onSelectionChange)="onSelectCustomer($event)">
+                        {{ customer.name }} ({{ customer.customerId }})
+                    </md-option>
+                </md-autocomplete>
+
+                {{selectedCustomerId}}
+                <!--{{postForm.controls['customer'].controls.customerId.value}}-->
+                <!--<small [hidden]="postForm.controls['customer'].controls.name.valid || (postForm.controls['customer'].controls.name.pristine && !isSubmitted)">
+                name required
+            </small>-->
+            </div>
             <div>
                 <md-input-container>
                     <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" formControlName="date">
@@ -26,15 +41,12 @@
                 </md-input-container>
             </div>
 
-            <div formArrayName="hairMenus">
+            <div>
                 <label>Hair Menues</label>
-                <md-chip-list>
-                    <div *ngFor="let hairMenu of hairMenus.controls; let i=index" [formGroupName]="i">
-                        <md-chip selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'" selectable="true">
-                            {{hairMenu.value.name}}
-                        </md-chip>
-                    </div>
-                </md-chip-list>
+                <div fxLayout="row" fxLayoutWrap>
+                    <md-button-toggle #hairMenusButtonToggle *ngFor="let hairMenu of hairMenus; let i=index" [value]="hairMenu.hairMenuId" [checked]="hairMenu.isChecked" (change)="onChangeHairMenus($event)">{{hairMenu.name}}</md-button-toggle>
+                </div>
+                <!-- {{hairMenus | json}} -->
             </div>
 
             <div></div>
@@ -43,15 +55,11 @@
             </div>
             <div></div>
 
-            <div formArrayName="hairTypes">
+            <div>
                 <label>Hair Types</label>
-                <md-chip-list>
-                    <div *ngFor="let hairType of hairTypes.controls; let i=index" [formGroupName]="i">
-                        <md-chip selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'" selectable="true">
-                            {{hairType.value.name}}
-                        </md-chip>
-                    </div>
-                </md-chip-list>
+                <div fxLayout="row" fxLayoutWrap>
+                    <md-button-toggle #hairTypesButtonToggle *ngFor="let hairType of hairTypes; let i=index" [value]="hairType.hairTypeId" [checked]="hairType.isChecked" (change)="onChangeHairTypes($event)">{{hairType.name}}</md-button-toggle>
+                </div>
             </div>
 
             <div>
@@ -60,7 +68,7 @@
                 </md-input-container>
             </div>
 
-            <div>
+            <div *ngIf="existsHairMenusColor">
                 <label>information for color</label>
                 <md-select placeholder="Color" formControlName="hairSubMenuColor" name="food">
                     <md-option *ngFor="let color of hairSubMenuColors" [value]="color.hairSubMenuId">
@@ -69,13 +77,13 @@
                 </md-select>
             </div>
 
-            <div>
+            <div *ngIf="existsHairMenusColor">
                 <md-input-container>
                     <textarea mdInput placeholder="Hair Color Memo" formControlName="hairSubMenuColorMemo"></textarea>
                 </md-input-container>
             </div>
 
-            <div>
+            <div *ngIf="existsHairMenusPerm">
                 <label>information for perm</label>
                 <md-select placeholder="Perm" formControlName="hairSubMenuPerm" name="food">
                     <md-option *ngFor="let perm of hairSubMenuPerms" [value]="perm.hairSubMenuId">
@@ -84,7 +92,7 @@
                 </md-select>
             </div>
 
-            <div>
+            <div *ngIf="existsHairMenusPerm">
                 <md-input-container>
                     <textarea mdInput placeholder="Hair Perm Memo" formControlName="hairSubMenuPermMemo"></textarea>
                 </md-input-container>
@@ -102,7 +110,7 @@
         </div>
     </form>
 
-    <p>{{postForm.status}}</p>
-    <!--<p>{{postForm.value | json}}</p>-->
+    <!--<p>{{postForm.status}}</p>-->
+    <p>{{postForm.value | json}}</p>
 
 </div>

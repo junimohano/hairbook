@@ -13,6 +13,7 @@ import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
+import { Auth } from 'app/shared/auth/auth.service';
 
 @Component({
   selector: 'hb-post-detail',
@@ -32,10 +33,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   postCommentSubscription: Subscription;
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   comment: string;
-  userId: number;
 
-  constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, private store: Store<Reducers.State>, private activedRoute: ActivatedRoute) {
-    this.userId = +sessionStorage.getItem('userId');
+  constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, private auth: Auth, private store: Store<Reducers.State>, private activedRoute: ActivatedRoute) {
 
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
     // console.log(this.uploadCategories);
@@ -118,7 +117,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       const postComment = <PostComment>{
         postId: this.post.postId,
         comment: comment,
-        createdUserId: this.userId
+        createdUserId: this.auth.userId
       };
       this.store.dispatch(new SharedActions.AddPostComment(postComment));
       this.comment = '';
@@ -132,13 +131,13 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
   onSetPostEvalution() {
     if (this.post.isEvaluation) {
-      const postEvaluation = this.post.postEvaluations.find(x => x.createdUserId === this.userId);
+      const postEvaluation = this.post.postEvaluations.find(x => x.createdUserId === this.auth.userId);
       this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluation.postEvaluationId));
     } else {
       const postEvaluation = <PostEvaluation>{
         evaluationType: EvaluationType.Like,
         postId: this.post.postId,
-        createdUserId: this.userId
+        createdUserId: this.auth.userId
       };
       this.store.dispatch(new SharedActions.AddPostEvaluation(postEvaluation));
     }

@@ -5,6 +5,7 @@ import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
+import { Auth } from 'app/shared/auth/auth.service';
 
 @Component({
   selector: 'hb-post-list-all',
@@ -26,10 +27,8 @@ export class PostListAllComponent implements OnInit {
 
   uploadCategories: any[];
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
-  userId: number;
 
-  constructor() {
-    this.userId = +sessionStorage.getItem('userId');
+  constructor(private auth: Auth) {
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
   }
 
@@ -68,7 +67,7 @@ export class PostListAllComponent implements OnInit {
       const postComment = <PostComment>{
         postId: post.postId,
         comment: post.comment,
-        createdUserId: +sessionStorage.getItem('userId')
+        createdUserId: this.auth.userId
       };
 
       this.addPostComment.emit(postComment);
@@ -77,15 +76,14 @@ export class PostListAllComponent implements OnInit {
   }
 
   onSetPostEvalution(post: Post) {
-    const userId = +sessionStorage.getItem('userId');
     if (post.isEvaluation) {
-      const postEvaluation = post.postEvaluations.find(x => x.createdUserId === userId);
+      const postEvaluation = post.postEvaluations.find(x => x.createdUserId === this.auth.userId);
       this.delPostEvalution.emit(postEvaluation.postEvaluationId);
     } else {
       const postEvaluation = <PostEvaluation>{
         evaluationType: EvaluationType.Like,
         postId: post.postId,
-        createdUserId: userId
+        createdUserId: this.auth.userId
       };
       this.addPostEvalution.emit(postEvaluation);
     }

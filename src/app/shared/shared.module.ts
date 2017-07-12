@@ -47,7 +47,10 @@ import {
   MdProgressSpinnerModule,
   MdProgressBarModule,
   MdSnackBarModule,
-  MdSelectModule
+  MdSelectModule,
+  MdAutocompleteModule,
+  MdButtonToggleModule,
+  MdRadioModule
 } from '@angular/material';
 
 // Flex layout
@@ -96,7 +99,10 @@ const modules = [
   MdProgressSpinnerModule,
   MdProgressBarModule,
   MdSnackBarModule,
-  MdSelectModule
+  MdSelectModule,
+  MdAutocompleteModule,
+  MdButtonToggleModule,
+  MdRadioModule
 ];
 
 @NgModule({
