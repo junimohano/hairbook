@@ -1,19 +1,17 @@
-import { Component, OnInit, OnDestroy, HostListener, ChangeDetectionStrategy } from '@angular/core';
-import { Auth } from '../../shared/auth/auth.service';
-
-import { Store } from '@ngrx/store';
-import * as SharedActions from '../../shared/shared-actions';
-import * as Reducers from '../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
-import { Post } from '../../shared/models/post';
-import { PostDetailComponent } from '../../shared/components/post-detail/post-detail.component';
-import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
-import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
+import { Store } from '@ngrx/store';
 import { PostComment } from 'app/shared/models/post-comment';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Auth } from '../../shared/auth/auth.service';
+import { Post } from '../../shared/models/post';
+import * as Reducers from '../../shared/reducers';
+import * as SharedActions from '../../shared/shared-actions';
 
 @Component({
   selector: 'hb-explorer',

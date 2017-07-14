@@ -1,22 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Auth } from '../../shared/auth/auth.service';
-import { TranslateService } from '@ngx-translate/core';
-
-import { AuthService } from 'angular2-social-login';
-import { User } from 'app/shared/models/user';
-import { Token } from 'app/shared/models/token';
-
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
-import * as LoginActions from '../shared/login-actions';
-import * as SharedActions from '../../shared/shared-actions';
-import * as UserActions from '../../users/shared/user-actions';
-import * as Reducers from '../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
+import { TranslateService } from '@ngx-translate/core';
 import { LoginService } from 'app/logins/shared/login.service';
 import { UserSecret } from 'app/logins/shared/user-secret';
-import { go } from '@ngrx/router-store';
+import { User } from 'app/shared/models/user';
+import { Observable } from 'rxjs/Observable';
+
+import { Auth } from '../../shared/auth/auth.service';
+import * as Reducers from '../../shared/reducers';
+import * as SharedActions from '../../shared/shared-actions';
+import * as LoginActions from '../shared/login-actions';
 
 @Component({
   selector: 'hb-login',

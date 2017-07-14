@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Auth } from '../../shared/auth/auth.service';
-// import { myConfig } from '../../shared/auth/auth.config';
-import { AuthHttp } from 'angular2-jwt/angular2-jwt';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { back } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
-import * as UserActions from '../shared/user-actions';
-import * as Reducers from '../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
-import { User } from 'app/shared/models/user';
-import { go, replace, search, show, back, forward } from '@ngrx/router-store';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { AuthHttp } from 'angular2-jwt/angular2-jwt';
 import { GenderType } from 'app/shared/models/enums/gender-type';
+import { User } from 'app/shared/models/user';
 import { Subscription } from 'rxjs/Subscription';
 
+import { Auth } from '../../shared/auth/auth.service';
+import * as Reducers from '../../shared/reducers';
+import * as UserActions from '../shared/user-actions';
+
+// import { myConfig } from '../../shared/auth/auth.config';
 function customWatcher(c: AbstractControl) {
   if (!c.get('password') || !c.get('password_confirm')) {
     return null;

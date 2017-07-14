@@ -1,11 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Post } from 'app/shared/models/post';
-import { PostHairMenu } from 'app/shared/models/post-hair-menu';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Auth } from 'app/shared/auth/auth.service';
+import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type';
+import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
-import { Auth } from 'app/shared/auth/auth.service';
 
 @Component({
   selector: 'hb-post-list-all',

@@ -1,21 +1,24 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl, FormArray } from '@angular/forms';
-import { PostHairMenu } from 'app/shared/models/post-hair-menu';
-import { HairMenu } from 'app/shared/models/hair-menu';
-import { AccessType } from 'app/shared/models/enums/access-type';
-import { HairType } from 'app/shared/models/hair-type';
-import { HairSubMenu } from 'app/shared/models/hair-sub-menu';
-import { Store } from '@ngrx/store';
-import * as PostActions from '../shared/post-actions';
-import * as Reducers from '../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { back } from '@ngrx/router-store';
-import { Customer } from 'app/shared/models/customer';
+import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
-import { Subscription } from 'rxjs/Subscription';
-import { MdButtonToggle } from '@angular/material';
+import { Customer } from 'app/shared/models/customer';
+import { AccessType } from 'app/shared/models/enums/access-type';
+import { HairMenu } from 'app/shared/models/hair-menu';
+import { HairSubMenu } from 'app/shared/models/hair-sub-menu';
+import { HairType } from 'app/shared/models/hair-type';
 import { Post } from 'app/shared/models/post';
+import { PostHairMenu } from 'app/shared/models/post-hair-menu';
 import { PostHairType } from 'app/shared/models/post-hair-type';
+import { PostInfo } from 'app/shared/models/post-info';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import * as Reducers from '../../shared/reducers';
+import * as SharedActions from '../../shared/shared-actions';
+import * as PostActions from '../shared/post-actions';
 
 function customWatcher(c: AbstractControl) {
   // if (!c.get('password') || !c.get('password_confirm')) {
@@ -39,6 +42,8 @@ function customWatcher(c: AbstractControl) {
 })
 export class PostComponent implements OnInit, OnDestroy {
 
+  @ViewChild('fileInput') fileInput;
+
   postForm: FormGroup;
   isSubmitted: boolean;
 
@@ -51,6 +56,8 @@ export class PostComponent implements OnInit, OnDestroy {
   hairMenusSubscription: Subscription;
   hairTypesSubscription: Subscription;
   customerSubscription: Subscription;
+  activatedRouteSubscription: Subscription;
+  postSubscription: Subscription;
 
   accessTypes = [];
   filteredCustomers$: Observable<Customer[]>;
@@ -58,7 +65,7 @@ export class PostComponent implements OnInit, OnDestroy {
   selectedCustomerId: number;
   isSelectedCustomer: boolean;
 
-  constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>) {
+  constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
     Object.keys(AccessType).forEach((x, i) => {
       if (i > 2) {
         this.accessTypes.push(x);
@@ -107,6 +114,20 @@ export class PostComponent implements OnInit, OnDestroy {
           .startWith(null)
           .map(name => this.filterCustomers(name));
       }
+    });
+
+    this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
+      console.log(params);
+      const postId = +params['postId'];
+      this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
+        if (post) {
+          console.log('edit : ', post);
+          this.postForm.patchValue({
+            memo: post.memo
+          });
+        }
+      });
+      this.store.dispatch(new SharedActions.GetPost(postId));
     });
   }
 
@@ -186,6 +207,12 @@ export class PostComponent implements OnInit, OnDestroy {
     this.hairMenusSubscription.unsubscribe();
     this.hairTypesSubscription.unsubscribe();
     this.customerSubscription.unsubscribe();
+    if (this.postSubscription) {
+      this.postSubscription.unsubscribe();
+    }
+    if (this.activatedRouteSubscription) {
+      this.activatedRouteSubscription.unsubscribe();
+    }
   }
 
   onBack() {
@@ -236,8 +263,22 @@ export class PostComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.store.dispatch(new PostActions.AddPost(post));
+      const postInfo = <PostInfo>{
+        post: post,
+        postUploads: []
+      }
+      const fi = this.fileInput.nativeElement;
+      for (let i = 0; i < fi.files.length; i++) {
+        const file = fi.files[i];
+        postInfo.postUploads.push(file);
+      }
+
+      this.store.dispatch(new PostActions.AddPost(postInfo));
     }
+  }
+
+  addFile() {
+
   }
 
   get existsHairMenusColor(): boolean {

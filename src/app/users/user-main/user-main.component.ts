@@ -1,22 +1,20 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, HostListener } from '@angular/core';
-import { Auth } from '../../shared/auth/auth.service';
-
-import { Store } from '@ngrx/store';
-import * as UserActions from '../shared/user-actions';
-import * as SharedActions from '../../shared/shared-actions';
-import * as Reducers from '../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
-import { MdDialog } from '@angular/material';
-import { Post } from 'app/shared/models/post';
-import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
-import { go, replace, search, show, back, forward } from '@ngrx/router-store';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'app/shared/models/user';
-import { Subscription } from 'rxjs/Subscription';
-import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { search } from '@ngrx/router-store';
+import { Store } from '@ngrx/store';
+import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { User } from 'app/shared/models/user';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { log } from 'util';
+
+import { Auth } from '../../shared/auth/auth.service';
+import * as Reducers from '../../shared/reducers';
+import * as SharedActions from '../../shared/shared-actions';
+import * as UserActions from '../shared/user-actions';
 
 @Component({
   selector: 'hb-user-main',
@@ -65,7 +63,6 @@ export class UserMainComponent implements OnInit, OnDestroy {
         this.isMe = user.userName === sessionStorage.getItem('userName');
       }
     });
-
   }
 
   ngOnDestroy(): void {

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl, NG_VALIDATORS } from '@angular/forms';
-
-import { Store } from '@ngrx/store';
-import * as LoginActions from '../shared/login-actions';
-import * as Reducers from '../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { go } from '@ngrx/router-store';
-import { User } from 'app/shared/models/user';
-import { GenderType } from 'app/shared/models/enums/gender-type';
+import { Store } from '@ngrx/store';
 import { LoginService } from 'app/logins/shared/login.service';
+import { GenderType } from 'app/shared/models/enums/gender-type';
+import { User } from 'app/shared/models/user';
+
+import * as Reducers from '../../shared/reducers';
+import * as LoginActions from '../shared/login-actions';
 
 function customWatcher(c: AbstractControl) {
   if (!c.get('password') || !c.get('password_confirm') || !c.get('userName') || !c.get('userName_confirm')) {

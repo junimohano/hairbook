@@ -1,20 +1,23 @@
+import { Customer } from '../../shared/models/customer';
+import { HairMenu } from '../../shared/models/hair-menu';
+import { HairType } from '../../shared/models/hair-type';
+import { Post } from '../../shared/models/post';
 import * as Actions from './post-actions';
-import { User } from 'app/shared/models/user';
-import { UserSecret } from 'app/logins/shared/user-secret';
-import { HairMenu } from 'app/shared/models/hair-menu';
-import { HairType } from 'app/shared/models/hair-type';
-import { Customer } from 'app/shared/models/customer';
 
 export interface State {
   hairMenus: HairMenu[];
   hairTypes: HairType[];
   customers: Customer[];
+  postUploadIndex: number;
+  post: Post;
 }
 
 const initialState: State = {
   hairMenus: [],
   hairTypes: [],
-  customers: []
+  customers: [],
+  postUploadIndex: 0,
+  post: null
 };
 
 export function reducer(state = initialState, action: Actions.All): State {

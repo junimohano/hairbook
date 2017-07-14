@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Post } from 'app/shared/models/post';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
+import { Post } from 'app/shared/models/post';
 
 @Component({
   selector: 'hb-post-list',

@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center ceter">
+<div fxLayout="row" fxLayoutAlign="center center">
 
     <form [formGroup]="postForm" novalidate>
         <div fxLayout="column" fxLayoutGap="10px">
@@ -8,7 +8,6 @@
                 </md-radio-group>
             </div>
 
-            <!-- <div formGroupName="customer"> -->
             <div>
 
                 <md-input-container>
@@ -98,6 +97,10 @@
                 </md-input-container>
             </div>
 
+            <div>
+                <input #fileInput type="file" multiple/>
+            </div>
+
             <div fxLayout="row" fxLayoutGap="20px">
                 <div class="form-group">
                     <button md-raised-button color="primary" type="submit" [disabled]="!postForm.valid" (click)="onSubmit()">Save</button>
@@ -111,6 +114,6 @@
     </form>
 
     <!--<p>{{postForm.status}}</p>-->
-    <p>{{postForm.value | json}}</p>
+    <!-- <p>{{postForm.value | json}}</p> -->
 
 </div>

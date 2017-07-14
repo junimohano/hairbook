@@ -1,19 +1,18 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter, OnDestroy, Optional, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
 import { MD_DIALOG_DATA } from '@angular/material';
-import { Post } from 'app/shared/models/post';
-import { PostHairMenu } from 'app/shared/models/post-hair-menu';
-import { Store } from '@ngrx/store';
-import * as UserActions from '../../../users/shared/user-actions';
-import * as SharedActions from '../../shared-actions';
-import * as Reducers from '../../../shared/reducers';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Auth } from 'app/shared/auth/auth.service';
+import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type';
+import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
-import { Auth } from 'app/shared/auth/auth.service';
+import { PostHairMenu } from 'app/shared/models/post-hair-menu';
+import { Subscription } from 'rxjs/Subscription';
+
+import * as Reducers from '../../../shared/reducers';
+import * as SharedActions from '../../shared-actions';
 
 @Component({
   selector: 'hb-post-detail',
@@ -31,10 +30,11 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   uploadCategories: any[];
   postSubscription: Subscription;
   postCommentSubscription: Subscription;
+  activatedRouteSubscription: Subscription;
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   comment: string;
 
-  constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, private auth: Auth, private store: Store<Reducers.State>, private activedRoute: ActivatedRoute) {
+  constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
 
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
     // console.log(this.uploadCategories);
@@ -42,7 +42,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     if (data) {
       this.setPostData(data);
     } else {
-      activedRoute.params.subscribe(params => {
+      this.activatedRouteSubscription = activatedRoute.params.subscribe(params => {
         console.log(params);
 
         const postId = +params['postId'];
@@ -72,6 +72,9 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
     if (this.postCommentSubscription) {
       this.postCommentSubscription.unsubscribe();
+    }
+    if (this.activatedRouteSubscription) {
+      this.activatedRouteSubscription.unsubscribe();
     }
   }
 
@@ -141,6 +144,10 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       };
       this.store.dispatch(new SharedActions.AddPostEvaluation(postEvaluation));
     }
+  }
+
+  onEdit() {
+    this.store.dispatch(new SharedActions.GoPostEditPage(this.post.postId));
   }
 
 }

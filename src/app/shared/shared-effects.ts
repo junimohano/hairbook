@@ -26,15 +26,16 @@ import { Auth } from 'app/shared/auth/auth.service';
 export class SharedEffects {
 
   @Effect() setSnackBarEffect$ = this.actions$.ofType(SharedActions.SET_SNACK_BAR)
-    .mergeMap((action: SharedActions.SetSnackBar) => {
+    .map((action: SharedActions.SetSnackBar) => {
       this.snackBar.open(action.payload.statusText, 'close', {
         duration: 5000,
       })
       console.log(action.payload);
       if (action.payload.status === 401) {
-        return [new SharedActions.SetProgressBar(false), go(['login'])];
+        this.store.dispatch(new SharedActions.SetProgressBar(false));
+        return go(['login']);
       } else {
-        return [new SharedActions.SetProgressBar(false)];
+        return new SharedActions.SetProgressBar(false);
       }
     });
 
@@ -61,8 +62,10 @@ export class SharedEffects {
       }
 
       return getPostsObservable
-        .mergeMap((posts: Post[]) => {
-          return [new SharedActions.SuccessPost(posts), new SharedActions.SetProgressBar(false), new SharedActions.SetProgressSpinner(false)];
+        .map((posts: Post[]) => {
+          this.store.dispatch(new SharedActions.SetProgressBar(false));
+          this.store.dispatch(new SharedActions.SetProgressSpinner(false));
+          return new SharedActions.SuccessPost(posts);
         })
         .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     });
@@ -73,10 +76,12 @@ export class SharedEffects {
       this.store.dispatch(new SharedActions.SetProgressBar(true));
 
       return this.sharedService.getPost(postId)
-        .mergeMap((post: Post) => [new SharedActions.SetProgressBar(false), new SharedActions.GetPostSuccess(post)])
+        .map((post: Post) => {
+          this.store.dispatch(new SharedActions.SetProgressBar(false));
+          return new SharedActions.GetPostSuccess(post);
+        })
         .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
-    }
-    );
+    });
 
   @Effect() addPostCommentEffect$ = this.actions$.ofType(SharedActions.ADD_POST_COMMENT)
     .map((action: SharedActions.AddPostComment) => action.payload)
@@ -118,6 +123,10 @@ export class SharedEffects {
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
+
+  @Effect() goPostEditPageEffect$ = this.actions$.ofType(SharedActions.GO_POST_EDIT_PAGE)
+    .map((action: SharedActions.GoPostEditPage) => action.payload)
+    .map((postId: number) => go(['/posts', String(postId)]));
 
   constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService) {
 
