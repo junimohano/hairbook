@@ -63,6 +63,7 @@ import { PostDetailComponent } from './components/post-detail/post-detail.compon
 import { PostSearchComponent } from './components/post-search/post-search.component';
 import { PostListAllComponent } from './components/post-list-all/post-list-all.component';
 import { SharedService } from 'app/shared/shared.service';
+import { PostMenuComponent } from './components/post-menu/post-menu.component';
 
 const components = [
   ProgressSpinnerComponent,
@@ -123,7 +124,8 @@ const modules = [
     components
   ],
   declarations: [
-    components
+    components,
+    PostMenuComponent
   ],
   providers: [
     {

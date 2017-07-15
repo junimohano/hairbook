@@ -45,6 +45,9 @@ export class PostListComponent implements OnInit {
       // dialogRef.afterClosed().subscribe(result => {
       // this.selectedOption = result;
       // })
+
+      dialogRef.componentInstance.closeDialog.subscribe(() => dialogRef.close());
+
     } else {
       this.goDetail.emit(post);
     }

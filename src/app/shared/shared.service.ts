@@ -40,6 +40,11 @@ export class SharedService {
       });
   }
 
+  delPost(postId: number): Observable<Post> {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/posts/${postId}`)
+      .map(res => res.json());
+  }
+
   addPostComment(postComment: PostComment): Observable<PostComment> {
     return this.authHttp.post(`${environment.webApiUrl}/api/v1/PostComments/`, postComment, { headers: this.headers })
       .map(res => res.json());

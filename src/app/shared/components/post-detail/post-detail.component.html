@@ -14,8 +14,8 @@
     </div>
 
     <div fxLayout="column" fxFlex="40">
-        <div>
-            <button md-button class="primary" (click)="onEdit()">edit</button>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <hb-post-menu (editPost)="editPost()" (deletePost)="deletePost()"></hb-post-menu>
         </div>
 
         <div fxLayout="row">
@@ -90,7 +90,7 @@
                     <!--<md-icon md-list-icon>folder</md-icon>-->
                     <h4 md-line>{{postComment.createdUser?.name}}</h4>
                     <p md-line> {{postComment.comment}}</p>
-                    <button *ngIf="postComment.createdUserId === userId" md-button class="warn" (click)="onDelPostComment(postComment.postCommentId)">x</button>
+                    <button *ngIf="postComment.createdUserId === auth.userId" md-button class="warn" (click)="onDelPostComment(postComment.postCommentId)">x</button>
                 </md-list-item>
             </md-list>
 

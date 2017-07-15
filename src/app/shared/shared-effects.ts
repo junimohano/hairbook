@@ -1,26 +1,25 @@
+import 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/withLatestFrom'
-import 'rxjs';
+import 'rxjs/add/operator/withLatestFrom';
+
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
-import { Action, Store } from '@ngrx/store';
+import { MdSnackBar } from '@angular/material';
+import { Actions, Effect } from '@ngrx/effects';
+import { go, replace } from '@ngrx/router-store';
+import { Store } from '@ngrx/store';
+import { Auth } from 'app/shared/auth/auth.service';
+import { AccessType } from 'app/shared/models/enums/access-type';
+import { Post } from 'app/shared/models/post';
+import { PostComment } from 'app/shared/models/post-comment';
+import { PostCommentInfo } from 'app/shared/models/post-comment-info';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { SharedService } from 'app/shared/shared.service';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 
 import * as Reducers from './reducers';
 import * as SharedActions from './shared-actions';
-import { User } from 'app/shared/models/user';
-import { Token } from 'app/shared/models/token';
-import { MdSnackBar } from '@angular/material';
-import { SharedService } from 'app/shared/shared.service';
-import { PostComment } from 'app/shared/models/post-comment';
-import { of } from 'rxjs/observable/of';
-import { go } from '@ngrx/router-store';
-import { Post } from 'app/shared/models/post';
-import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { AccessType } from 'app/shared/models/enums/access-type';
-import { PostCommentInfo } from 'app/shared/models/post-comment-info';
-import { Observable } from 'rxjs/Observable';
-import { Auth } from 'app/shared/auth/auth.service';
 
 @Injectable()
 export class SharedEffects {
@@ -127,6 +126,13 @@ export class SharedEffects {
   @Effect() goPostEditPageEffect$ = this.actions$.ofType(SharedActions.GO_POST_EDIT_PAGE)
     .map((action: SharedActions.GoPostEditPage) => action.payload)
     .map((postId: number) => go(['/posts', String(postId)]));
+
+  @Effect() delPostEffect$ = this.actions$.ofType(SharedActions.DEL_POST)
+    .map((action: SharedActions.DelPost) => action.payload)
+    .switchMap((postId: number) => this.sharedService.delPost(postId)
+      .map(x => new SharedActions.DelPostSuccess(x.postId))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res))));
+  // location.reload()
 
   constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService) {
 

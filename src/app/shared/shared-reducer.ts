@@ -152,6 +152,11 @@ export function reducer(state = initialState, action: Actions.All): State {
       return { ...state, selectedPost: post }
     }
 
+    case Actions.DEL_POST_SUCCESS: {
+      return { ...state, posts: state.posts.filter(x => x.postId !== action.payload) }
+    }
+
+
     default:
       return state;
   }

@@ -117,17 +117,20 @@ export class PostComponent implements OnInit, OnDestroy {
     });
 
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
-      console.log(params);
-      const postId = +params['postId'];
-      this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
-        if (post) {
-          console.log('edit : ', post);
-          this.postForm.patchValue({
-            memo: post.memo
-          });
-        }
-      });
-      this.store.dispatch(new SharedActions.GetPost(postId));
+      const postId = params['postId'];
+      if (postId !== undefined) {
+        console.log(postId);
+
+        this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
+          if (post) {
+            console.log('edit : ', post);
+            this.postForm.patchValue({
+              memo: post.memo
+            });
+          }
+        });
+        this.store.dispatch(new SharedActions.GetPost(+postId));
+      }
     });
   }
 
@@ -224,11 +227,6 @@ export class PostComponent implements OnInit, OnDestroy {
     if (this.postForm.valid) {
       const post = <Post>{
         accessType: this.postForm.get('accessType').value,
-        customerId: this.postForm.get('customer').value.customerId,
-        // customer: <Customer>{
-        //   name: this.postForm.get('customer').value.name.name,
-        //   customerId: this.postForm.get('customer').value.customerId,
-        // },
         date: this.postForm.get('date').value,
         memo: this.postForm.get('memo').value,
         hairTypeMemo: this.postForm.get('hairTypeMemo').value,
@@ -236,6 +234,15 @@ export class PostComponent implements OnInit, OnDestroy {
         postHairMenus: [],
         postHairTypes: []
       };
+
+      // new customer
+      if (this.selectedCustomerId === 0) {
+        post.customer = <Customer>{
+          name: this.postForm.get('customer').value,
+        };
+      } else {
+        post.customerId = this.postForm.get('customer').value.customerId;
+      }
 
       this.hairMenus.forEach(x => {
         if (x.isChecked) {

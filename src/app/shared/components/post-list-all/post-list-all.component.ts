@@ -27,7 +27,7 @@ export class PostListAllComponent implements OnInit {
   uploadCategories: any[];
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
 
-  constructor(private auth: Auth) {
+  constructor(public auth: Auth) {
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
   }
 
@@ -87,5 +87,4 @@ export class PostListAllComponent implements OnInit {
       this.addPostEvalution.emit(postEvaluation);
     }
   }
-
 }

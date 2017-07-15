@@ -57,7 +57,7 @@
                     <button *ngIf="post?.totalPostComments !== post?.postComments.length" md-button class="primary" (click)="showMoreComments.emit(post)">Show more comments</button>
                     <md-list-item *ngFor="let postComment of post.postComments">
                         <span md-line><strong>{{postComment.createdUser?.userName}}</strong> &nbsp;&nbsp; {{postComment.comment}}</span>
-                        <button *ngIf="postComment.createdUserId === userId" md-button class="warn" (click)="delPostComment.emit(postComment.postCommentId)">x</button>
+                        <button *ngIf="postComment.createdUserId === auth.userId" md-button class="warn" (click)="delPostComment.emit(postComment.postCommentId)">x</button>
                     </md-list-item>
                 </md-list>
                 <div fxLayout="row">

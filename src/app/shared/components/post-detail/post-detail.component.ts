@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, Optional, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -26,6 +26,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   postMenuPerm: PostHairMenu;
 
   @ViewChild('commentBox') commentBox;
+  @Output() closeDialog = new EventEmitter();
 
   uploadCategories: any[];
   postSubscription: Subscription;
@@ -34,7 +35,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   comment: string;
 
-  constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
+  constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, public auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
 
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
     // console.log(this.uploadCategories);
@@ -146,8 +147,14 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onEdit() {
+  editPost() {
     this.store.dispatch(new SharedActions.GoPostEditPage(this.post.postId));
+    this.closeDialog.emit();
+  }
+
+  deletePost() {
+    this.store.dispatch(new SharedActions.DelPost(this.post.postId));
+    this.closeDialog.emit();
   }
 
 }
