@@ -99,4 +99,8 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluationId));
   }
 
+  clickUser(userName: string) {
+    this.store.dispatch(new SharedActions.GoUserPage(userName));
+  }
+
 }

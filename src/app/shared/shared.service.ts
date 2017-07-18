@@ -18,26 +18,23 @@ export class SharedService {
 
   getPosts(index: number, accessType: AccessType, userName: string, userNameParam: string, search: string): Observable<Post[]> {
     return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&userNameParam=${userNameParam}&accessType=${accessType}&search=${search}`)
-      .map(res => res.json())
-      .map((results: Post[]) => {
-        results.forEach((p: Post) => {
-          p.postUploads.forEach(u => {
-            u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
-          });
-        });
-        return results;
-      });
+      .map(res => res.json());
+      // .map((results: Post[]) => {
+      //   results.forEach((p: Post) => {
+      //     p.postUploads.forEach(u => {
+      //       u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
+      //     });
+      //     if (p.createdUser.image && !p.createdUser.image.startsWith('http')) {
+      //       p.createdUser.image = `${environment.webApiUrl}/${p.createdUser.image.split('\\').join('/')}`;
+      //     }
+      //   });
+      //   return results;
+      // });
   }
 
   getPost(postId: number): Observable<Post> {
     return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts/${postId}`)
-      .map(res => res.json())
-      .map((post: Post) => {
-        post.postUploads.forEach(u => {
-          u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
-        });
-        return post;
-      });
+      .map(res => res.json());
   }
 
   delPost(postId: number): Observable<Post> {

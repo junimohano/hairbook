@@ -29,6 +29,7 @@ export const GET_POST_COMMENT_SUCCESS = '[Shared] Get Post Comment Success';
 export const GO_POST_EDIT_PAGE = '[Shared] GO_POST_EDIT_PAGE';
 export const DEL_POST = '[Shared] DEL_POST';
 export const DEL_POST_SUCCESS = '[Shared] DEL_POST_SUCCESS';
+export const GO_USER_PAGE = '[Shared] GO_USER_PAGE';
 
 export class SetProgressBar implements Action {
   readonly type = SET_PROGRESS_BAR;
@@ -145,6 +146,11 @@ export class DelPostSuccess implements Action {
   constructor(public payload: number) { }
 }
 
+export class GoUserPage implements Action {
+  readonly type = GO_USER_PAGE;
+  constructor(public payload: string) { }
+}
+
 export type All
   = SetProgressBar
   | SetProgressSpinner
@@ -169,4 +175,5 @@ export type All
   | GoPostEditPage
   | DelPost
   | DelPostSuccess
+  | GoUserPage
   ;

@@ -4,7 +4,7 @@
         <div></div>
         <div fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
             <div *ngIf="user?.image" fxFlexFill fxLayout="column">
-                <img class="img-circle" [src]="user?.image" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
+                <img class="img-circle" [src]="user?.image | imagePath" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
             </div>
         </div>
 

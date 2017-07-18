@@ -21,6 +21,7 @@ export class PostListAllComponent implements OnInit {
   @Output() delPostComment = new EventEmitter<number>();
   @Output() addPostEvalution = new EventEmitter<PostEvaluation>();
   @Output() delPostEvalution = new EventEmitter<number>();
+  @Output() clickUser = new EventEmitter<string>();
 
   @ViewChild('commentBox') commentBox;
 
@@ -86,5 +87,9 @@ export class PostListAllComponent implements OnInit {
       };
       this.addPostEvalution.emit(postEvaluation);
     }
+  }
+
+  onClickUser(userName: string) {
+    this.clickUser.emit(userName);
   }
 }

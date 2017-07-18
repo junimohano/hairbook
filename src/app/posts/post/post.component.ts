@@ -1,3 +1,5 @@
+import { UploadCategoryType } from '../../shared/models/enums/upload-category-type';
+import { PostUploadInfo } from '../shared/post-upload-info';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -60,15 +62,24 @@ export class PostComponent implements OnInit, OnDestroy {
   postSubscription: Subscription;
 
   accessTypes = [];
+  uploadCategoryTypes = [];
   filteredCustomers$: Observable<Customer[]>;
   customers: Customer[];
   selectedCustomerId: number;
   isSelectedCustomer: boolean;
 
+  postUploadInfos: PostUploadInfo[] = [];
+
   constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
     Object.keys(AccessType).forEach((x, i) => {
       if (i > 2) {
         this.accessTypes.push(x);
+      }
+    });
+
+    Object.keys(UploadCategoryType).forEach((x, i) => {
+      if (i > 2) {
+        this.uploadCategoryTypes.push(x);
       }
     });
 
@@ -219,7 +230,6 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
-    const aa = this.postForm;
     this.store.dispatch(back());
   }
 
@@ -284,8 +294,18 @@ export class PostComponent implements OnInit, OnDestroy {
     }
   }
 
-  addFile() {
+  public fileChangeEvent(fileInput: any) {
+    if (fileInput.target.files) {
+      for (let i = 0; i < fileInput.target.files.length; i++) {
+        const file = fileInput.target.files[i];
+        const reader = new FileReader();
 
+        reader.onload = (event: any) => {
+          this.postUploadInfos.push(new PostUploadInfo({ postUpload: event.target.result }));
+        }
+        reader.readAsDataURL(file);
+      }
+    }
   }
 
   get existsHairMenusColor(): boolean {

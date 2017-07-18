@@ -4,7 +4,7 @@
 
             <div class="post-wrapper">
                 <div class="post-inside" *ngIf="post.postUploads.length > 0; else test" fxLayout="column">
-                    <img [src]="post.postUploads[0]?.path" fxFlex.xs="150px" fxFlex.sm="200px" fxFlex.md="250px" fxFlex.lg="250px" fxFlex="300px">
+                    <img [src]="post.postUploads[0]?.path | imagePath" fxFlex.xs="150px" fxFlex.sm="200px" fxFlex.md="250px" fxFlex.lg="250px" fxFlex="300px">
                 </div>
                 <ng-template #test>
                     <div class="post-inside" fxLayout="column">

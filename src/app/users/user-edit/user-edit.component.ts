@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UserInfo } from '../shared/user-info';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { back } from '@ngrx/router-store';
@@ -32,6 +33,8 @@ function customWatcher(c: AbstractControl) {
   styleUrls: ['./user-edit.component.scss']
 })
 export class UserEditComponent implements OnInit, OnDestroy {
+
+  @ViewChild('fileInput') fileInput;
 
   user: User;
   editForm: FormGroup;
@@ -93,9 +96,9 @@ export class UserEditComponent implements OnInit, OnDestroy {
         userId: this.user.userId,
         userKey: this.user.userKey,
         userName: this.user.userName,
-        // password: string;
+        password: this.user.password,
         email: this.editForm.get('email').value,
-        // image: string;
+        image: this.user.image,
         name: this.editForm.get('name').value,
 
         gender: this.editForm.get('gender').value,
@@ -104,7 +107,24 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
         // salonId: number | null;
       };
+      const p1 = this.editForm.get('password').value;
+      const p2 = this.editForm.get('password_confirm').value;
+      if (p1 === p2 && p1 && p2) {
+        user.password = p1;
+      }
+
       this.store.dispatch(new UserActions.EditUser(user));
     }
   }
+
+  onChangeImage() {
+    const fi = this.fileInput.nativeElement;
+    const userInfo = <UserInfo>{
+      user: this.user,
+      userUpload: fi.files[0]
+    }
+
+    this.store.dispatch(new UserActions.EditUserImage(userInfo));
+  }
+
 }

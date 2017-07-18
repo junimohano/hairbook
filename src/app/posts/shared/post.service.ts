@@ -50,7 +50,7 @@ export class PostService {
   addUpload(postId: number, fileToUpload: any) {
     const input = new FormData();
     input.append('uploadedFile', fileToUpload);
-    return this.authHttp.post(`${environment.webApiUrl}/api/v1/PostUploads?postId=${postId}`, input)
+    return this.authHttp.post(`${environment.webApiUrl}/api/v1/PostUploads/${postId}`, input)
       .map(res => res.json());
   }
 

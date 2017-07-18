@@ -64,13 +64,18 @@ import { PostSearchComponent } from './components/post-search/post-search.compon
 import { PostListAllComponent } from './components/post-list-all/post-list-all.component';
 import { SharedService } from 'app/shared/shared.service';
 import { PostMenuComponent } from './components/post-menu/post-menu.component';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
+import { ImagePathPipe } from './pipes/image-path.pipe';
 
 const components = [
   ProgressSpinnerComponent,
   PostListComponent,
   PostDetailComponent,
   PostSearchComponent,
-  PostListAllComponent
+  PostListAllComponent,
+  PostMenuComponent,
+  TimeAgoPipe,
+  ImagePathPipe
 ];
 
 const modules = [
@@ -125,7 +130,6 @@ const modules = [
   ],
   declarations: [
     components,
-    PostMenuComponent
   ],
   providers: [
     {

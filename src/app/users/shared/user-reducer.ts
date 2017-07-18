@@ -3,6 +3,7 @@ import { Post } from 'app/shared/models/post';
 import { User } from 'app/shared/models/user';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { PostComment } from 'app/shared/models/post-comment';
+import { environment } from 'environments/environment';
 
 export interface State {
   user: User;

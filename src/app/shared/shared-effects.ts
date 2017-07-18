@@ -134,6 +134,10 @@ export class SharedEffects {
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res))));
   // location.reload()
 
+  @Effect() goUserPageEffect$ = this.actions$.ofType(SharedActions.GO_USER_PAGE)
+    .map((action: SharedActions.GoUserPage) => action.payload)
+    .map((userName: string) => go(['/users', userName]));
+
   constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService) {
 
   }

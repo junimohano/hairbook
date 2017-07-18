@@ -1,6 +1,7 @@
+import { UserInfo } from './user-info';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/withLatestFrom'
+import 'rxjs/add/operator/withLatestFrom';
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
@@ -34,6 +35,21 @@ export class UserEffects {
     .switchMap((user: User) => this.userService.putUser(user)
       .map(x => back())
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+
+  @Effect() editUserImageEffect$ = this.actions$.ofType(UserActions.EDIT_USER_IMAGE)
+    .map((action: UserActions.EditUserImage) => action.payload)
+    .switchMap((userInfo: UserInfo) => {
+      this.store.dispatch(new SharedActions.SetProgressBar(true));
+
+      return this.userService.postUserImage(userInfo)
+        .map(x => {
+          this.store.dispatch(new SharedActions.SetProgressBar(false));
+          return new UserActions.GetUserSuccess(x)
+        })
+        .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    }
     );
 
   constructor(private actions$: Actions, private userService: UserService, private sharedService: SharedService, private store: Store<Reducers.State>) {

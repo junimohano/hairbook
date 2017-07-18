@@ -1,3 +1,4 @@
+import { UserInfo } from './user-info';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
@@ -20,6 +21,13 @@ export class UserService {
 
   putUser(user: User): Observable<User> {
     return this.authHttp.put(`${environment.webApiUrl}/api/v1/users/${user.userId}`, user, { headers: this.headers })
+      .map(res => res.json());
+  }
+
+  postUserImage(userInfo: UserInfo): Observable<User> {
+    const input = new FormData();
+    input.append('uploadedFile', userInfo.userUpload);
+    return this.authHttp.post(`${environment.webApiUrl}/api/v1/users/PostUserImage/${userInfo.user.userId}`, input)
       .map(res => res.json());
   }
 
