@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="center center">
 
     <form [formGroup]="postForm" novalidate>
         <div fxLayout="column" fxLayoutGap="10px">
@@ -9,7 +9,6 @@
             </div>
 
             <div>
-
                 <md-input-container>
                     <input mdInput placeholder="Customer" [mdAutocomplete]="auto" formControlName="customer" (ngModelChange)="onChangedCustomer($event)">
                 </md-input-container>
@@ -98,7 +97,7 @@
             </div>
 
             <div>
-                <input #fileInput type="file" multiple (change)="fileChangeEvent($event)" />
+                <input #fileInput type="file" multiple (change)="fileChangeEvent($event)" class="custom-file-input" />
             </div>
 
             <div fxLayout="row" fxLayoutGap="20px">
@@ -113,18 +112,22 @@
         </div>
     </form>
 
-    <div *ngFor="let postUploadInfo of postUploadInfos">
-        <img [src]="postUploadInfo.postUpload" width="100" height="100">
-        <md-select placeholder="Upload Categories" [(ngModel)]="postUploadInfo.uploadCategoryType">
-            <md-option *ngFor="let uploadCategoryType of uploadCategoryTypes let i = index;" [value]="i">
-                {{ uploadCategoryType }}
-            </md-option>
-        </md-select>
-        <md-input-container>
-            <textarea mdInput placeholder="Upload Memo" [(ngModel)]="postUploadInfo.postMemo"></textarea>
-        </md-input-container>
+    <div fxLayout="row" fxFlexFill>
+        <div *ngFor="let postUploadInfo of postUploadInfos; let i = index;">
+            <div *ngIf="postUploadInfo.postUploadInfoType !== postUploadInfoType.Delete" fxLayout="column">
+                <img [src]="postUploadInfo.postUploadBlob" width="100" height="100">
+                <md-select placeholder="Upload Categories" [(ngModel)]="postUploadInfo.uploadCategoryType">
+                    <md-option *ngFor="let uploadCategoryType of uploadCategoryTypes let i = index;" [value]="i">
+                        {{ uploadCategoryType }}
+                    </md-option>
+                </md-select>
+                <md-input-container>
+                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="postUploadInfo.memo"></textarea>
+                </md-input-container>
+                <button md-button class="warn" (click)="onDelPostUploadInfo(i)">x</button>
+            </div>
+        </div>
     </div>
-
     <!--<p>{{postForm.status}}</p>-->
     <!-- <p>{{postForm.value | json}}</p> -->
 

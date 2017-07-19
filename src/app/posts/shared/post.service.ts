@@ -1,3 +1,4 @@
+import { PostUploadInfo } from './post-upload-info';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { environment } from 'environments/environment';
@@ -38,7 +39,7 @@ export class PostService {
   }
 
   editPost(post: Post): Observable<Post> {
-    return this.authHttp.put(`${environment.webApiUrl}/api/v1/posts`, post, { headers: this.headers })
+    return this.authHttp.put(`${environment.webApiUrl}/api/v1/posts/${post.postId}`, post, { headers: this.headers })
       .map(res => res.json());
   }
 
@@ -47,10 +48,28 @@ export class PostService {
       .map(res => res.json());
   }
 
-  addUpload(postId: number, fileToUpload: any) {
+  addUpload(postId: number, postUploadInfo: PostUploadInfo, userId: number) {
     const input = new FormData();
-    input.append('uploadedFile', fileToUpload);
+    input.append('uploadedFile', postUploadInfo.postUploadFile);
+    input.append('memo', postUploadInfo.memo);
+    input.append('uploadCategoryType', String(postUploadInfo.uploadCategoryType));
+    input.append('uploadFileType', String(postUploadInfo.uploadFileType));
+    input.append('userId', String(userId));
     return this.authHttp.post(`${environment.webApiUrl}/api/v1/PostUploads/${postId}`, input)
+      .map(res => res.json());
+  }
+
+  delUpload(postUploadId: number) {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/PostUploads/${postUploadId}`)
+      .map(res => res.json());
+  }
+
+  updateUpload(postUploadId: number, postUploadInfo: PostUploadInfo, userId: number) {
+    const input = new FormData();
+    input.append('memo', postUploadInfo.memo);
+    input.append('uploadCategoryType', String(postUploadInfo.uploadCategoryType));
+    input.append('userId', String(userId));
+    return this.authHttp.put(`${environment.webApiUrl}/api/v1/PostUploads/${postUploadId}`, input)
       .map(res => res.json());
   }
 

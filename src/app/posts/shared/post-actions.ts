@@ -14,7 +14,7 @@ export const ADD_POST = '[Post] ADD_POST';
 export const EDIT_POST = '[Post] EDIT_POST';
 export const GET_CUSTOMERS = '[Post] GET_CUSTOMERS';
 export const GET_CUSTOMERS_SUCCESS = '[Post] GET_CUSTOMERS_SUCCESS';
-export const ADD_POST_UPLOAD = '[Post] ADD_POST_UPLOAD';
+export const SET_POST_UPLOAD = '[Post] SET_POST_UPLOAD';
 export const GO_USER_PAGE = '[Post] GO_USER_PAGE';
 
 export class GetHairMenus implements Action {
@@ -57,8 +57,8 @@ export class GetCustomersSuccess implements Action {
   constructor(public payload: Customer[]) { }
 }
 
-export class AddPostUpload implements Action {
-  readonly type = ADD_POST_UPLOAD;
+export class SetPostUpload implements Action {
+  readonly type = SET_POST_UPLOAD;
   constructor(public payload: PostInfo) { }
 }
 
@@ -77,6 +77,6 @@ export type All
   | EditPost
   | GetCustomers
   | GetCustomersSuccess
-  | AddPostUpload
+  | SetPostUpload
   | GoUserPage
   ;

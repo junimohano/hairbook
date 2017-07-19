@@ -1,3 +1,4 @@
+import { PostUploadInfoType } from './post-upload-info-type';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom';
@@ -17,7 +18,6 @@ import * as Reducers from '../../shared/reducers';
 import * as SharedActions from '../../shared/shared-actions';
 import { SharedService } from '../../shared/shared.service';
 import * as PostActions from './post-actions';
-import { AddPost, AddPostUpload, EditPost, GetCustomers } from './post-actions';
 import { PostService } from './post.service';
 
 @Injectable()
@@ -48,35 +48,71 @@ export class PostEffects {
           state.post.postUploadIndex = 0;
           const postInfoTemp = <PostInfo>{
             post: post,
-            postUploads: postInfo.postUploads
+            postUploadInfo: postInfo.postUploadInfo
           }
-          return new PostActions.AddPostUpload(postInfoTemp);
+          return new PostActions.SetPostUpload(postInfoTemp);
         })
         .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     });
 
   @Effect() editPostEffect$ = this.actions$.ofType(PostActions.EDIT_POST)
-    .switchMap((action: PostActions.EditPost) =>
-      this.postService.editPost(action.payload.post)
-        .map(x => new PostActions.GoUserPage())
-        .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
-    );
-
-  @Effect() addPostUploadEffect$ = this.actions$.ofType(PostActions.ADD_POST_UPLOAD)
-    .map((action: PostActions.AddPostUpload) => action.payload)
+    .map((action: PostActions.EditPost) => action.payload)
     .withLatestFrom(this.store)
     .switchMap(([postInfo, state]) => {
-      if (state.post.postUploadIndex < postInfo.postUploads.length) {
-        console.log('hahaha', state.post.postUploadIndex);
+      this.store.dispatch(new SharedActions.SetProgressBar(true));
+      return this.postService.editPost(postInfo.post)
+        .map((post: Post) => {
+          console.log(PostActions.EDIT_POST);
+          state.post.postUploadIndex = 0;
+          const postInfoTemp = <PostInfo>{
+            post: post,
+            postUploadInfo: postInfo.postUploadInfo
+          }
+          return new PostActions.SetPostUpload(postInfoTemp);
+        })
+        .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    });
 
-        return this.postService.addUpload(postInfo.post.postId, postInfo.postUploads[state.post.postUploadIndex])
-          .map(x => {
-            state.post.postUploadIndex++;
-            return new PostActions.AddPostUpload(postInfo);
-          })
-          .catch((res: Response) => {
-            return of(new SharedActions.SetSnackBar(res));
-          });
+  @Effect() setPostUploadEffect$ = this.actions$.ofType(PostActions.SET_POST_UPLOAD)
+    .map((action: PostActions.SetPostUpload) => action.payload)
+    .withLatestFrom(this.store)
+    .switchMap(([postInfo, state]) => {
+      if (state.post.postUploadIndex < postInfo.postUploadInfo.length) {
+        console.log(PostActions.SET_POST_UPLOAD, state.post.postUploadIndex);
+        const postUploadInfo = postInfo.postUploadInfo[state.post.postUploadIndex];
+
+        switch (postUploadInfo.postUploadInfoType) {
+          case PostUploadInfoType.Add:
+            return this.postService.addUpload(postInfo.post.postId, postUploadInfo, this.auth.userId)
+              .map(x => {
+                state.post.postUploadIndex++;
+                return new PostActions.SetPostUpload(postInfo);
+              })
+              .catch((res: Response) => {
+                return of(new SharedActions.SetSnackBar(res));
+              });
+
+          case PostUploadInfoType.Delete:
+            return this.postService.delUpload(postUploadInfo.postUploadId)
+              .map(x => {
+                state.post.postUploadIndex++;
+                return new PostActions.SetPostUpload(postInfo);
+              })
+              .catch((res: Response) => {
+                return of(new SharedActions.SetSnackBar(res));
+              });
+
+          case PostUploadInfoType.Update:
+            return this.postService.updateUpload(postUploadInfo.postUploadId, postUploadInfo, this.auth.userId)
+              .map(x => {
+                state.post.postUploadIndex++;
+                return new PostActions.SetPostUpload(postInfo);
+              })
+              .catch((res: Response) => {
+                return of(new SharedActions.SetSnackBar(res));
+              });
+        }
+
       } else {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
         this.store.dispatch(new PostActions.GoUserPage());

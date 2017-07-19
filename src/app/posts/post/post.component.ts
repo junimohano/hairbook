@@ -1,3 +1,6 @@
+import { ImagePathPipe } from '../../shared/pipes/image-path.pipe';
+import { UploadFileType } from '../../shared/models/enums/upload-file-type';
+import { PostUploadInfoType } from '../shared/post-upload-info-type';
 import { UploadCategoryType } from '../../shared/models/enums/upload-category-type';
 import { PostUploadInfo } from '../shared/post-upload-info';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -47,7 +50,6 @@ export class PostComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput;
 
   postForm: FormGroup;
-  isSubmitted: boolean;
 
   hairSubMenuColors: HairSubMenu[];
   hairSubMenuPerms: HairSubMenu[];
@@ -69,6 +71,10 @@ export class PostComponent implements OnInit, OnDestroy {
   isSelectedCustomer: boolean;
 
   postUploadInfos: PostUploadInfo[] = [];
+  postUploadInfoType = PostUploadInfoType;
+
+  post: Post;
+  isEdit = false;
 
   constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
     Object.keys(AccessType).forEach((x, i) => {
@@ -95,6 +101,7 @@ export class PostComponent implements OnInit, OnDestroy {
       hairSubMenuColorMemo: '',
       hairSubMenuPerm: 0,
       hairSubMenuPermMemo: '',
+      postId: 0
     }, { validator: customWatcher });
 
     this.hairMenusSubscription = this.store.select(Reducers.postHairMenus).subscribe(x => {
@@ -131,13 +138,56 @@ export class PostComponent implements OnInit, OnDestroy {
       const postId = params['postId'];
       if (postId !== undefined) {
         console.log(postId);
+        this.isEdit = true;
 
         this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
           if (post) {
             console.log('edit : ', post);
+            this.post = post;
+
+            const color = post.postHairMenus.find(y => y.hairMenu.name === 'Color');
+            const perm = post.postHairMenus.find(y => y.hairMenu.name === 'Perm');
+
             this.postForm.patchValue({
-              memo: post.memo
+              accessType: post.accessType,
+              customer: {
+                name: post.customer.name,
+                customerId: post.customerId
+              },
+              date: post.date,
+              memo: post.memo,
+              hairMenus: post.postHairMenus.length > 0 ? true : false,
+              hairTypes: post.postHairTypes.length > 0 ? true : false,
+              hairTypeMemo: post.hairTypeMemo,
+              hairSubMenuColor: color === undefined ? 0 : color.hairSubMenuId,
+              hairSubMenuColorMemo: color === undefined ? 0 : color.memo,
+              hairSubMenuPerm: perm === undefined ? 0 : perm.hairSubMenuId,
+              hairSubMenuPermMemo: perm === undefined ? 0 : perm.memo
             });
+
+            this.selectedCustomerId = post.customerId;
+
+            this.hairMenus.forEach(hairMenu => {
+              hairMenu.isChecked = post.postHairMenus.findIndex(x => x.hairMenuId === hairMenu.hairMenuId) === -1 ? false : true;
+            });
+
+            this.hairTypes.forEach(hairType => {
+              hairType.isChecked = post.postHairTypes.findIndex(x => x.hairTypeId === hairType.hairTypeId) === -1 ? false : true;
+            });
+
+            // file Uploads
+            this.postUploadInfos = [];
+            post.postUploads.forEach(postUpload => {
+              const imagePathPipe = new ImagePathPipe();
+              this.postUploadInfos.push(new PostUploadInfo({
+                postUploadId: postUpload.postUploadId,
+                memo: postUpload.memo === undefined ? '' : postUpload.memo,
+                postUploadBlob: imagePathPipe.transform(postUpload.path, null),
+                uploadCategoryType: postUpload.uploadCategoryType,
+                postUploadInfoType: PostUploadInfoType.Update
+              }));
+            });
+
           }
         });
         this.store.dispatch(new SharedActions.GetPost(+postId));
@@ -235,6 +285,8 @@ export class PostComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.postForm.valid) {
+      const postId = this.post ? 0 : this.post.postId;
+
       const post = <Post>{
         accessType: this.postForm.get('accessType').value,
         date: this.postForm.get('date').value,
@@ -242,7 +294,8 @@ export class PostComponent implements OnInit, OnDestroy {
         hairTypeMemo: this.postForm.get('hairTypeMemo').value,
         createdUserId: this.auth.userId,
         postHairMenus: [],
-        postHairTypes: []
+        postHairTypes: [],
+        postId: postId
       };
 
       // new customer
@@ -258,7 +311,8 @@ export class PostComponent implements OnInit, OnDestroy {
         if (x.isChecked) {
           const postHairMenu = <PostHairMenu>{
             createdUserId: this.auth.userId,
-            hairMenuId: x.hairMenuId
+            hairMenuId: x.hairMenuId,
+            postId: postId
           };
           if (x.name === 'Color') {
             postHairMenu.hairSubMenuId = this.postForm.get('hairSubMenuColor').value;
@@ -274,7 +328,8 @@ export class PostComponent implements OnInit, OnDestroy {
         if (x.isChecked) {
           const postHairType = <PostHairType>{
             createdUserId: this.auth.userId,
-            hairTypeId: x.hairTypeId
+            hairTypeId: x.hairTypeId,
+            postId: postId
           };
           post.postHairTypes.push(postHairType);
         }
@@ -282,29 +337,45 @@ export class PostComponent implements OnInit, OnDestroy {
 
       const postInfo = <PostInfo>{
         post: post,
-        postUploads: []
-      }
-      const fi = this.fileInput.nativeElement;
-      for (let i = 0; i < fi.files.length; i++) {
-        const file = fi.files[i];
-        postInfo.postUploads.push(file);
+        postUploadInfo: this.postUploadInfos
       }
 
-      this.store.dispatch(new PostActions.AddPost(postInfo));
+      if (this.isEdit) {
+        this.store.dispatch(new PostActions.EditPost(postInfo));
+      } else {
+        this.store.dispatch(new PostActions.AddPost(postInfo));
+      }
+
+
+      /////////////// todo: postHairTypeId doesn't have id...
     }
   }
 
-  public fileChangeEvent(fileInput: any) {
+  fileChangeEvent(fileInput: any) {
     if (fileInput.target.files) {
       for (let i = 0; i < fileInput.target.files.length; i++) {
         const file = fileInput.target.files[i];
         const reader = new FileReader();
 
         reader.onload = (event: any) => {
-          this.postUploadInfos.push(new PostUploadInfo({ postUpload: event.target.result }));
+          this.postUploadInfos.push(new PostUploadInfo({
+            postUploadFile: file,
+            postUploadBlob: event.target.result,
+            uploadCategoryType: UploadCategoryType.Before,
+            uploadFileType: UploadFileType.Image,
+            postUploadInfoType: PostUploadInfoType.Add
+          }));
         }
         reader.readAsDataURL(file);
       }
+    }
+  }
+
+  onDelPostUploadInfo(i: number) {
+    if (this.postUploadInfos[i].postUploadInfoType === PostUploadInfoType.Add) {
+      this.postUploadInfos.splice(i, 1);
+    } else {
+      this.postUploadInfos[i].postUploadInfoType = PostUploadInfoType.Delete;
     }
   }
 
