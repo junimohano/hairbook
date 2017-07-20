@@ -2,13 +2,13 @@ import { Action } from '@ngrx/store';
 import { User } from 'app/shared/models/user';
 import { UserSecret } from 'app/logins/shared/user-secret';
 
-export const LOGIN_SOCIAL = '[Login] Login Social';
-export const EXIST_USER = '[Login] Exist User';
-export const GET_TOKEN = '[Login] Get Token';
-export const SET_USER = '[Login] Success User';
-export const REGISTER = '[Login] Register';
-export const EXIST_USER_NAME = '[Login] Exist UserName';
-export const EXIST_USER_NAME_SUCCESS = '[Login] Exist UserName Success';
+export const LOGIN_SOCIAL = '[Login] LOGIN_SOCIAL';
+export const EXIST_USER = '[Login] EXIST_USER';
+export const GET_TOKEN = '[Login] GET_TOKEN';
+export const SET_USER = '[Login] SET_USER';
+export const REGISTER = '[Login] REGISTER';
+export const EXIST_USER_NAME = '[Login] EXIST_USER_NAME';
+export const EXIST_USER_NAME_SUCCESS = '[Login] EXIST_USER_NAME_SUCCESS';
 
 export class LoginSocial implements Action {
   readonly type = LOGIN_SOCIAL;

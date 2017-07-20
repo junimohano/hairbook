@@ -1,12 +1,9 @@
 import 'rxjs';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/withLatestFrom';
 
 import { Injectable } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
-import { go, replace } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
 import { AccessType } from 'app/shared/models/enums/access-type';
@@ -32,7 +29,8 @@ export class SharedEffects {
       console.log(action.payload);
       if (action.payload.status === 401) {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
-        return go(['login']);
+        this.router.navigate(['login']);
+        return new SharedActions.NoAction();
       } else {
         return new SharedActions.SetProgressBar(false);
       }
@@ -125,7 +123,10 @@ export class SharedEffects {
 
   @Effect() goPostEditPageEffect$ = this.actions$.ofType(SharedActions.GO_POST_EDIT_PAGE)
     .map((action: SharedActions.GoPostEditPage) => action.payload)
-    .map((postId: number) => go(['/posts', String(postId)]));
+    .map((postId: number) => {
+      this.router.navigate(['/posts', String(postId)]);
+      return new SharedActions.NoAction();
+    });
 
   @Effect() delPostEffect$ = this.actions$.ofType(SharedActions.DEL_POST)
     .map((action: SharedActions.DelPost) => action.payload)
@@ -136,9 +137,12 @@ export class SharedEffects {
 
   @Effect() goUserPageEffect$ = this.actions$.ofType(SharedActions.GO_USER_PAGE)
     .map((action: SharedActions.GoUserPage) => action.payload)
-    .map((userName: string) => go(['/users', userName]));
+    .map((userName: string) => {
+      this.router.navigate(['/users', userName]);
+      return new SharedActions.NoAction();
+    });
 
-  constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService) {
+  constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService, private router: Router) {
 
   }
 }

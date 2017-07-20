@@ -6,30 +6,37 @@ import { Post } from 'app/shared/models/post';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { PostCommentInfo } from 'app/shared/models/post-comment-info';
 
-export const SET_PROGRESS_BAR = '[Shared] Set Progress Bar';
-export const SET_PROGRESS_SPINNER = '[Shared] Set Progress Spinner';
-export const SET_SNACK_BAR = '[Shared] Set Snack Bar';
-export const SEARCH_POST = '[Shared] Search Post';
-export const SUCCESS_POST = '[Shared] Success Post';
-export const PREVIOUS_UPLOAD_INDEX = '[Shared] Previous Upload Index';
-export const NEXT_UPLOAD_INDEX = '[Shared] Next Upload Index';
-export const RESET_STATE = '[Shared] Reset State';
-export const GET_POST = '[Shared] Get Post';
-export const GET_POST_SUCCESS = '[Shared] Get Post Success';
-export const ADD_POST_COMMENT = '[Shared] Add Post Comment';
-export const ADD_POST_COMMENT_SUCCESS = '[Shared] Add Post Comment Success';
-export const DEL_POST_COMMENT = '[Shared] Del Post Comment';
-export const DEL_POST_COMMENT_SUCCESS = '[Shared] Del Post Comment Success';
-export const ADD_POST_EVALUATION = '[Shared] Add Post Evaluation';
-export const ADD_POST_EVALUATION_SUCCESS = '[Shared] Add Post Evaluation Success';
-export const DEL_POST_EVALUATION = '[Shared] Del Post Evaluation';
-export const DEL_POST_EVALUATION_SUCCESS = '[Shared] Del Post Evaluation Success';
-export const GET_POST_COMMENT = '[Shared] Get Post Comment';
-export const GET_POST_COMMENT_SUCCESS = '[Shared] Get Post Comment Success';
+export const NO_ACTION = '[Shared] NO_ACTION';
+export const SET_PROGRESS_BAR = '[Shared] SET_PROGRESS_BAR';
+export const SET_PROGRESS_SPINNER = '[Shared] SET_PROGRESS_SPINNER';
+export const SET_SNACK_BAR = '[Shared] SET_SNACK_BAR';
+export const SEARCH_POST = '[Shared] SEARCH_POST';
+export const SUCCESS_POST = '[Shared] SUCCESS_POST';
+export const PREVIOUS_UPLOAD_INDEX = '[Shared] PREVIOUS_UPLOAD_INDEX';
+export const NEXT_UPLOAD_INDEX = '[Shared] NEXT_UPLOAD_INDEX';
+export const RESET_STATE = '[Shared] RESET_STATE';
+export const GET_POST = '[Shared] GET_POST';
+export const GET_POST_SUCCESS = '[Shared] GET_POST_SUCCESS';
+export const ADD_POST_COMMENT = '[Shared] ADD_POST_COMMENT';
+export const ADD_POST_COMMENT_SUCCESS = '[Shared] ADD_POST_COMMENT_SUCCESS';
+export const DEL_POST_COMMENT = '[Shared] DEL_POST_COMMENT';
+export const DEL_POST_COMMENT_SUCCESS = '[Shared] DEL_POST_COMMENT_SUCCESS';
+export const ADD_POST_EVALUATION = '[Shared] ADD_POST_EVALUATION';
+export const ADD_POST_EVALUATION_SUCCESS = '[Shared] ADD_POST_EVALUATION_SUCCESS';
+export const DEL_POST_EVALUATION = '[Shared] DEL_POST_EVALUATION';
+export const DEL_POST_EVALUATION_SUCCESS = '[Shared] DEL_POST_EVALUATION_SUCCESS';
+export const GET_POST_COMMENT = '[Shared] GET_POST_COMMENT';
+export const GET_POST_COMMENT_SUCCESS = '[Shared] GET_POST_COMMENT_SUCCESS';
 export const GO_POST_EDIT_PAGE = '[Shared] GO_POST_EDIT_PAGE';
 export const DEL_POST = '[Shared] DEL_POST';
 export const DEL_POST_SUCCESS = '[Shared] DEL_POST_SUCCESS';
 export const GO_USER_PAGE = '[Shared] GO_USER_PAGE';
+
+
+export class NoAction implements Action {
+  readonly type = NO_ACTION;
+  constructor() { }
+}
 
 export class SetProgressBar implements Action {
   readonly type = SET_PROGRESS_BAR;

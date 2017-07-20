@@ -4,7 +4,7 @@ import * as LoginReducer from '../logins/shared/login-reducer';
 import * as SharedReducer from './shared-reducer';
 import { User } from 'app/shared/models/user';
 import { UserSecret } from 'app/logins/shared/user-secret';
-import { routerReducer, RouterState } from '@ngrx/router-store';
+import * as fromRouter from '@ngrx/router-store';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
@@ -13,7 +13,7 @@ import { HairType } from 'app/shared/models/hair-type';
 import { Customer } from 'app/shared/models/customer';
 
 export interface State {
-  router: RouterState;
+  router: fromRouter.RouterReducerState;
   post: PostReducer.State;
   user: UserReducer.State;
   login: LoginReducer.State;
@@ -21,7 +21,7 @@ export interface State {
 }
 
 export const reducers = {
-  router: routerReducer,
+  router: fromRouter.routerReducer,
   post: PostReducer.reducer,
   user: UserReducer.reducer,
   login: LoginReducer.reducer,

@@ -5,8 +5,7 @@ import { UploadCategoryType } from '../../shared/models/enums/upload-category-ty
 import { PostUploadInfo } from '../shared/post-upload-info';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { back } from '@ngrx/router-store';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
 import { Customer } from 'app/shared/models/customer';
@@ -20,6 +19,7 @@ import { PostHairType } from 'app/shared/models/post-hair-type';
 import { PostInfo } from 'app/shared/models/post-info';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { Location } from '@angular/common';
 
 import * as Reducers from '../../shared/reducers';
 import * as SharedActions from '../../shared/shared-actions';
@@ -54,8 +54,8 @@ export class PostComponent implements OnInit, OnDestroy {
   hairSubMenuColors: HairSubMenu[];
   hairSubMenuPerms: HairSubMenu[];
 
-  hairMenus: HairMenu[];
-  hairTypes: HairType[];
+  hairMenus: HairMenu[] = [];
+  hairTypes: HairType[] = [];
 
   hairMenusSubscription: Subscription;
   hairTypesSubscription: Subscription;
@@ -76,7 +76,7 @@ export class PostComponent implements OnInit, OnDestroy {
   post: Post;
   isEdit = false;
 
-  constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
+  constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private location: Location) {
     Object.keys(AccessType).forEach((x, i) => {
       if (i > 2) {
         this.accessTypes.push(x);
@@ -100,8 +100,7 @@ export class PostComponent implements OnInit, OnDestroy {
       hairSubMenuColor: 0,
       hairSubMenuColorMemo: '',
       hairSubMenuPerm: 0,
-      hairSubMenuPermMemo: '',
-      postId: 0
+      hairSubMenuPermMemo: ''
     }, { validator: customWatcher });
 
     this.hairMenusSubscription = this.store.select(Reducers.postHairMenus).subscribe(x => {
@@ -133,6 +132,10 @@ export class PostComponent implements OnInit, OnDestroy {
           .map(name => this.filterCustomers(name));
       }
     });
+
+    this.store.dispatch(new PostActions.GetHairMenus());
+    this.store.dispatch(new PostActions.GetHairTypes());
+    this.store.dispatch(new PostActions.GetCustomers(this.auth.userId));
 
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
       const postId = params['postId'];
@@ -168,11 +171,23 @@ export class PostComponent implements OnInit, OnDestroy {
             this.selectedCustomerId = post.customerId;
 
             this.hairMenus.forEach(hairMenu => {
-              hairMenu.isChecked = post.postHairMenus.findIndex(x => x.hairMenuId === hairMenu.hairMenuId) === -1 ? false : true;
+              const postHairMenu = post.postHairMenus.find(x => x.hairMenuId === hairMenu.hairMenuId);
+              if (postHairMenu) {
+                hairMenu.postHairMenu = postHairMenu;
+                hairMenu.isChecked = true;
+              } else {
+                hairMenu.isChecked = false;
+              }
             });
 
             this.hairTypes.forEach(hairType => {
-              hairType.isChecked = post.postHairTypes.findIndex(x => x.hairTypeId === hairType.hairTypeId) === -1 ? false : true;
+              const postHairType = post.postHairTypes.find(x => x.hairTypeId === hairType.hairTypeId);
+              if (postHairType) {
+                hairType.isChecked = true;
+                hairType.postHairType = postHairType;
+              } else {
+                hairType.isChecked = false;
+              }
             });
 
             // file Uploads
@@ -262,9 +277,6 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new PostActions.GetCustomers(this.auth.userId));
-    this.store.dispatch(new PostActions.GetHairMenus());
-    this.store.dispatch(new PostActions.GetHairTypes());
   }
 
   ngOnDestroy(): void {
@@ -280,22 +292,25 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
-    this.store.dispatch(back());
+    this.location.back();
   }
 
   onSubmit() {
     if (this.postForm.valid) {
-      const postId = this.post ? 0 : this.post.postId;
+      const postId = this.post ? this.post.postId : 0;
 
       const post = <Post>{
         accessType: this.postForm.get('accessType').value,
         date: this.postForm.get('date').value,
         memo: this.postForm.get('memo').value,
         hairTypeMemo: this.postForm.get('hairTypeMemo').value,
-        createdUserId: this.auth.userId,
         postHairMenus: [],
         postHairTypes: [],
-        postId: postId
+        postId: postId,
+        createdUserId: this.post ? this.post.createdUserId : this.auth.userId,
+        createdDate: this.post ? this.post.createdDate : null,
+        updatedUserId: this.isEdit ? this.auth.userId : null,
+        updatedDate: this.isEdit ? this.post ? this.post.updatedDate : null : null
       };
 
       // new customer
@@ -310,9 +325,11 @@ export class PostComponent implements OnInit, OnDestroy {
       this.hairMenus.forEach(x => {
         if (x.isChecked) {
           const postHairMenu = <PostHairMenu>{
-            createdUserId: this.auth.userId,
             hairMenuId: x.hairMenuId,
-            postId: postId
+            postId: postId,
+            postHairMenuId: x.postHairMenu ? x.postHairMenu.postHairMenuId : 0,
+            createdUserId: x.postHairMenu ? x.postHairMenu.createdUserId : this.auth.userId,
+            createdDate: x.postHairMenu ? x.postHairMenu.createdDate : null
           };
           if (x.name === 'Color') {
             postHairMenu.hairSubMenuId = this.postForm.get('hairSubMenuColor').value;
@@ -321,16 +338,21 @@ export class PostComponent implements OnInit, OnDestroy {
             postHairMenu.hairSubMenuId = this.postForm.get('hairSubMenuPerm').value;
             postHairMenu.memo = this.postForm.get('hairSubMenuPermMemo').value;
           }
+
           post.postHairMenus.push(postHairMenu);
         }
       });
+
       this.hairTypes.forEach(x => {
         if (x.isChecked) {
           const postHairType = <PostHairType>{
-            createdUserId: this.auth.userId,
             hairTypeId: x.hairTypeId,
-            postId: postId
+            postId: postId,
+            postHairTypeId: x.postHairType ? x.postHairType.postHairTypeId : 0,
+            createdUserId: x.postHairType ? x.postHairType.createdUserId : this.auth.userId,
+            createdDate: x.postHairType ? x.postHairType.createdDate : null
           };
+
           post.postHairTypes.push(postHairType);
         }
       });
@@ -346,8 +368,6 @@ export class PostComponent implements OnInit, OnDestroy {
         this.store.dispatch(new PostActions.AddPost(postInfo));
       }
 
-
-      /////////////// todo: postHairTypeId doesn't have id...
     }
   }
 

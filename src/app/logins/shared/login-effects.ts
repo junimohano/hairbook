@@ -1,7 +1,9 @@
+import 'rxjs';
+import { empty } from 'rxjs/observable/empty';
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
-import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { Auth } from 'app/shared/auth/auth.service';
@@ -44,7 +46,8 @@ export class LoginEffects {
           return new LoginActions.GetToken(userSecret);
         } else {
           this.store.dispatch(new SharedActions.SetProgressBar(false));
-          return go(['login', 'register']);
+          this.router.navigate(['login', 'register']);
+          return new SharedActions.NoAction();
         }
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
@@ -67,7 +70,9 @@ export class LoginEffects {
     .map((user: User) => {
       console.log(LoginActions.SET_USER);
       this.store.dispatch(new SharedActions.SetProgressBar(false));
-      return go(['/users', user.userName]);
+      this.router.navigate(['/users', user.userName])
+
+      return new SharedActions.NoAction();
     });
 
   @Effect() registerEffect$ = this.actions$.ofType(LoginActions.REGISTER)
@@ -75,7 +80,8 @@ export class LoginEffects {
     .switchMap((user: User) => this.loginService.postUser(user)
       .map((x: User) => {
         console.log(LoginActions.REGISTER);
-        return go(['login']);
+        this.router.navigate(['login']);
+        return new SharedActions.NoAction();
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );

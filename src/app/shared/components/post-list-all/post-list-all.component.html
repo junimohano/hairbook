@@ -23,8 +23,30 @@
         </div>
         <div fxFlex="30" fxFlex.xs="100">
             <md-card-content>
-                <p>{{post.customer.name}}</p>
-                <p>{{post.date | date}}</p>
+                <!-- <p>{{post.customer.name}}</p>
+                <p>{{post.date | date}}</p> -->
+
+                <div fxLayout="row">
+                    <md-input-container>
+                        <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
+                    </md-input-container>
+
+                    <p>{{post.customerId}}</p>
+                </div>
+
+                <div fxLayout="row">
+                    <md-input-container>
+                        <input mdInput [mdDatepicker]="" placeholder="When" [(ngModel)]="post.date" readonly>
+                        <button mdSuffix [mdDatepickerToggle]=""></button>
+                    </md-input-container>
+                    <md-datepicker #picker readonly></md-datepicker>
+                </div>
+
+                <div fxLayout="column">
+                    <md-input-container fxFill>
+                        <textarea mdInput placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
+                    </md-input-container>
+                </div>
 
                 <h5>Menu</h5>
                 <md-chip-list>

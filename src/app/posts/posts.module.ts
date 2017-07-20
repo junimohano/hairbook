@@ -13,7 +13,7 @@ import { PostService } from 'app/posts/shared/post.service';
   imports: [
     SharedModule,
     PostsRoutingModule,
-    EffectsModule.run(PostEffects)
+    EffectsModule.forFeature([PostEffects])
   ],
   declarations: [
     PostsComponent,

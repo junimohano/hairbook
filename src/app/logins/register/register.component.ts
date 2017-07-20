@@ -1,6 +1,6 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { go } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { LoginService } from 'app/logins/shared/login.service';
 import { GenderType } from 'app/shared/models/enums/gender-type';
@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store<Reducers.State>, public loginService: LoginService) {
+  constructor(private fb: FormBuilder, private store: Store<Reducers.State>, public loginService: LoginService, private router: Router) {
     this.registerForm = this.fb.group({
       userName: ['', Validators.required],
       userName_confirm: false,
@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
   }
 
   cancel() {
-    this.store.dispatch(go(['login']));
+    this.router.navigate(['login']);
   }
 
 }

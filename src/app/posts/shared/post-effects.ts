@@ -1,12 +1,9 @@
-import { PostUploadInfoType } from './post-upload-info-type';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs';
 
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
-import { replace } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
 import { Observable } from 'rxjs/Rx';
@@ -18,6 +15,7 @@ import * as Reducers from '../../shared/reducers';
 import * as SharedActions from '../../shared/shared-actions';
 import { SharedService } from '../../shared/shared.service';
 import * as PostActions from './post-actions';
+import { PostUploadInfoType } from './post-upload-info-type';
 import { PostService } from './post.service';
 
 @Injectable()
@@ -115,14 +113,18 @@ export class PostEffects {
 
       } else {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
+        this.store.dispatch(new SharedActions.GetPost(postInfo.post.postId));
         this.store.dispatch(new PostActions.GoUserPage());
         return Observable.empty();
       }
     });
 
   @Effect() goUserPageEffect$ = this.actions$.ofType(PostActions.GO_USER_PAGE)
-    // .map(() => go(['/users', this.auth.userName]));
-    .map(() => replace(['/users', this.auth.userName]));
+    .map(() => {
+      this.location.back();
+      // this.router.navigate(['/users', this.auth.userName]);
+      return new SharedActions.NoAction();
+    });
 
   @Effect() getCustomersEffect$ = this.actions$.ofType(PostActions.GET_CUSTOMERS)
     .switchMap((action: PostActions.GetCustomers) =>
@@ -136,7 +138,8 @@ export class PostEffects {
     private postService: PostService,
     private sharedService: SharedService,
     private store: Store<Reducers.State>,
-    private router: Router) {
+    private router: Router,
+    private location: Location) {
   }
 
 }

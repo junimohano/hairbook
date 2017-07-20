@@ -2,12 +2,12 @@ import { UserInfo } from '../shared/user-info';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { back } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
 import { GenderType } from 'app/shared/models/enums/gender-type';
 import { User } from 'app/shared/models/user';
 import { Subscription } from 'rxjs/Subscription';
+import { Location } from '@angular/common';
 
 import { Auth } from '../../shared/auth/auth.service';
 import * as Reducers from '../../shared/reducers';
@@ -44,7 +44,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   userSubscription: Subscription;
 
-  constructor(private fb: FormBuilder, public auth: Auth, private authHttp: AuthHttp, private router: Router, private store: Store<Reducers.State>) {
+  constructor(private fb: FormBuilder, public auth: Auth, private authHttp: AuthHttp, private router: Router, private store: Store<Reducers.State>, private location: Location) {
     this.genderKeys = Object.keys(this.genders).filter(Number);
 
     this.editForm = this.fb.group({
@@ -87,7 +87,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
-    this.store.dispatch(back());
+    this.location.back();
   }
 
   onSubmit() {

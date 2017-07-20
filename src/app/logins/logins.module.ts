@@ -15,7 +15,7 @@ import { RegisterComponent } from './register/register.component';
   imports: [
     SharedModule,
     LoginsRoutingModule,
-    EffectsModule.run(LoginEffects)
+    EffectsModule.forFeature([LoginEffects])
   ],
   declarations: [
     LoginsComponent,

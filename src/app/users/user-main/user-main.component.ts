@@ -1,6 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { search } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';

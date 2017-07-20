@@ -101,6 +101,12 @@ export function reducer(state = initialState, action: Actions.All): State {
       } else {
         action.payload.isEvaluation = false;
       }
+
+      const postIndex = state.posts.findIndex(x => x.postId === action.payload.postId);
+      if (postIndex !== -1) {
+        state.posts[postIndex] = action.payload;
+      }
+
       return { ...state, selectedPost: action.payload };
     }
 

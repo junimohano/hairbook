@@ -3,9 +3,9 @@ import { User } from 'app/shared/models/user';
 
 import { UserInfo } from './user-info';
 
-export const GET_USER = '[Users] Get User';
-export const GET_USER_SUCCESS = '[Users] Get User Success';
-export const EDIT_USER = '[Users] Edit User';
+export const GET_USER = '[Users]GET_USER';
+export const GET_USER_SUCCESS = '[Users] GET_USER_SUCCESS';
+export const EDIT_USER = '[Users] EDIT_USER';
 export const EDIT_USER_IMAGE = '[Users] EDIT_USER_IMAGE';
 export const EDIT_USER_IMAGE_SUCCESS = '[Users] EDIT_USER_IMAGE_SUCCESS';
 

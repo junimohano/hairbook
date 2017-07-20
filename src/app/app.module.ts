@@ -9,8 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SharedEffects } from './shared/shared-effects';
-import { RouterStoreModule } from '@ngrx/router-store';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 import { reducers } from './shared/reducers';
 
 // components
@@ -35,10 +36,10 @@ import { ProgressBarComponent } from './shared/components/progress-bar/progress-
     SharedModule,
     AppRoutingModule,
     // ngrx
-    EffectsModule.run(SharedEffects),
-    StoreModule.provideStore(reducers),
-    RouterStoreModule.connectRouter(),
-    StoreDevtoolsModule.instrumentOnlyWithExtension()
+    EffectsModule.forRoot([SharedEffects]),
+    StoreModule.forRoot(reducers),
+    StoreRouterConnectingModule,
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : []
   ],
   providers: [
   ],

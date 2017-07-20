@@ -17,7 +17,7 @@ import { UserEditComponent } from './user-edit/user-edit.component';
   imports: [
     SharedModule,
     UsersRoutingModule,
-    EffectsModule.run(UserEffects)
+    EffectsModule.forFeature([UserEffects])
   ],
   declarations: [
     UsersComponent,
