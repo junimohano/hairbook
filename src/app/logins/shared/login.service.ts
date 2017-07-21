@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { environment } from 'environments/environment';
+import { Headers, Http } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
-import { Auth } from 'app/shared/auth/auth.service';
-import { User } from 'app/shared/models/user';
-import { Token } from 'app/shared/models/token';
 import { UserSecret } from 'app/logins/shared/user-secret';
-import { of } from 'rxjs/observable/of';
-import * as SharedActions from '../../shared/shared-actions';
+import { Token } from 'app/shared/models/token';
+import { User } from 'app/shared/models/user';
+import { environment } from 'environments/environment';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()

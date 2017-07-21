@@ -52,8 +52,9 @@ export class PostDetailComponent implements OnInit, OnDestroy {
             this.setPostData(post);
           }
         });
+
         this.store.dispatch(new SharedActions.GetPost(postId));
-      })
+      });
     }
   }
 
@@ -65,6 +66,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
   }
 
   ngOnDestroy(): void {
@@ -148,7 +150,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
 
   editPost() {
-    this.store.dispatch(new SharedActions.GoPostEditPage(this.post.postId));
+    this.store.dispatch(new SharedActions.NavPosts(String(this.post.postId)));
     this.closeDialog.emit();
   }
 

@@ -1,11 +1,7 @@
-import { ImagePathPipe } from '../../shared/pipes/image-path.pipe';
-import { UploadFileType } from '../../shared/models/enums/upload-file-type';
-import { PostUploadInfoType } from '../shared/post-upload-info-type';
-import { UploadCategoryType } from '../../shared/models/enums/upload-category-type';
-import { PostUploadInfo } from '../shared/post-upload-info';
+import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
 import { Customer } from 'app/shared/models/customer';
@@ -19,11 +15,15 @@ import { PostHairType } from 'app/shared/models/post-hair-type';
 import { PostInfo } from 'app/shared/models/post-info';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Location } from '@angular/common';
 
+import { UploadCategoryType } from '../../shared/models/enums/upload-category-type';
+import { UploadFileType } from '../../shared/models/enums/upload-file-type';
+import { ImagePathPipe } from '../../shared/pipes/image-path.pipe';
 import * as Reducers from '../../shared/reducers';
 import * as SharedActions from '../../shared/shared-actions';
 import * as PostActions from '../shared/post-actions';
+import { PostUploadInfo } from '../shared/post-upload-info';
+import { PostUploadInfoType } from '../shared/post-upload-info-type';
 
 function customWatcher(c: AbstractControl) {
   // if (!c.get('password') || !c.get('password_confirm')) {
@@ -90,7 +90,7 @@ export class PostComponent implements OnInit, OnDestroy {
     });
 
     this.postForm = this.fb.group({
-      accessType: ['', Validators.required],
+      accessType: [2, Validators.required],
       customer: ['', Validators.required],
       date: ['', Validators.required],
       memo: '',
@@ -132,10 +132,6 @@ export class PostComponent implements OnInit, OnDestroy {
           .map(name => this.filterCustomers(name));
       }
     });
-
-    this.store.dispatch(new PostActions.GetHairMenus());
-    this.store.dispatch(new PostActions.GetHairTypes());
-    this.store.dispatch(new PostActions.GetCustomers(this.auth.userId));
 
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
       const postId = params['postId'];
@@ -208,6 +204,7 @@ export class PostComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SharedActions.GetPost(+postId));
       }
     });
+
   }
 
   onChangeAccessType(event) {
@@ -277,6 +274,15 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch(new PostActions.GetHairMenus());
+    this.store.dispatch(new PostActions.GetHairTypes());
+    this.store.dispatch(new PostActions.GetCustomers(this.auth.userId));
+
+    // This page is not reloaded
+    if (performance.navigation.type !== 1) {
+      // prevent search again when I go back to users or explorers.
+      this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
+    }
   }
 
   ngOnDestroy(): void {

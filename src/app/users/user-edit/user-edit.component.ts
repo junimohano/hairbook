@@ -1,4 +1,4 @@
-import { UserInfo } from '../shared/user-info';
+import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -7,11 +7,11 @@ import { AuthHttp } from 'angular2-jwt/angular2-jwt';
 import { GenderType } from 'app/shared/models/enums/gender-type';
 import { User } from 'app/shared/models/user';
 import { Subscription } from 'rxjs/Subscription';
-import { Location } from '@angular/common';
 
 import { Auth } from '../../shared/auth/auth.service';
 import * as Reducers from '../../shared/reducers';
 import * as UserActions from '../shared/user-actions';
+import { UserInfo } from '../shared/user-info';
 
 // import { myConfig } from '../../shared/auth/auth.config';
 function customWatcher(c: AbstractControl) {
@@ -77,7 +77,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const userName = sessionStorage.getItem('userName');
+    const userName = this.auth.userName
     console.log('userName : ', userName);
     this.store.dispatch(new UserActions.GetUser(userName));
   }

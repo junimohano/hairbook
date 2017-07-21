@@ -3,7 +3,7 @@
     <form [formGroup]="postForm" novalidate>
         <div fxLayout="column" fxLayoutGap="10px">
             <div>
-                <md-radio-group>
+                <md-radio-group [value]="postForm.get('accessType').value">
                     <md-radio-button *ngFor="let accessType of accessTypes; let i = index;" [value]="i" (change)="onChangeAccessType($event)">{{accessType}}</md-radio-button>
                 </md-radio-group>
             </div>

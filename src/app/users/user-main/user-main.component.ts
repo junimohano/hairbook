@@ -8,7 +8,6 @@ import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { User } from 'app/shared/models/user';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { log } from 'util';
 
 import { Auth } from '../../shared/auth/auth.service';
 import * as Reducers from '../../shared/reducers';
@@ -42,9 +41,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
     this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
-  }
 
-  ngOnInit() {
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
       const userNameParam = params['userName'];
       this.store.dispatch(new UserActions.GetUser(userNameParam));
@@ -53,15 +50,18 @@ export class UserMainComponent implements OnInit, OnDestroy {
         isUserPost: true,
         userNameParam: userNameParam
       }
-      this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
-      // this.id = +params['id']; // (+) converts string 'id' to a number
+      this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
     });
 
     this.userSubscription = this.user$.subscribe(user => {
       if (user) {
-        this.isMe = user.userName === sessionStorage.getItem('userName');
+        this.isMe = user.userName === this.auth.userName;
       }
     });
+  }
+
+  ngOnInit() {
+
   }
 
   ngOnDestroy(): void {
@@ -81,7 +81,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
       if (this.scrollFlag) {
         console.log('bottom');
         if (this.postSearchInfo) {
-          this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+          this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
         }
       }
       this.scrollFlag = false;
@@ -93,12 +93,12 @@ export class UserMainComponent implements OnInit, OnDestroy {
   searchChange(searchString: string) {
     if (this.postSearchInfo) {
       this.postSearchInfo.search = searchString;
-      this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+      this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
     }
   }
 
   goDetail(post: Post) {
-    this.router.navigate(['/users', 'post', post.postId]);
+    this.store.dispatch(new SharedActions.NavUsersPost(String(post.postId)));
   }
 
   showMoreComments(post: Post) {

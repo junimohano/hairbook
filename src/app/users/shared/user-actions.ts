@@ -9,7 +9,6 @@ export const EDIT_USER = '[Users] EDIT_USER';
 export const EDIT_USER_IMAGE = '[Users] EDIT_USER_IMAGE';
 export const EDIT_USER_IMAGE_SUCCESS = '[Users] EDIT_USER_IMAGE_SUCCESS';
 
-
 export class GetUser implements Action {
   readonly type = GET_USER;
   constructor(public payload: string) { }

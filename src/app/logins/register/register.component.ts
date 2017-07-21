@@ -1,6 +1,6 @@
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { LoginService } from 'app/logins/shared/login.service';
 import { GenderType } from 'app/shared/models/enums/gender-type';
@@ -8,6 +8,7 @@ import { User } from 'app/shared/models/user';
 
 import * as Reducers from '../../shared/reducers';
 import * as LoginActions from '../shared/login-actions';
+import * as SharedActions from '../../shared/shared-actions';
 
 function customWatcher(c: AbstractControl) {
   if (!c.get('password') || !c.get('password_confirm') || !c.get('userName') || !c.get('userName_confirm')) {
@@ -80,7 +81,7 @@ export class RegisterComponent implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['login']);
+    this.store.dispatch(new SharedActions.NavLogin());
   }
 
 }

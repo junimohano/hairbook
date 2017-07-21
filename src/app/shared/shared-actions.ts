@@ -1,17 +1,23 @@
 import { Action } from '@ngrx/store';
-import { User } from 'app/shared/models/user';
-import { PostComment } from 'app/shared/models/post-comment';
-import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { Post } from 'app/shared/models/post';
-import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { PostComment } from 'app/shared/models/post-comment';
 import { PostCommentInfo } from 'app/shared/models/post-comment-info';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
 export const NO_ACTION = '[Shared] NO_ACTION';
+export const NAV_EXPLORERS = '[Shared] NAV_EXPLORERS';
+export const NAV_EXPLORERS_POST = '[Shared] NAV_EXPLORERS_POST';
+export const NAV_LOGIN_REGISTER = '[Shared] NAV_LOGIN_REGISTER';
+export const NAV_LOGIN = '[Shared] NAV_LOGIN';
+export const NAV_USERS = '[Shared] NAV_USERS';
+export const NAV_USERS_POST = '[Shared] NAV_USERS_POST';
+export const NAV_POSTS = '[Shared] NAV_POSTS';
 export const SET_PROGRESS_BAR = '[Shared] SET_PROGRESS_BAR';
 export const SET_PROGRESS_SPINNER = '[Shared] SET_PROGRESS_SPINNER';
 export const SET_SNACK_BAR = '[Shared] SET_SNACK_BAR';
-export const SEARCH_POST = '[Shared] SEARCH_POST';
-export const SUCCESS_POST = '[Shared] SUCCESS_POST';
+export const SEARCH_POSTS = '[Shared] SEARCH_POSTS';
+export const SUCCESS_POSTS = '[Shared] SUCCESS_POSTS';
 export const PREVIOUS_UPLOAD_INDEX = '[Shared] PREVIOUS_UPLOAD_INDEX';
 export const NEXT_UPLOAD_INDEX = '[Shared] NEXT_UPLOAD_INDEX';
 export const RESET_STATE = '[Shared] RESET_STATE';
@@ -27,15 +33,48 @@ export const DEL_POST_EVALUATION = '[Shared] DEL_POST_EVALUATION';
 export const DEL_POST_EVALUATION_SUCCESS = '[Shared] DEL_POST_EVALUATION_SUCCESS';
 export const GET_POST_COMMENT = '[Shared] GET_POST_COMMENT';
 export const GET_POST_COMMENT_SUCCESS = '[Shared] GET_POST_COMMENT_SUCCESS';
-export const GO_POST_EDIT_PAGE = '[Shared] GO_POST_EDIT_PAGE';
 export const DEL_POST = '[Shared] DEL_POST';
 export const DEL_POST_SUCCESS = '[Shared] DEL_POST_SUCCESS';
-export const GO_USER_PAGE = '[Shared] GO_USER_PAGE';
-
+export const SET_IS_PREVENT_REFRESHING_POSTS = '[Shared] SET_IS_PREVENT_REFRESHING_POSTS';
 
 export class NoAction implements Action {
   readonly type = NO_ACTION;
   constructor() { }
+}
+
+export class NavExplorers implements Action {
+  readonly type = NAV_EXPLORERS;
+  constructor() { }
+}
+
+export class NavExplorersPost implements Action {
+  readonly type = NAV_EXPLORERS_POST;
+  constructor(public payload: string) { }
+}
+
+export class NavLoginRegister implements Action {
+  readonly type = NAV_LOGIN_REGISTER;
+  constructor() { }
+}
+
+export class NavLogin implements Action {
+  readonly type = NAV_LOGIN;
+  constructor() { }
+}
+
+export class NavUsers implements Action {
+  readonly type = NAV_USERS;
+  constructor(public payload: string) { }
+}
+
+export class NavUsersPost implements Action {
+  readonly type = NAV_USERS_POST;
+  constructor(public payload: string) { }
+}
+
+export class NavPosts implements Action {
+  readonly type = NAV_POSTS;
+  constructor(public payload: string) { }
 }
 
 export class SetProgressBar implements Action {
@@ -53,13 +92,13 @@ export class SetSnackBar implements Action {
   constructor(public payload: Response) { }
 }
 
-export class SearchPost implements Action {
-  readonly type = SEARCH_POST;
+export class SearchPosts implements Action {
+  readonly type = SEARCH_POSTS;
   constructor(public payload: PostSearchInfo) { }
 }
 
-export class SuccessPost implements Action {
-  readonly type = SUCCESS_POST;
+export class SuccessPosts implements Action {
+  readonly type = SUCCESS_POSTS;
   constructor(public payload: Post[]) { }
 }
 
@@ -138,11 +177,6 @@ export class GetPostCommentSuccess implements Action {
   constructor(public payload: PostCommentInfo) { }
 }
 
-export class GoPostEditPage implements Action {
-  readonly type = GO_POST_EDIT_PAGE;
-  constructor(public payload: number) { }
-}
-
 export class DelPost implements Action {
   readonly type = DEL_POST;
   constructor(public payload: number) { }
@@ -153,17 +187,25 @@ export class DelPostSuccess implements Action {
   constructor(public payload: number) { }
 }
 
-export class GoUserPage implements Action {
-  readonly type = GO_USER_PAGE;
-  constructor(public payload: string) { }
+export class SetIsPreventRefreshingPosts implements Action {
+  readonly type = SET_IS_PREVENT_REFRESHING_POSTS;
+  constructor(public payload: boolean) { }
 }
 
 export type All
-  = SetProgressBar
+  = NoAction
+  | NavExplorers
+  | NavExplorersPost
+  | NavLoginRegister
+  | NavLogin
+  | NavUsers
+  | NavUsersPost
+  | NavPosts
+  | SetProgressBar
   | SetProgressSpinner
   | SetSnackBar
-  | SearchPost
-  | SuccessPost
+  | SearchPosts
+  | SuccessPosts
   | PreviousUploadIndex
   | NextUploadIndex
   | ResetState
@@ -179,8 +221,7 @@ export type All
   | DelPostEvaluationSuccess
   | GetPostComment
   | GetPostCommentSuccess
-  | GoPostEditPage
   | DelPost
   | DelPostSuccess
-  | GoUserPage
+  | SetIsPreventRefreshingPosts
   ;

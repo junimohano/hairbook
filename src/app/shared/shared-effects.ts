@@ -1,4 +1,7 @@
-import 'rxjs';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/debounceTime';
 
 import { Injectable } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
@@ -12,8 +15,8 @@ import { PostComment } from 'app/shared/models/post-comment';
 import { PostCommentInfo } from 'app/shared/models/post-comment-info';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { SharedService } from 'app/shared/shared.service';
-import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { Observable } from 'rxjs/Rx';
 
 import * as Reducers from './reducers';
 import * as SharedActions from './shared-actions';
@@ -29,14 +32,55 @@ export class SharedEffects {
       console.log(action.payload);
       if (action.payload.status === 401) {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
-        this.router.navigate(['login']);
-        return new SharedActions.NoAction();
+        return new SharedActions.NavLogin();
       } else {
         return new SharedActions.SetProgressBar(false);
       }
     });
 
-  @Effect() searchUserPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POST)
+  @Effect() navExplorersEffect$ = this.actions$.ofType(SharedActions.NAV_EXPLORERS)
+    .map((action: SharedActions.NavExplorers) => {
+      this.router.navigate(['/explorers']);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navExplorersPostEffect$ = this.actions$.ofType(SharedActions.NAV_EXPLORERS_POST)
+    .map((action: SharedActions.NavExplorersPost) => {
+      this.router.navigate(['/explorers', 'post', action.payload]);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navLoginEffect$ = this.actions$.ofType(SharedActions.NAV_LOGIN)
+    .map((action: SharedActions.NavLogin) => {
+      this.router.navigate(['/login']);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navLoginRegisterEffect$ = this.actions$.ofType(SharedActions.NAV_LOGIN_REGISTER)
+    .map((action: SharedActions.NavLoginRegister) => {
+      this.router.navigate(['/login', 'register']);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navUsersEffect$ = this.actions$.ofType(SharedActions.NAV_USERS)
+    .map((action: SharedActions.NavUsers) => {
+      this.router.navigate(['/users', action.payload]);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navUsersPostEffect$ = this.actions$.ofType(SharedActions.NAV_USERS_POST)
+    .map((action: SharedActions.NavUsersPost) => {
+      this.router.navigate(['/users', 'post', action.payload]);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navPostEffect$ = this.actions$.ofType(SharedActions.NAV_POSTS)
+    .map((action: SharedActions.NavPosts) => {
+      this.router.navigate(['/posts', action.payload]);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() searchUserPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POSTS)
     .debounceTime(100)
     // .filter(x => !x)
     // .filter(() => this.auth.userId !== undefined)
@@ -52,8 +96,11 @@ export class SharedEffects {
     .switchMap((results) => {
       let getPostsObservable: Observable<Post[]>;
 
+      // users page
       if (results.postSearchInfo.isUserPost) {
-        getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Private, String(sessionStorage.getItem('userName')), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
+        getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Private, String(this.auth.userName), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
+
+        // explorer page
       } else {
         getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Public, '', '', results.postSearchInfo.search);
       }
@@ -62,7 +109,7 @@ export class SharedEffects {
         .map((posts: Post[]) => {
           this.store.dispatch(new SharedActions.SetProgressBar(false));
           this.store.dispatch(new SharedActions.SetProgressSpinner(false));
-          return new SharedActions.SuccessPost(posts);
+          return new SharedActions.SuccessPosts(posts);
         })
         .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     });
@@ -121,26 +168,12 @@ export class SharedEffects {
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 
-  @Effect() goPostEditPageEffect$ = this.actions$.ofType(SharedActions.GO_POST_EDIT_PAGE)
-    .map((action: SharedActions.GoPostEditPage) => action.payload)
-    .map((postId: number) => {
-      this.router.navigate(['/posts', String(postId)]);
-      return new SharedActions.NoAction();
-    });
-
   @Effect() delPostEffect$ = this.actions$.ofType(SharedActions.DEL_POST)
     .map((action: SharedActions.DelPost) => action.payload)
     .switchMap((postId: number) => this.sharedService.delPost(postId)
       .map(x => new SharedActions.DelPostSuccess(x.postId))
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res))));
   // location.reload()
-
-  @Effect() goUserPageEffect$ = this.actions$.ofType(SharedActions.GO_USER_PAGE)
-    .map((action: SharedActions.GoUserPage) => action.payload)
-    .map((userName: string) => {
-      this.router.navigate(['/users', userName]);
-      return new SharedActions.NoAction();
-    });
 
   constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService, private router: Router) {
 

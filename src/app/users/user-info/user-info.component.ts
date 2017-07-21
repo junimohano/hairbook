@@ -20,11 +20,6 @@ export class UserInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // if (this.user) {
-    //   if (this.user.userName === sessionStorage.getItem('userName')) {
-    //     this.isMe = true;
-    //   }
-    // }
   }
 
 }

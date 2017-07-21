@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
-import { Router } from '@angular/router';
 import 'rxjs/add/operator/filter';
-import { environment } from '../../../environments/environment';
+
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { tokenNotExpired } from 'angular2-jwt';
 import { AuthService } from 'angular2-social-login/dist';
-import { User } from 'app/shared/models/user';
-import { Token } from 'app/shared/models/token';
 
 @Injectable()
 export class Auth {
@@ -29,8 +27,6 @@ export class Auth {
     localStorage.removeItem('id_token');
     // localStorage.removeItem('profile');
     // localStorage.removeItem('redirect_url');
-
-    // this.router.navigate(['/']);
   };
 
   public setLoginData(userId: string, userName: string, accessToken: string) {

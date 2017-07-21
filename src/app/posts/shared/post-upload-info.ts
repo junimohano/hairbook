@@ -1,6 +1,6 @@
+import { UploadCategoryType } from '../../shared/models/enums/upload-category-type';
 import { UploadFileType } from '../../shared/models/enums/upload-file-type';
 import { PostUploadInfoType } from './post-upload-info-type';
-import { UploadCategoryType } from '../../shared/models/enums/upload-category-type';
 
 export class PostUploadInfo {
   postUploadId: number;

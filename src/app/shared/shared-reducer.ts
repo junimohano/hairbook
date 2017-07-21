@@ -1,7 +1,7 @@
-import * as Actions from './shared-actions';
-import { User } from 'app/shared/models/user';
-import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { Post } from 'app/shared/models/post';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
+
+import * as Actions from './shared-actions';
 
 export interface State {
   isProgressBar: boolean;
@@ -9,6 +9,7 @@ export interface State {
   postSearchInfo: PostSearchInfo;
   posts: Post[];
   selectedPost: Post;
+  isPreventRefreshingPosts: boolean;
 }
 
 const initialState: State = {
@@ -18,7 +19,8 @@ const initialState: State = {
     isUserPost: true
   },
   posts: [],
-  selectedPost: null
+  selectedPost: null,
+  isPreventRefreshingPosts: false
 };
 
 export function reducer(state = initialState, action: Actions.All): State {
@@ -32,13 +34,14 @@ export function reducer(state = initialState, action: Actions.All): State {
       return { ...state, isProgressSpinner: action.payload }
     }
 
-    case Actions.SEARCH_POST: {
+    case Actions.SEARCH_POSTS: {
       if (state.postSearchInfo) {
         if (state.postSearchInfo.search !== action.payload.search && action.payload !== null) {
           state.posts = [];
         }
         if (state.postSearchInfo.isUserPost !== action.payload.isUserPost) {
           state.posts = [];
+          state.isPreventRefreshingPosts = false;
         }
         if (action.payload === null) {
           action.payload.search = state.postSearchInfo.search;
@@ -53,10 +56,17 @@ export function reducer(state = initialState, action: Actions.All): State {
       return { ...state };
     }
 
-    case Actions.SUCCESS_POST: {
+    case Actions.SUCCESS_POSTS: {
+
+      if (state.isPreventRefreshingPosts) {
+        state.isPreventRefreshingPosts = false;
+        return state;
+      }
+
       console.log('success post');
 
       action.payload.forEach(x => x.currentUploadIndex = 0);
+      // remove duplicate
       state.posts = state.posts.concat(action.payload)
         .filter((post, index, self) => self.findIndex(x => x.postId === post.postId) === index)
 
@@ -103,7 +113,10 @@ export function reducer(state = initialState, action: Actions.All): State {
       }
 
       const postIndex = state.posts.findIndex(x => x.postId === action.payload.postId);
-      if (postIndex !== -1) {
+      // add Post
+      if (postIndex === -1) {
+        state.posts.splice(0, 0, action.payload);
+      } else {
         state.posts[postIndex] = action.payload;
       }
 
@@ -115,7 +128,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postComments.push(action.payload);
       post.totalPostComments++;
-      return { ...state, selectedPost: post }
+      return { ...state, selectedPost: post };
     }
 
     case Actions.DEL_POST_COMMENT_SUCCESS: {
@@ -123,7 +136,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postComments = post.postComments.filter(x => x.postCommentId !== action.payload.postCommentId);
       post.totalPostComments--;
-      return { ...state, selectedPost: post }
+      return { ...state, selectedPost: post };
     }
 
     case Actions.ADD_POST_EVALUATION_SUCCESS: {
@@ -135,7 +148,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       } else {
         post.isEvaluation = false;
       }
-      return { ...state, selectedPost: post }
+      return { ...state, selectedPost: post };
     }
 
     case Actions.DEL_POST_EVALUATION_SUCCESS: {
@@ -147,7 +160,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       } else {
         post.isEvaluation = false;
       }
-      return { ...state, selectedPost: post }
+      return { ...state, selectedPost: post };
     }
 
     case Actions.GET_POST_COMMENT_SUCCESS: {
@@ -155,13 +168,15 @@ export function reducer(state = initialState, action: Actions.All): State {
       post.postComments = action.payload.postComments.concat(post.postComments)
         .filter((postComment, index, self) => self.findIndex(x => x.postCommentId === postComment.postCommentId) === index)
 
-      return { ...state, selectedPost: post }
+      return { ...state, selectedPost: post };
     }
 
     case Actions.DEL_POST_SUCCESS: {
-      return { ...state, posts: state.posts.filter(x => x.postId !== action.payload) }
+      return { ...state, posts: state.posts.filter(x => x.postId !== action.payload) };
     }
 
+    case Actions.SET_IS_PREVENT_REFRESHING_POSTS:
+      return { ...state, isPreventRefreshingPosts: action.payload };
 
     default:
       return state;

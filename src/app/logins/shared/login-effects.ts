@@ -1,5 +1,6 @@
-import 'rxjs';
-import { empty } from 'rxjs/observable/empty';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/withLatestFrom';
 
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -46,8 +47,7 @@ export class LoginEffects {
           return new LoginActions.GetToken(userSecret);
         } else {
           this.store.dispatch(new SharedActions.SetProgressBar(false));
-          this.router.navigate(['login', 'register']);
-          return new SharedActions.NoAction();
+          return new SharedActions.NavLoginRegister();
         }
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
@@ -70,9 +70,8 @@ export class LoginEffects {
     .map((user: User) => {
       console.log(LoginActions.SET_USER);
       this.store.dispatch(new SharedActions.SetProgressBar(false));
-      this.router.navigate(['/users', user.userName])
 
-      return new SharedActions.NoAction();
+      return new SharedActions.NavUsers(user.userName);
     });
 
   @Effect() registerEffect$ = this.actions$.ofType(LoginActions.REGISTER)

@@ -1,16 +1,16 @@
-import * as PostReducer from '../posts/shared/post-reducer';
-import * as UserReducer from '../users/shared/user-reducer';
-import * as LoginReducer from '../logins/shared/login-reducer';
-import * as SharedReducer from './shared-reducer';
-import { User } from 'app/shared/models/user';
-import { UserSecret } from 'app/logins/shared/user-secret';
 import * as fromRouter from '@ngrx/router-store';
-import { PostSearchInfo } from 'app/shared/models/post-search-info';
-import { Post } from 'app/shared/models/post';
-import { PostComment } from 'app/shared/models/post-comment';
+import { UserSecret } from 'app/logins/shared/user-secret';
+import { Customer } from 'app/shared/models/customer';
 import { HairMenu } from 'app/shared/models/hair-menu';
 import { HairType } from 'app/shared/models/hair-type';
-import { Customer } from 'app/shared/models/customer';
+import { Post } from 'app/shared/models/post';
+import { PostSearchInfo } from 'app/shared/models/post-search-info';
+import { User } from 'app/shared/models/user';
+
+import * as LoginReducer from '../logins/shared/login-reducer';
+import * as PostReducer from '../posts/shared/post-reducer';
+import * as UserReducer from '../users/shared/user-reducer';
+import * as SharedReducer from './shared-reducer';
 
 export interface State {
   router: fromRouter.RouterReducerState;
@@ -75,4 +75,8 @@ export function sharedPostSearchInfo(state: State): PostSearchInfo {
 }
 export function sharedSelectedPost(state: State): Post {
   return state.shared.selectedPost;
+}
+
+export function sharedIsPreventRefreshingPosts(state: State): boolean {
+  return state.shared.isPreventRefreshingPosts;
 }

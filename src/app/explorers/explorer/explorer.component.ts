@@ -41,7 +41,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
       search: '',
       isUserPost: false
     }
-    this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+    this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
   }
 
   ngOnDestroy(): void {
@@ -59,7 +59,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
       if (this.scrollFlag) {
         console.log('bottom');
         if (this.postSearchInfo) {
-          this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+          this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
         }
       }
       this.scrollFlag = false;
@@ -71,12 +71,12 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   searchChange(search: string) {
     if (this.postSearchInfo) {
       this.postSearchInfo.search = search;
-      this.store.dispatch(new SharedActions.SearchPost(this.postSearchInfo));
+      this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
     }
   }
 
   goDetail(post: Post) {
-    this.router.navigate(['/explorers', 'post', post.postId]); ;
+    this.store.dispatch(new SharedActions.NavExplorersPost(String(post.postId)));
   }
 
   showMoreComments(post: Post) {
@@ -100,7 +100,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   }
 
   clickUser(userName: string) {
-    this.store.dispatch(new SharedActions.GoUserPage(userName));
+    this.store.dispatch(new SharedActions.NavUsers(userName));
   }
 
 }

@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Auth } from './shared/auth/auth.service';
-
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as Reducers from './shared/reducers';
 import { Observable } from 'rxjs/Observable';
+
+import { Auth } from './shared/auth/auth.service';
+import * as Reducers from './shared/reducers';
 
 @Component({
   selector: 'hb-root',

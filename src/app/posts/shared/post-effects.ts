@@ -1,8 +1,10 @@
-import 'rxjs';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/withLatestFrom';
 
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs/observable/of';
@@ -114,17 +116,20 @@ export class PostEffects {
       } else {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
         this.store.dispatch(new SharedActions.GetPost(postInfo.post.postId));
-        this.store.dispatch(new PostActions.GoUserPage());
+        this.store.dispatch(new SharedActions.NavUsers(this.auth.userName));
         return Observable.empty();
       }
     });
 
-  @Effect() goUserPageEffect$ = this.actions$.ofType(PostActions.GO_USER_PAGE)
-    .map(() => {
-      this.location.back();
-      // this.router.navigate(['/users', this.auth.userName]);
-      return new SharedActions.NoAction();
-    });
+  // @Effect() goUserPageEffect$ = this.actions$.ofType(PostActions.GO_USER_PAGE)
+  //   .withLatestFrom(this.store)
+  //   .map(([postInfo, state]) => {
+  //     // this.location.back();
+  //     state.shared.postSearchInfo.isUserPost = !state.shared.postSearchInfo.isUserPost;
+
+  //     this.router.navigate(['/users', this.auth.userName]);
+  //     return new SharedActions.NoAction();
+  //   });
 
   @Effect() getCustomersEffect$ = this.actions$.ofType(PostActions.GET_CUSTOMERS)
     .switchMap((action: PostActions.GetCustomers) =>

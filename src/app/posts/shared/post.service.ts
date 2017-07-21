@@ -1,19 +1,14 @@
-import { PostUploadInfo } from './post-upload-info';
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { environment } from 'environments/environment';
+import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
-import { Auth } from 'app/shared/auth/auth.service';
-import { User } from 'app/shared/models/user';
-import { Token } from 'app/shared/models/token';
-import { UserSecret } from 'app/logins/shared/user-secret';
-import { of } from 'rxjs/observable/of';
-import * as SharedActions from '../../shared/shared-actions';
-import { Observable } from 'rxjs/Observable';
+import { Customer } from 'app/shared/models/customer';
 import { HairMenu } from 'app/shared/models/hair-menu';
 import { HairType } from 'app/shared/models/hair-type';
 import { Post } from 'app/shared/models/post';
-import { Customer } from 'app/shared/models/customer';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs/Observable';
+
+import { PostUploadInfo } from './post-upload-info';
 
 @Injectable()
 export class PostService {

@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { User } from 'app/shared/models/user';
 import { UserSecret } from 'app/logins/shared/user-secret';
+import { User } from 'app/shared/models/user';
 
 export const LOGIN_SOCIAL = '[Login] LOGIN_SOCIAL';
 export const EXIST_USER = '[Login] EXIST_USER';

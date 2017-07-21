@@ -1,6 +1,7 @@
-import * as Actions from './login-actions';
-import { User } from 'app/shared/models/user';
 import { UserSecret } from 'app/logins/shared/user-secret';
+import { User } from 'app/shared/models/user';
+
+import * as Actions from './login-actions';
 
 export interface State {
   userKey: string;

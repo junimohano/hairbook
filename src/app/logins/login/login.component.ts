@@ -1,6 +1,6 @@
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { LoginService } from 'app/logins/shared/login.service';
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
   }
 
   signUp() {
-    this.router.navigate(['login', 'register']);
+    this.store.dispatch(new SharedActions.NavLoginRegister());
   }
 
   logout() {

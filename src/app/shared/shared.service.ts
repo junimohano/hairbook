@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
-import { environment } from 'environments/environment';
-import { PostComment } from 'app/shared/models/post-comment';
-import { Post } from 'app/shared/models/post';
-import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { AccessType } from 'app/shared/models/enums/access-type';
+import { Post } from 'app/shared/models/post';
+import { PostComment } from 'app/shared/models/post-comment';
+import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class SharedService {

@@ -1,4 +1,5 @@
-import 'rxjs';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';

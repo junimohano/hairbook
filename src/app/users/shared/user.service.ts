@@ -1,10 +1,11 @@
-import { UserInfo } from './user-info';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
 import { User } from 'app/shared/models/user';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs/Observable';
+
+import { UserInfo } from './user-info';
 
 @Injectable()
 export class UserService {

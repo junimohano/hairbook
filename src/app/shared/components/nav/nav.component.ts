@@ -1,3 +1,4 @@
+import { Auth } from '../../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,8 +10,8 @@ export class NavComponent implements OnInit {
 
   userName = '';
 
-  constructor() {
-    this.userName = sessionStorage.getItem('userName');
+  constructor(private auth: Auth) {
+    this.userName = this.auth.userName;
   }
 
   ngOnInit() {
