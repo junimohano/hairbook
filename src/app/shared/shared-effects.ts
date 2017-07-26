@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/operator/debounceTime';
 
 import { Injectable } from '@angular/core';
 import { MdSnackBar } from '@angular/material';
@@ -64,6 +64,7 @@ export class SharedEffects {
 
   @Effect() navUsersEffect$ = this.actions$.ofType(SharedActions.NAV_USERS)
     .map((action: SharedActions.NavUsers) => {
+      console.log(SharedActions.NAV_USERS);
       this.router.navigate(['/users', action.payload]);
       return new SharedActions.NoAction();
     });
@@ -175,7 +176,12 @@ export class SharedEffects {
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res))));
   // location.reload()
 
-  constructor(private actions$: Actions, private store: Store<Reducers.State>, private auth: Auth, private snackBar: MdSnackBar, private sharedService: SharedService, private router: Router) {
+  constructor(private actions$: Actions,
+    private store: Store<Reducers.State>,
+    private auth: Auth,
+    private snackBar: MdSnackBar,
+    private sharedService: SharedService,
+    private router: Router) {
 
   }
 }

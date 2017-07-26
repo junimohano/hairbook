@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Rx';
+import { Subscribable } from 'rxjs/Observable';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -30,14 +32,13 @@ function customWatcher(c: AbstractControl) {
 @Component({
   selector: 'hb-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  // providers: [
-  //   { provide: NG_VALIDATORS, multi: true, useValue: passwordWatcher }
-  // ]
+  styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   registerForm: FormGroup;
+  existUserNameSubscription: Subscription;
+  loginSocialUserSubscription: Subscription;
 
   constructor(private fb: FormBuilder, private store: Store<Reducers.State>, public loginService: LoginService, private router: Router) {
     this.registerForm = this.fb.group({
@@ -46,14 +47,36 @@ export class RegisterComponent implements OnInit {
       password: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(15)])],
       password_confirm: ['', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(15)])],
       name: ['', Validators.required],
-      email: ['', Validators.compose([Validators.required, Validators.pattern('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$')])]
+      email: ['', Validators.compose([Validators.required, Validators.pattern('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$')])],
+      image: '',
+      userKey: '',
+      provider: ''
     }, { validator: customWatcher });
 
-    this.store.select(Reducers.existUserName)
+    this.existUserNameSubscription = this.store.select(Reducers.existUserName)
       .subscribe(x => this.registerForm.get('userName_confirm').setValue(x));
+
+    this.loginSocialUserSubscription = this.store.select(Reducers.loginSocialUser)
+      .subscribe(x => {
+        if (x) {
+          console.log(x);
+          this.registerForm.patchValue({
+            image: x.photoUrl,
+            userKey: x.id,
+            provider: x.provider,
+            name: x.name,
+            email: x.email
+          });
+        }
+      });
   }
 
   ngOnInit() {
+  }
+
+  public ngOnDestroy(): void {
+    this.existUserNameSubscription.unsubscribe();
+    this.loginSocialUserSubscription.unsubscribe();
   }
 
   valueChange(event) {
@@ -65,15 +88,16 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       const user = <User>{
         userId: 0,
-        userKey: '',
+        userKey: this.registerForm.get('userKey').value,
         userName: this.registerForm.get('userName').value,
         password: this.registerForm.get('password').value,
         email: this.registerForm.get('email').value,
-        image: '',
+        image: this.registerForm.get('image').value,
         name: this.registerForm.get('name').value,
         gender: GenderType.Undefined,
         birthday: null,
-        phone: ''
+        phone: '',
+        provider: this.registerForm.get('provider').value
       };
 
       this.store.dispatch(new LoginActions.Register(user));
@@ -83,5 +107,7 @@ export class RegisterComponent implements OnInit {
   cancel() {
     this.store.dispatch(new SharedActions.NavLogin());
   }
+
+
 
 }

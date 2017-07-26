@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { LoginService } from 'app/logins/shared/login.service';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { User } from 'app/shared/models/user';
 import { Observable } from 'rxjs/Observable';
@@ -30,7 +28,7 @@ export class LoginComponent implements OnInit {
   userKey = '';
   user$: Observable<User>;
 
-  constructor(private fb: FormBuilder, public auth: Auth, private store: Store<Reducers.State>, private translate: TranslateService, private loginService: LoginService, private router: Router) {
+  constructor(private fb: FormBuilder, public auth: Auth, private store: Store<Reducers.State>, private translate: TranslateService) {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
       password: ['', Validators.required],

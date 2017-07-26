@@ -13,6 +13,7 @@ export class User extends Base {
   gender: GenderType;
   birthday: Date | null;
   phone: string;
+  provider: string;
   salonId: number | null;
   salon: Salon | null;
 }

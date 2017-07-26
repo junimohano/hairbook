@@ -5,6 +5,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 
+// social login
+import { SocialLoginModule } from 'angular4-social-login/dist';
+import { config } from './shared/auth/auth.config';
+
 // ngrx
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -21,6 +25,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
 import { ProgressBarComponent } from './shared/components/progress-bar/progress-bar.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +39,8 @@ import { ProgressBarComponent } from './shared/components/progress-bar/progress-
     BrowserAnimationsModule,
     SharedModule,
     AppRoutingModule,
+    // social login
+    SocialLoginModule.initialize(config),
     // ngrx
     EffectsModule.forRoot([SharedEffects]),
     StoreModule.forRoot(reducers),

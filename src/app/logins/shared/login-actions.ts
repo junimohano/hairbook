@@ -1,3 +1,4 @@
+import { SocialUser } from 'angular4-social-login/dist';
 import { Action } from '@ngrx/store';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { User } from 'app/shared/models/user';
@@ -17,7 +18,7 @@ export class LoginSocial implements Action {
 
 export class ExistUser implements Action {
   readonly type = EXIST_USER;
-  constructor(public payload: string) { }
+  constructor(public payload: SocialUser) { }
 }
 
 export class GetToken implements Action {

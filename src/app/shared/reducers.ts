@@ -1,3 +1,4 @@
+import { SocialUser } from 'angular4-social-login/dist';
 import * as fromRouter from '@ngrx/router-store';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { Customer } from 'app/shared/models/customer';
@@ -11,6 +12,7 @@ import * as LoginReducer from '../logins/shared/login-reducer';
 import * as PostReducer from '../posts/shared/post-reducer';
 import * as UserReducer from '../users/shared/user-reducer';
 import * as SharedReducer from './shared-reducer';
+import * as FriendReducer from '../friends/shared/friend-reducer';
 
 export interface State {
   router: fromRouter.RouterReducerState;
@@ -18,6 +20,7 @@ export interface State {
   user: UserReducer.State;
   login: LoginReducer.State;
   shared: SharedReducer.State;
+  friend: FriendReducer.State;
 }
 
 export const reducers = {
@@ -25,7 +28,8 @@ export const reducers = {
   post: PostReducer.reducer,
   user: UserReducer.reducer,
   login: LoginReducer.reducer,
-  shared: SharedReducer.reducer
+  shared: SharedReducer.reducer,
+  friend: FriendReducer.reducer,
 };
 
 // post
@@ -45,6 +49,9 @@ export function userUser(state: State): User {
 }
 
 // login
+export function loginSocialUser(state: State): SocialUser {
+  return state.login.socialUser;
+}
 export function loginUser(state: State): User {
   return state.login.user;
 }
@@ -80,3 +87,5 @@ export function sharedSelectedPost(state: State): Post {
 export function sharedIsPreventRefreshingPosts(state: State): boolean {
   return state.shared.isPreventRefreshingPosts;
 }
+
+// friend

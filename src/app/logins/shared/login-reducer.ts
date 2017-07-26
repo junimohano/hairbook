@@ -1,17 +1,18 @@
+import { SocialUser } from 'angular4-social-login/dist';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { User } from 'app/shared/models/user';
 
 import * as Actions from './login-actions';
 
 export interface State {
-  userKey: string;
+  socialUser: SocialUser;
   user: User;
   userSecret: UserSecret;
   existUserName: boolean;
 }
 
 const initialState: State = {
-  userKey: '',
+  socialUser: null,
   user: null,
   userSecret: null,
   existUserName: false
@@ -20,7 +21,7 @@ const initialState: State = {
 export function reducer(state = initialState, action: Actions.All): State {
   switch (action.type) {
     case Actions.EXIST_USER:
-      return { ...state, userKey: action.payload };
+      return { ...state, socialUser: action.payload };
 
     case Actions.GET_TOKEN:
       return { ...state, userSecret: action.payload };

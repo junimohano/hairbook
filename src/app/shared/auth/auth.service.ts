@@ -1,19 +1,22 @@
 import 'rxjs/add/operator/filter';
 
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { tokenNotExpired } from 'angular2-jwt';
-import { AuthService } from 'angular2-social-login/dist';
+import { AuthService, FacebookLoginProvider } from 'angular4-social-login/dist';
+import { GoogleLoginProvider } from 'angular4-social-login/dist/a4sl-flat';
 
 @Injectable()
 export class Auth {
 
-  constructor(private router: Router, private authService: AuthService) {
-
+  constructor(private authService: AuthService) {
   };
 
   public login(provider: string) {
-    return this.authService.login(provider);
+    if (provider === 'facebook') {
+      return this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+    } else {
+      return this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+    }
   };
 
   public authenticated() {

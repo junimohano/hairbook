@@ -6,9 +6,7 @@ import { HttpModule, Http, RequestOptions } from '@angular/http';
 // Auth
 import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
 import { Auth } from '../shared/auth/auth.service';
-import { providers } from '../shared/auth/auth.config';
 import { AuthGuard } from '../shared/auth/auth.guard';
-import { Angular2SocialLoginModule } from 'angular2-social-login';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -85,9 +83,6 @@ const modules = [
   ReactiveFormsModule,
   FlexLayoutModule,
 
-  // social login
-  Angular2SocialLoginModule,
-
   MdButtonModule,
   MdCheckboxModule,
   MdCardModule,
@@ -146,5 +141,3 @@ const modules = [
   // ],
 })
 export class SharedModule { }
-
-Angular2SocialLoginModule.loadProvidersScripts(providers);

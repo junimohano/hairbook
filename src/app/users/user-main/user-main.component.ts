@@ -1,4 +1,13 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  NgZone,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Post } from 'app/shared/models/post';
@@ -17,9 +26,10 @@ import * as UserActions from '../shared/user-actions';
 @Component({
   selector: 'hb-user-main',
   templateUrl: './user-main.component.html',
-  styleUrls: ['./user-main.component.scss']
+  styleUrls: ['./user-main.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
-export class UserMainComponent implements OnInit, OnDestroy {
+export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   postSearchInfo$: Observable<PostSearchInfo>;
   posts$: Observable<Post[]>;
@@ -36,7 +46,7 @@ export class UserMainComponent implements OnInit, OnDestroy {
   postSearchInfo: PostSearchInfo;
   scrollFlag = true;
 
-  constructor(private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private router: Router) {
+  constructor(private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private router: Router, private cd: ChangeDetectorRef) {
     this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
     this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
@@ -60,8 +70,15 @@ export class UserMainComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+  }
 
+  ngOnInit() {
+    // location.reload();
+    // setTimeout(() => {
+    //   console.log('done');
+    //   this.cd.markForCheck();
+    // }, 5000);
   }
 
   ngOnDestroy(): void {

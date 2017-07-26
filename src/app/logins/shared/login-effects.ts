@@ -1,3 +1,4 @@
+import { SocialUser } from 'angular4-social-login/dist';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/withLatestFrom';
@@ -23,26 +24,24 @@ export class LoginEffects {
   @Effect() loginSocialEffect$ = this.actions$.ofType(LoginActions.LOGIN_SOCIAL)
     .map((action: LoginActions.LoginSocial) => action.payload)
     .switchMap((provider: string) => this.auth.login(provider)
-      .map(data => {
-        console.log(LoginActions.LOGIN_SOCIAL, data);
-        const userKey = data['uid'];
+      .then(socialUser => {
+        console.log(LoginActions.LOGIN_SOCIAL, socialUser);
         this.store.dispatch(new SharedActions.SetProgressBar(true));
-        return new LoginActions.ExistUser(userKey);
+        return new LoginActions.ExistUser(socialUser);
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 
-  // todo: fix here
   @Effect() existUserEffect$ = this.actions$.ofType(LoginActions.EXIST_USER)
     .map((action: LoginActions.ExistUser) => action.payload)
-    .switchMap((userKey: string) => this.loginService.existUser(userKey)
+    .switchMap((socialUser: SocialUser) => this.loginService.existUser(socialUser.id)
       .withLatestFrom(this.store)
       .map(([existUser, state]) => {
         console.log(LoginActions.EXIST_USER);
 
         if (existUser) {
           const userSecret = <UserSecret>{
-            userKey: state.login.userKey
+            userKey: state.login.socialUser.id
           }
           return new LoginActions.GetToken(userSecret);
         } else {
@@ -70,7 +69,6 @@ export class LoginEffects {
     .map((user: User) => {
       console.log(LoginActions.SET_USER);
       this.store.dispatch(new SharedActions.SetProgressBar(false));
-
       return new SharedActions.NavUsers(user.userName);
     });
 
@@ -79,8 +77,7 @@ export class LoginEffects {
     .switchMap((user: User) => this.loginService.postUser(user)
       .map((x: User) => {
         console.log(LoginActions.REGISTER);
-        this.router.navigate(['login']);
-        return new SharedActions.NoAction();
+        return new SharedActions.NavLogin();
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );

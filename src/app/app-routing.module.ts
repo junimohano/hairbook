@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'explorers', loadChildren: './explorers/explorers.module#ExplorersModule', canActivate: [AuthGuard] },
   { path: 'posts', loadChildren: './posts/posts.module#PostsModule', canActivate: [AuthGuard] },
   { path: 'users', loadChildren: './users/users.module#UsersModule', canActivate: [AuthGuard] },
+  { path: 'friends', loadChildren: './friends/friends.module#FriendsModule', canActivate: [AuthGuard] },
   { path: '**', pathMatch: 'full', component: PageNotFoundComponent }
 ];
 
