@@ -1,6 +1,5 @@
 import { FriendSearchType } from './friend-search-type';
 import { UserFriend } from '../../shared/models/user-friend';
-import { SocialUser } from 'angular4-social-login/dist';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { User } from 'app/shared/models/user';
 

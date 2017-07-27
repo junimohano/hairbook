@@ -1,5 +1,4 @@
-import { AuthServiceConfig, GoogleLoginProvider, FacebookLoginProvider } from 'angular4-social-login/dist/a4sl-flat';
-
+import { AuthServiceConfig, FacebookLoginProvider, GoogleLoginProvider } from 'angular4-social-login/dist/a4sl-flat';
 
 const config = new AuthServiceConfig([
   {
@@ -15,6 +14,15 @@ const config = new AuthServiceConfig([
 export function provideConfig() {
   return config;
 }
+
+
+
+
+
+
+
+
+
 
 // export const providers = {
 //   'google': {

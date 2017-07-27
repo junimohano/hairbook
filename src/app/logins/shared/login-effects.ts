@@ -1,3 +1,4 @@
+
 import { SocialUser } from 'angular4-social-login/dist';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -27,6 +28,15 @@ export class LoginEffects {
       .then(socialUser => {
         console.log(LoginActions.LOGIN_SOCIAL, socialUser);
         this.store.dispatch(new SharedActions.SetProgressBar(true));
+
+        // const socialUserTemp = <SocialUser>{
+        //   provider: 'facebook',
+        //   id: socialUser.authResponse.userID,
+        //   email: '',
+        //   name: '',
+        //   photoUrl: 'string'
+        // };
+
         return new LoginActions.ExistUser(socialUser);
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))

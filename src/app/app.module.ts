@@ -1,4 +1,3 @@
-import { FacebookLoginProvider } from 'angular4-social-login/dist';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

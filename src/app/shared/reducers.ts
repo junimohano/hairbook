@@ -1,6 +1,6 @@
+import { SocialUser } from 'angular4-social-login/dist';
 import { FriendSearchInfo } from '../friends/shared/friend-search-info';
 import { UserFriend } from './models/user-friend';
-import { SocialUser } from 'angular4-social-login/dist';
 import * as fromRouter from '@ngrx/router-store';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { Customer } from 'app/shared/models/customer';
