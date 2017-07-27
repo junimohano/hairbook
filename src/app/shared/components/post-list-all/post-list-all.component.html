@@ -1,5 +1,5 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.xs="5px" fxLayoutGap="20px">
-    <md-card *ngFor="let post of posts; let postIndex = index;" class="example-card" fxFlexFill fxLayout="row" fxLayoutWrap.xs fxLayoutAlign="center start">
+    <md-card *ngFor="let post of posts; let postIndex = index;" fxFlexFill fxLayout="row" fxLayoutWrap.xs fxLayoutAlign="start start">
         <div fxFlex="60" fxFlex.xs="100" fxLayout="column" fxLayoutGap="10px">
             <md-card-header>
                 <div *ngIf="post.createdUser.image" md-card-avatar class="example-header-image">
@@ -10,8 +10,8 @@
             </md-card-header>
             <div>
                 <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
-                    <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="300px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
-                        <img md-card-image (swipeleft)="onSwipe(post.postId, $event.type)" (swiperight)="onSwipe(post.postId, $event.type)" [src]="upload.path | imagePath" width="100%" fxFlex.xs="300px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
+                    <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100%" fxFlex="90%" fxLayout="column">
+                        <img md-card-image (swipeleft)="onSwipe(post.postId, $event.type)" (swiperight)="onSwipe(post.postId, $event.type)" [src]="upload.path | imagePath" width="100%">
                         <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
                     </div>
                 </div>
@@ -92,3 +92,4 @@
         </div>
     </md-card>
 </div>
+

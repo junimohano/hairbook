@@ -1,8 +1,8 @@
-<div class="main" fxLayout="column">
-    <div class="no-margin-left">
+<div class="main no-margin-left no-margin-right" fxLayout="column">
+    <div>
         <hb-progress-bar [isProgressBar]="isProgressBar$ | async" class="progress-fixed" fxFlexOffset.gt-md="20" fxFlex.gt-md="60"></hb-progress-bar>
     </div>
-    <div class="no-margin-left">
+    <div>
         <hb-nav class="menu-fixed" fxFlexOffset.gt-md="20" fxFlex.gt-md="60" *ngIf="auth.authenticated()"></hb-nav>
     </div>
     <div>

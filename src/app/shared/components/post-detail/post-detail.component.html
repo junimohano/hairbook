@@ -1,17 +1,17 @@
 <div *ngIf="post" fxLayout="row" fxLayoutWrap class="no-scroll">
 
-    <div fxLayout="column" fxFlex="60" class="no-scroll" fxLayoutAlign="start center">
+    <div fxLayout="column" fxFlex="60" fxFlex.xs="100" class="no-scroll" fxLayoutAlign="start center">
         <div fxLayput="row">
             <div *ngIf="post.createdUser.image">
-                <img md-card-avatar [src]="post.createdUser.image | imagePath">
+                <img md-card-avatar [src]="post.createdUser.image | imagePath" width="50" height="50">
             </div>
             <div>
                 {{post.createdUser.userName}}
             </div>
         </div>
         <div *ngFor="let upload of post?.postUploads; let uploadIndex = index;">
-            <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="500px" fxLayout="column">
-                <img (swipeleft)="onSwipe($event.type)" (swiperight)="onSwipe($event.type)" [src]="upload.path | imagePath" width="100%" fxFlex.xs="100px" fxFlex.sm="150px" fxFlex.md="200px" fxFlex="600px">
+            <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100%" fxFlex="90%" fxLayout="column">
+                <img (swipeleft)="onSwipe($event.type)" (swiperight)="onSwipe($event.type)" [src]="upload.path | imagePath" width="100%">
                 <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
             </div>
         </div>
@@ -21,7 +21,7 @@
         </div>
     </div>
 
-    <div fxLayout="column" fxFlex="40">
+    <div fxLayout="column" fxFlex="40" fxFlex.xs="100">
         <div fxLayout="row" fxLayoutAlign="end center">
             <hb-post-menu (editPost)="editPost()" (deletePost)="deletePost()"></hb-post-menu>
         </div>
