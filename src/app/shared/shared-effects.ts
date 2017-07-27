@@ -81,8 +81,28 @@ export class SharedEffects {
       return new SharedActions.NoAction();
     });
 
+  @Effect() navFriendsFollowersEffect$ = this.actions$.ofType(SharedActions.NAV_FRIENDS_FOLLOWERS)
+    .map((action: SharedActions.NavFriendsFollowers) => {
+      this.router.navigate(['/friends', 'followers']);
+      return new SharedActions.NoAction();
+    });
+
+  @Effect() navFriendsFollowingEffect$ = this.actions$.ofType(SharedActions.NAV_FRIENDS_FOLLOWING)
+    .map((action: SharedActions.NavFriendsFollowing) => {
+      this.router.navigate(['/friends', 'following']);
+      return new SharedActions.NoAction();
+    });
+
   @Effect() searchUserPostEffect$ = this.actions$.ofType(SharedActions.SEARCH_POSTS)
-    .debounceTime(100)
+    .debounceTime(50)
+    .withLatestFrom(this.store, (payload, state) => state)
+    .filter(state => {
+      if (state.shared.isPreventRefreshingPosts) {
+        state.shared.isPreventRefreshingPosts = false;
+        return false;
+      }
+      return true;
+    })
     // .filter(x => !x)
     // .filter(() => this.auth.userId !== undefined)
     .withLatestFrom(this.store, (payload, state) => {

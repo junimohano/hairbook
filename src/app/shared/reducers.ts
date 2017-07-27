@@ -1,3 +1,5 @@
+import { FriendSearchInfo } from '../friends/shared/friend-search-info';
+import { UserFriend } from './models/user-friend';
 import { SocialUser } from 'angular4-social-login/dist';
 import * as fromRouter from '@ngrx/router-store';
 import { UserSecret } from 'app/logins/shared/user-secret';
@@ -83,9 +85,18 @@ export function sharedPostSearchInfo(state: State): PostSearchInfo {
 export function sharedSelectedPost(state: State): Post {
   return state.shared.selectedPost;
 }
-
-export function sharedIsPreventRefreshingPosts(state: State): boolean {
-  return state.shared.isPreventRefreshingPosts;
+export function sharedUsersTabIndex(state: State): number {
+  return state.shared.usersTabIndex;
+}
+export function sharedExplorersTabIndex(state: State): number {
+  return state.shared.explorersTabIndex;
 }
 
 // friend
+export function friendUserFriends(state: State): UserFriend[] {
+  return state.friend.userFriends;
+}
+
+export function friendFriendSearchInfo(state: State): FriendSearchInfo {
+  return state.friend.friendSearchInfo;
+}

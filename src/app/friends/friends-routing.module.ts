@@ -1,4 +1,7 @@
-import { FriendComponent } from './friend/friend.component';
+import { SearchComponent } from './search/search.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FollowingComponent } from './following/following.component';
+import { FriendsComponent } from './friends.component';
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -6,10 +9,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '', component: FriendComponent,
+    path: '', component: FriendsComponent,
     children: [
-      // { path: 'post/:postId', component: PostDetailComponent },
-      // { path: '', component: ExplorerComponent }
+      { path: 'search', component: SearchComponent },
+      { path: 'followers', component: FollowersComponent },
+      { path: 'following', component: FollowingComponent },
     ]
   }
 ];

@@ -1,1 +1,7 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <hb-post-search [search]="friendSearchInfo?.search" (searchChange)="searchChange($event)"></hb-post-search>
+</div>
+
+<hb-friend-nav></hb-friend-nav>
+
 <router-outlet></router-outlet>

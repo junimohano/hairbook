@@ -1,9 +1,9 @@
+import { GoogleLoginProvider } from 'angular4-social-login/dist/a4sl-flat';
+import { FacebookLoginProvider, AuthService } from 'angular4-social-login/dist';
 import 'rxjs/add/operator/filter';
 
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
-import { AuthService, FacebookLoginProvider } from 'angular4-social-login/dist';
-import { GoogleLoginProvider } from 'angular4-social-login/dist/a4sl-flat';
 
 @Injectable()
 export class Auth {

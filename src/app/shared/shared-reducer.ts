@@ -1,3 +1,4 @@
+import { PostEvaluation } from './models/post-evaluation';
 import { Post } from 'app/shared/models/post';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 
@@ -10,6 +11,8 @@ export interface State {
   posts: Post[];
   selectedPost: Post;
   isPreventRefreshingPosts: boolean;
+  usersTabIndex: number;
+  explorersTabIndex: number;
 }
 
 const initialState: State = {
@@ -20,7 +23,9 @@ const initialState: State = {
   },
   posts: [],
   selectedPost: null,
-  isPreventRefreshingPosts: false
+  isPreventRefreshingPosts: false,
+  usersTabIndex: 0,
+  explorersTabIndex: 1
 };
 
 export function reducer(state = initialState, action: Actions.All): State {
@@ -41,41 +46,38 @@ export function reducer(state = initialState, action: Actions.All): State {
         }
         if (state.postSearchInfo.isUserPost !== action.payload.isUserPost) {
           state.posts = [];
+          action.payload.search = '';
           state.isPreventRefreshingPosts = false;
         }
-        if (action.payload === null) {
-          action.payload.search = state.postSearchInfo.search;
-        }
+        // if (action.payload === null) {
+        //   action.payload.search = state.postSearchInfo.search;
+        // }
       }
-      state.postSearchInfo = <PostSearchInfo>{
+      const postSearchInfo = <PostSearchInfo>{
         search: action.payload.search,
         userNameParam: action.payload.userNameParam,
         isUserPost: action.payload.isUserPost
       }
 
-      return { ...state };
+      return { ...state, postSearchInfo: postSearchInfo };
     }
 
     case Actions.SUCCESS_POSTS: {
-
-      if (state.isPreventRefreshingPosts) {
-        state.isPreventRefreshingPosts = false;
-        return state;
-      }
-
       console.log('success post');
 
       action.payload.forEach(x => x.currentUploadIndex = 0);
+
       // remove duplicate
       state.posts = state.posts.concat(action.payload)
-        .filter((post, index, self) => self.findIndex(x => x.postId === post.postId) === index)
+        .filter((post, index, self) => self.findIndex(x => x.postId === post.postId) === index);
 
       state.posts.forEach(x => {
-        if (x.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-          x.isEvaluation = true;
-        } else {
-          x.isEvaluation = false;
-        }
+        setValidatePostEvaluations(x);
+        // if (x.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+        //   x.isEvaluation = true;
+        // } else {
+        //   x.isEvaluation = false;
+        // }
       });
 
       console.log(`search_post : ${state.posts.length}`);
@@ -106,17 +108,19 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.GET_POST_SUCCESS: {
       action.payload.currentUploadIndex = 0;
-      if (action.payload.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-        action.payload.isEvaluation = true;
-      } else {
-        action.payload.isEvaluation = false;
-      }
+      setValidatePostEvaluations(action.payload);
+      // if (action.payload.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+      //   action.payload.isEvaluation = true;
+      // } else {
+      //   action.payload.isEvaluation = false;
+      // }
 
       const postIndex = state.posts.findIndex(x => x.postId === action.payload.postId);
       // add Post
       if (postIndex === -1) {
         state.posts.splice(0, 0, action.payload);
       } else {
+        // replace
         state.posts[postIndex] = action.payload;
       }
 
@@ -143,11 +147,12 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postEvaluations.push(action.payload);
-      if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-        post.isEvaluation = true;
-      } else {
-        post.isEvaluation = false;
-      }
+      setValidatePostEvaluations(post);
+      // if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+      //   post.isEvaluation = true;
+      // } else {
+      //   post.isEvaluation = false;
+      // }
       return { ...state, selectedPost: post };
     }
 
@@ -155,11 +160,12 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
-      if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-        post.isEvaluation = true;
-      } else {
-        post.isEvaluation = false;
-      }
+      setValidatePostEvaluations(post);
+      // if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+      //   post.isEvaluation = true;
+      // } else {
+      //   post.isEvaluation = false;
+      // }
       return { ...state, selectedPost: post };
     }
 
@@ -178,8 +184,22 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.SET_IS_PREVENT_REFRESHING_POSTS:
       return { ...state, isPreventRefreshingPosts: action.payload };
 
+    case Actions.SET_USERS_TAB_INDEX:
+      return { ...state, usersTabIndex: action.payload };
+
+    case Actions.SET_EXPLORERS_TAB_INDEX:
+      return { ...state, explorersTabIndex: action.payload };
+
     default:
       return state;
+  }
+}
+
+function setValidatePostEvaluations(post: Post) {
+  if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
+    post.isEvaluation = true;
+  } else {
+    post.isEvaluation = false;
   }
 }
 

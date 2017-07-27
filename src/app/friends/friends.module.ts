@@ -1,14 +1,15 @@
-import { FriendService } from './shared/friend.service';
 import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
 
 import { SharedModule } from '../shared/shared.module';
 import { FriendsRoutingModule } from './friends-routing.module';
-
-import { EffectsModule } from '@ngrx/effects';
-import { FriendEffects } from './shared/friend-effects';
-
 import { FriendsComponent } from './friends.component';
-import { FriendComponent } from './friend/friend.component';
+import { FriendEffects } from './shared/friend-effects';
+import { FriendService } from './shared/friend.service';
+import { FollowingComponent } from './following/following.component';
+import { FollowersComponent } from './followers/followers.component';
+import { FriendNavComponent } from './friend-nav/friend-nav.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,10 @@ import { FriendComponent } from './friend/friend.component';
   ],
   declarations: [
     FriendsComponent,
-    FriendComponent
+    FollowingComponent,
+    FollowersComponent,
+    FriendNavComponent,
+    SearchComponent
   ],
   providers: [
     FriendService

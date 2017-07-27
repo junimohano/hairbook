@@ -24,21 +24,32 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   postSearchInfo$: Observable<PostSearchInfo>;
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
+  sharedExplorersTabIndex$: Observable<number>;
+
+  postSearchInfoSubscription: Subscription;
   previousSubscription: Subscription;
   nextSubscription: Subscription;
 
   postSearchInfo: PostSearchInfo;
+  search: string;
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
     this.postSearchInfo$ = store.select(Reducers.sharedPostSearchInfo);
     this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
+    this.sharedExplorersTabIndex$ = store.select(Reducers.sharedExplorersTabIndex);
+
+    this.postSearchInfoSubscription = this.postSearchInfo$.subscribe(x => {
+      if (x) {
+        this.search = x.search;
+      }
+    });
   }
 
   ngOnInit() {
     this.postSearchInfo = <PostSearchInfo>{
-      search: '',
+      search: this.search,
       isUserPost: false
     }
     this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
@@ -51,6 +62,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     if (this.nextSubscription) {
       this.nextSubscription.unsubscribe();
     }
+    this.postSearchInfoSubscription.unsubscribe();
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -103,4 +115,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new SharedActions.NavUsers(userName));
   }
 
+  onSelectedIndexChange(event) {
+    this.store.dispatch(new SharedActions.SetExplorersTabIndex(event));
+  }
 }

@@ -1,0 +1,9 @@
+<md-list>
+    <h3 md-subheader>Followers</h3>
+    <md-list-item *ngFor="let userFriend of userFriends$ | async" (click)="onNavUser(userFriend.createdUser.userName)">
+        <md-icon md-list-icon>folder</md-icon>
+        <h4 md-line> {{userFriend.createdUser.userName}}</h4>
+        <p md-line> {{userFriend.createdUser.name}} </p>
+    </md-list-item>
+    <md-divider></md-divider>
+</md-list>

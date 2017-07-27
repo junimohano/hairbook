@@ -8,12 +8,19 @@
             </div>
         </div>
 
-        <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="column" fxLayoutGap="15px">
             <div class="user-name">
                 {{user?.userName}} <button *ngIf="isMe" md-button type="submit" [routerLink]="['/users', 'edit']"><md-icon>brightness_low</md-icon></button>
             </div>
             <div><strong>{{user?.name}}</strong></div>
             <div><span fxHide.xs>{{user?.email}}</span></div>
+
+            <div fxLayout="row" fxLayoutGap="10px">
+                <div><span>{{user?.totalUserPosts}} posts</span></div>
+                <div (click)="onClickFollowers()"><span>{{user?.totalUserFollowers}} followers</span></div>
+                <div (click)="onClickFollowing()"><span>{{user?.totalUserFollowing}} following</span></div>
+            </div>
+
         </div>
     </div>
     <div></div>

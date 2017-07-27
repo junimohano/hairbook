@@ -14,7 +14,8 @@ export interface State {
 
 const initialState: State = {
   friendSearchInfo: <FriendSearchInfo>{
-    friendSearchType: FriendSearchType.Search
+    friendSearchType: FriendSearchType.Following,
+    search: ''
   },
   userFriends: []
 };
@@ -23,7 +24,22 @@ export function reducer(state = initialState, action: Actions.All): State {
   switch (action.type) {
 
     case Actions.SEARCH_FRIENDS:
-      return { ...state, friendSearchInfo: action.payload };
+      if (state.friendSearchInfo) {
+        if (state.friendSearchInfo.search !== action.payload.search && action.payload !== null) {
+          state.userFriends = [];
+        }
+        if (state.friendSearchInfo.friendSearchType !== action.payload.friendSearchType) {
+          state.userFriends = [];
+        }
+        if (action.payload === null) {
+          action.payload.search = state.friendSearchInfo.search;
+        }
+      }
+      state.friendSearchInfo = <FriendSearchInfo>{
+        search: action.payload.search,
+        friendSearchType: action.payload.friendSearchType
+      };
+      return { ...state };
 
     case Actions.SEARCH_FRIENDS_SUCCESS:
       return { ...state, userFriends: action.payload };

@@ -14,6 +14,10 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   }), http, options);
 }
 
+// Social Login
+import { SocialLoginModule, AuthServiceConfig } from 'angular4-social-login/dist/a4sl-flat';
+import { provideConfig } from './auth/auth.config';
+
 // i18n
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -83,6 +87,8 @@ const modules = [
   ReactiveFormsModule,
   FlexLayoutModule,
 
+  SocialLoginModule,
+
   MdButtonModule,
   MdCheckboxModule,
   MdCardModule,
@@ -131,6 +137,10 @@ const modules = [
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
+    },
+    {
+      provide: AuthServiceConfig,
+      useFactory: provideConfig
     },
     Auth,
     AuthGuard,

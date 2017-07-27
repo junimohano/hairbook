@@ -5,5 +5,5 @@ export class UserFriend extends Base {
   userFriendId: number;
 
   friendId: number;
-  Friend: User;
+  friend: User;
 }

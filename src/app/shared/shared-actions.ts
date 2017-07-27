@@ -13,6 +13,8 @@ export const NAV_LOGIN = '[Shared] NAV_LOGIN';
 export const NAV_USERS = '[Shared] NAV_USERS';
 export const NAV_USERS_POST = '[Shared] NAV_USERS_POST';
 export const NAV_POSTS = '[Shared] NAV_POSTS';
+export const NAV_FRIENDS_FOLLOWERS = '[Shared] NAV_FRIENDS_FOLLOWERS';
+export const NAV_FRIENDS_FOLLOWING = '[Shared] NAV_FRIENDS_FOLLOWING';
 export const SET_PROGRESS_BAR = '[Shared] SET_PROGRESS_BAR';
 export const SET_PROGRESS_SPINNER = '[Shared] SET_PROGRESS_SPINNER';
 export const SET_SNACK_BAR = '[Shared] SET_SNACK_BAR';
@@ -36,6 +38,8 @@ export const GET_POST_COMMENT_SUCCESS = '[Shared] GET_POST_COMMENT_SUCCESS';
 export const DEL_POST = '[Shared] DEL_POST';
 export const DEL_POST_SUCCESS = '[Shared] DEL_POST_SUCCESS';
 export const SET_IS_PREVENT_REFRESHING_POSTS = '[Shared] SET_IS_PREVENT_REFRESHING_POSTS';
+export const SET_USERS_TAB_INDEX = '[Shared] SET_USERS_TAB_INDEX';
+export const SET_EXPLORERS_TAB_INDEX = '[Shared] SET_EXPLORERS_TAB_INDEX';
 
 export class NoAction implements Action {
   readonly type = NO_ACTION;
@@ -75,6 +79,16 @@ export class NavUsersPost implements Action {
 export class NavPosts implements Action {
   readonly type = NAV_POSTS;
   constructor(public payload: string) { }
+}
+
+export class NavFriendsFollowers implements Action {
+  readonly type = NAV_FRIENDS_FOLLOWERS;
+  constructor() { }
+}
+
+export class NavFriendsFollowing implements Action {
+  readonly type = NAV_FRIENDS_FOLLOWING;
+  constructor() { }
 }
 
 export class SetProgressBar implements Action {
@@ -192,6 +206,16 @@ export class SetIsPreventRefreshingPosts implements Action {
   constructor(public payload: boolean) { }
 }
 
+export class SetUsersTabIndex implements Action {
+  readonly type = SET_USERS_TAB_INDEX;
+  constructor(public payload: number) { }
+}
+
+export class SetExplorersTabIndex implements Action {
+  readonly type = SET_EXPLORERS_TAB_INDEX;
+  constructor(public payload: number) { }
+}
+
 export type All
   = NoAction
   | NavExplorers
@@ -201,6 +225,8 @@ export type All
   | NavUsers
   | NavUsersPost
   | NavPosts
+  | NavFriendsFollowers
+  | NavFriendsFollowing
   | SetProgressBar
   | SetProgressSpinner
   | SetSnackBar
@@ -224,4 +250,6 @@ export type All
   | DelPost
   | DelPostSuccess
   | SetIsPreventRefreshingPosts
+  | SetUsersTabIndex
+  | SetExplorersTabIndex
   ;

@@ -1,4 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { subscribeOn } from 'rxjs/operator/subscribeOn';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs/Rx';
+
+import { UserFriend } from '../shared/models/user-friend';
+import * as Reducers from '../shared/reducers';
+import * as FriendActions from './shared/friend-actions';
+import { FriendSearchInfo } from './shared/friend-search-info';
+import { FriendSearchType } from './shared/friend-search-type';
 
 @Component({
   selector: 'hb-friends',
@@ -6,11 +15,48 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   styleUrls: ['./friends.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class FriendsComponent implements OnInit {
+export class FriendsComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  scrollFlag = true;
+  friendSearchInfoSubscription: Subscription;
+  friendSearchInfo: FriendSearchInfo;
+
+  constructor(private store: Store<Reducers.State>) {
+    this.friendSearchInfoSubscription = store.select(Reducers.friendFriendSearchInfo).subscribe(x => {
+      this.friendSearchInfo = x;
+    });
+  }
 
   ngOnInit() {
+  }
+
+  public ngOnDestroy(): void {
+    this.friendSearchInfoSubscription.unsubscribe();
+  }
+
+  searchChange(searchString: string) {
+    if (this.friendSearchInfo) {
+      const friendSearchInfo = <FriendSearchInfo>{
+        friendSearchType: this.friendSearchInfo.friendSearchType,
+        search: searchString
+      };
+      this.store.dispatch(new FriendActions.SearchFriends(friendSearchInfo));
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
+      if (this.scrollFlag) {
+        console.log('bottom');
+        if (this.friendSearchInfo) {
+          this.store.dispatch(new FriendActions.SearchFriends(this.friendSearchInfo));
+        }
+      }
+      this.scrollFlag = false;
+    } else {
+      this.scrollFlag = true;
+    }
   }
 
 }

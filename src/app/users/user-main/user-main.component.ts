@@ -35,7 +35,10 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
   user$: Observable<User>;
+  sharedUsersTabIndex$: Observable<number>;
   isMe = false;
+
+  postSearchInfoSubscription: Subscription;
   activatedRouteSubscription: Subscription;
   userSubscription: Subscription;
   previousSubscription: Subscription;
@@ -44,6 +47,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   postCommentSubscription: Subscription;
 
   postSearchInfo: PostSearchInfo;
+  search: string;
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private router: Router, private cd: ChangeDetectorRef) {
@@ -51,12 +55,19 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
+    this.sharedUsersTabIndex$ = store.select(Reducers.sharedUsersTabIndex);
+
+    this.postSearchInfoSubscription = this.postSearchInfo$.subscribe(x => {
+      if (x) {
+        this.search = x.search;
+      }
+    });
 
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
       const userNameParam = params['userName'];
       this.store.dispatch(new UserActions.GetUser(userNameParam));
       this.postSearchInfo = <PostSearchInfo>{
-        search: '',
+        search: this.search,
         isUserPost: true,
         userNameParam: userNameParam
       }
@@ -90,6 +101,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.nextSubscription) {
       this.nextSubscription.unsubscribe();
     }
+    this.postSearchInfoSubscription.unsubscribe();
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -136,6 +148,10 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   delPostEvalution(postEvaluationId: number) {
     this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluationId));
+  }
+
+  onSelectedIndexChange(event) {
+    this.store.dispatch(new SharedActions.SetUsersTabIndex(event));
   }
 
 }

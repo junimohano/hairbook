@@ -18,9 +18,9 @@ import { FriendService } from './friend.service';
 @Injectable()
 export class FriendEffects {
 
-
   @Effect() searchFriendsEffect$ = this.actions$.ofType(FriendActions.SEARCH_FRIENDS)
     .map((action: FriendActions.SearchFriends) => action.payload)
+    .debounceTime(50)
     .withLatestFrom(this.store, (payload, state) => {
       const totalFriends = state.friend.userFriends.length;
       if (totalFriends === 0) {
@@ -33,7 +33,7 @@ export class FriendEffects {
     .switchMap((results) => this.friendService.getFriends(results.currentTotalUserFriends, results.friendSearchInfo.friendSearchType, this.auth.userId, results.friendSearchInfo.search)
       .map(userFriends => {
         console.log(FriendActions.SEARCH_FRIENDS, userFriends);
-        this.store.dispatch(new SharedActions.SetProgressBar(true));
+        this.store.dispatch(new SharedActions.SetProgressBar(false));
         return new FriendActions.SearchFriendsSuccess(userFriends);
       })
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))

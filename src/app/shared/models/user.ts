@@ -16,4 +16,8 @@ export class User extends Base {
   provider: string;
   salonId: number | null;
   salon: Salon | null;
+
+  totalUserFollowing: number;
+  totalUserFollowers: number;
+  totalUserPosts: number;
 }

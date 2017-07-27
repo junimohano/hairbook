@@ -281,8 +281,9 @@ export class PostComponent implements OnInit, OnDestroy {
     // This page is not reloaded
     if (performance.navigation.type !== 1) {
       // prevent search again when I go back to users or explorers.
-      this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
     }
+    // todo: move here !!
+    this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
   }
 
   ngOnDestroy(): void {

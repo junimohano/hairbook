@@ -1,6 +1,6 @@
 <div>
     <md-input-container>
-        <input mdInput placeholder="Search" [value]="search" (keyup)="searchChange.emit($event.target.value)">
-        <!--(ngModelChange)="valueChange($event)" [(ngModel)]="search"-->
+        <input mdInput placeholder="Search" [(ngModel)]="search" (ngModelChange)="searchChange.emit($event)">
+        <!-- <input mdInput placeholder="Search" [value]="search" (keyup)="searchChange.emit($event.target.value)"> -->
     </md-input-container>
 </div>
