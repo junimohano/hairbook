@@ -23,11 +23,9 @@
         </div>
         <div fxFlex="30" fxFlex.xs="100">
             <md-card-content>
-                <!-- <p>{{post.customer.name}}</p>
-                <p>{{post.date | date}}</p> -->
 
                 <div fxLayout="row">
-                    <md-input-container>
+                    <md-input-container fxFlexFill>
                         <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
                     </md-input-container>
 
@@ -35,7 +33,7 @@
                 </div>
 
                 <div fxLayout="row">
-                    <md-input-container>
+                    <md-input-container fxFlexFill>
                         <input mdInput [mdDatepicker]="" placeholder="When" [(ngModel)]="post.date" readonly>
                         <button mdSuffix [mdDatepickerToggle]=""></button>
                     </md-input-container>
@@ -43,32 +41,63 @@
                 </div>
 
                 <div fxLayout="column">
-                    <md-input-container fxFill>
+                    <h5>Hair Types</h5>
+                    <md-chip-list>
+                        <div *ngFor="let postHairType of post.postHairTypes; let i = index;">
+                            <md-chip selected="true" [color]="i % 3 == 0 ? 'primary' : i % 2 == 0 ? 'accent' : 'warn'">
+                                {{postHairType.hairType?.name}}
+                            </md-chip>
+                        </div>
+                    </md-chip-list>
+                </div>
+
+                <div>
+                    <div fxLayout="column" fxLayoutGap="10px">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <md-input-container fxFlexFill>
+                        <textarea mdInput placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
+                    </md-input-container>
+                </div>
+
+                <div fxLayout="column">
+                    <h5>Hair Menus</h5>
+                    <md-chip-list>
+                        <div *ngFor="let postHairMenu of post.postHairMenus; let i = index;">
+                            <md-chip selected="true" [color]="i % 3 == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
+                                {{postHairMenu?.hairMenu?.name}}
+                            </md-chip>
+                        </div>
+                    </md-chip-list>
+                </div>
+
+                <div fxLayout="column" *ngIf="post.postMenuColor">
+                    <h4>{{post.postMenuColor.hairSubMenu?.name}}</h4>
+                    <md-input-container>
+                        <textarea mdInput placeholder="Color Memo" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
+                    </md-input-container>
+                </div>
+
+                <div fxLayout="column" *ngIf="post?.postMenuPerm">
+                    <h4>{{post.postMenuPerm.hairSubMenu?.name}}</h4>
+                    <md-input-container>
+                        <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
+                    </md-input-container>
+                </div>
+
+                <div>
+                    <div fxLayout="column" fxLayoutGap="10px">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <md-input-container fxFlexFill>
                         <textarea mdInput placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
-                <h5>Menu</h5>
-                <md-chip-list>
-                    <div *ngFor="let postHairMenu of post.postHairMenus; let i = index;">
-                        <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
-                            {{postHairMenu?.hairMenu?.name}}
-                        </md-chip>
-                    </div>
-                </md-chip-list>
-
-                <h5>HairType</h5>
-                <md-chip-list>
-                    <div *ngFor="let postHairType of post.postHairTypes; let i = index;">
-                        <md-chip fxFlex="70px" selected="true" [color]="i == 0 ? 'accent' : i % 2 == 0 ? 'warn' : 'primary'">
-                            {{postHairType.hairType?.name}}
-                        </md-chip>
-                    </div>
-                </md-chip-list>
-                <p>{{post.hairTypeMemo}}</p>
-
-
             </md-card-content>
+
             <md-card-actions>
                 <div fxLayout="row">
                     <md-icon (click)="onSetPostEvalution(post)">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon> {{post?.postEvaluations?.length}} &nbsp;
@@ -83,7 +112,7 @@
                     </md-list-item>
                 </md-list>
                 <div fxLayout="row">
-                    <md-input-container>
+                    <md-input-container fxFlex="80">
                         <input mdInput placeholder="Comment" [(ngModel)]="post.comment" #commentBox>
                     </md-input-container>
                     <button md-button class="warn" (click)="onAddPostComment(post)">Add</button>
@@ -92,4 +121,3 @@
         </div>
     </md-card>
 </div>
-

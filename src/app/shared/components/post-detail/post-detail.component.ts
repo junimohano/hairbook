@@ -22,8 +22,8 @@ import * as SharedActions from '../../shared-actions';
 export class PostDetailComponent implements OnInit, OnDestroy {
 
   post: Post;
-  postMenuColor: PostHairMenu;
-  postMenuPerm: PostHairMenu;
+  // postMenuColor: PostHairMenu;
+  // postMenuPerm: PostHairMenu;
 
   @ViewChild('commentBox') commentBox;
   @Output() closeDialog = new EventEmitter();
@@ -41,7 +41,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     // console.log(this.uploadCategories);
 
     if (data) {
-      this.setPostData(data);
+      this.post = data;
+      // this.setPostData(data);
     } else {
       this.activatedRouteSubscription = activatedRoute.params.subscribe(params => {
         console.log(params);
@@ -49,7 +50,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         const postId = +params['postId'];
         this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
           if (post) {
-            this.setPostData(post);
+            this.post = post;
+            // this.setPostData(post);
           }
         });
 
@@ -58,12 +60,11 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  setPostData(post: Post) {
-    console.log(post);
-    this.post = post;
-    this.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
-    this.postMenuPerm = post.postHairMenus.find(x => x.hairMenuId === 3);
-  }
+  // setPostData(post: Post) {
+  //   console.log(post);
+  // this.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
+  // this.postMenuPerm = post.postHairMenus.find(x => x.hairMenuId === 3);
+  // }
 
   ngOnInit() {
     this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));

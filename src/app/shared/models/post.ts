@@ -30,6 +30,8 @@ export class Post extends Base {
   currentUploadIndex: number;
   comment: string;
   isEvaluation: boolean;
+  postMenuColor: PostHairMenu;
+  postMenuPerm: PostHairMenu;
 }
 
 

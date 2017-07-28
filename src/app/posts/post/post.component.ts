@@ -49,6 +49,8 @@ export class PostComponent implements OnInit, OnDestroy {
 
   @ViewChild('fileInput') fileInput;
 
+  isProgressSpinner$: Observable<boolean>;
+
   postForm: FormGroup;
 
   hairSubMenuColors: HairSubMenu[];
@@ -77,6 +79,8 @@ export class PostComponent implements OnInit, OnDestroy {
   isEdit = false;
 
   constructor(public auth: Auth, private fb: FormBuilder, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private location: Location) {
+    this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
+
     Object.keys(AccessType).forEach((x, i) => {
       if (i > 2) {
         this.accessTypes.push(x);
@@ -92,14 +96,14 @@ export class PostComponent implements OnInit, OnDestroy {
     this.postForm = this.fb.group({
       accessType: [2, Validators.required],
       customer: ['', Validators.required],
-      date: ['', Validators.required],
+      date: [new Date().toLocaleDateString(), Validators.required],
       memo: '',
       hairMenus: [false, Validators.requiredTrue],
       hairTypes: [false, Validators.requiredTrue],
       hairTypeMemo: '',
-      hairSubMenuColor: 0,
+      hairSubMenuColor: 2,
       hairSubMenuColorMemo: '',
-      hairSubMenuPerm: 0,
+      hairSubMenuPerm: 8,
       hairSubMenuPermMemo: ''
     }, { validator: customWatcher });
 
@@ -393,6 +397,27 @@ export class PostComponent implements OnInit, OnDestroy {
             postUploadInfoType: PostUploadInfoType.Add
           }));
         }
+
+        // reader.onloadend = function () {
+
+        //   const exif = EXIF.readFromBinaryFile(new BinaryFile(this.result));
+
+        //   switch (exif.Orientation) {
+
+        //     case 8:
+        //       ctx.rotate(90 * Math.PI / 180);
+        //       break;
+        //     case 3:
+        //       ctx.rotate(180 * Math.PI / 180);
+        //       break;
+        //     case 6:
+        //       ctx.rotate(-90 * Math.PI / 180);
+        //       break;
+
+
+        //   }
+        // };
+
         reader.readAsDataURL(file);
       }
     }

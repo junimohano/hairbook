@@ -65,19 +65,15 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.SUCCESS_POSTS: {
       console.log('success post');
 
-      action.payload.forEach(x => x.currentUploadIndex = 0);
-
       // remove duplicate
       state.posts = state.posts.concat(action.payload)
         .filter((post, index, self) => self.findIndex(x => x.postId === post.postId) === index);
 
-      state.posts.forEach(x => {
-        setValidatePostEvaluations(x);
-        // if (x.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-        //   x.isEvaluation = true;
-        // } else {
-        //   x.isEvaluation = false;
-        // }
+      state.posts.forEach(post => {
+        post.currentUploadIndex = 0;
+        post.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
+        post.postMenuPerm = post.postHairMenus.find(x => x.hairMenuId === 3);
+        setValidatePostEvaluations(post);
       });
 
       console.log(`search_post : ${state.posts.length}`);
@@ -108,12 +104,9 @@ export function reducer(state = initialState, action: Actions.All): State {
 
     case Actions.GET_POST_SUCCESS: {
       action.payload.currentUploadIndex = 0;
+      action.payload.postMenuColor = action.payload.postHairMenus.find(x => x.hairMenuId === 2);
+      action.payload.postMenuPerm = action.payload.postHairMenus.find(x => x.hairMenuId === 3);
       setValidatePostEvaluations(action.payload);
-      // if (action.payload.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-      //   action.payload.isEvaluation = true;
-      // } else {
-      //   action.payload.isEvaluation = false;
-      // }
 
       const postIndex = state.posts.findIndex(x => x.postId === action.payload.postId);
       // add Post
@@ -148,11 +141,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postEvaluations.push(action.payload);
       setValidatePostEvaluations(post);
-      // if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-      //   post.isEvaluation = true;
-      // } else {
-      //   post.isEvaluation = false;
-      // }
       return { ...state, selectedPost: post };
     }
 
@@ -161,11 +149,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
       setValidatePostEvaluations(post);
-      // if (post.postEvaluations.findIndex(postEvaluation => postEvaluation.createdUserId === +sessionStorage.getItem('userId')) !== -1) {
-      //   post.isEvaluation = true;
-      // } else {
-      //   post.isEvaluation = false;
-      // }
       return { ...state, selectedPost: post };
     }
 

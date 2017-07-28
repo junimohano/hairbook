@@ -42,6 +42,7 @@ export class PostEffects {
     .withLatestFrom(this.store)
     .switchMap(([postInfo, state]) => {
       this.store.dispatch(new SharedActions.SetProgressBar(true));
+      this.store.dispatch(new SharedActions.SetProgressSpinner(true));
       return this.postService.addPost(postInfo.post)
         .map((post: Post) => {
           console.log(PostActions.ADD_POST);
@@ -60,6 +61,7 @@ export class PostEffects {
     .withLatestFrom(this.store)
     .switchMap(([postInfo, state]) => {
       this.store.dispatch(new SharedActions.SetProgressBar(true));
+      this.store.dispatch(new SharedActions.SetProgressSpinner(true));
       return this.postService.editPost(postInfo.post)
         .map((post: Post) => {
           console.log(PostActions.EDIT_POST);
@@ -115,6 +117,7 @@ export class PostEffects {
 
       } else {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
+        this.store.dispatch(new SharedActions.SetProgressSpinner(false));
         this.store.dispatch(new SharedActions.GetPost(postInfo.post.postId));
         this.store.dispatch(new SharedActions.NavUsers(this.auth.userName));
         return Observable.empty();

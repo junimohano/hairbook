@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 
@@ -144,7 +144,8 @@ const modules = [
     },
     Auth,
     AuthGuard,
-    SharedService
+    SharedService,
+    DatePipe
   ],
   // entryComponents: [
   //   PostDetailComponent

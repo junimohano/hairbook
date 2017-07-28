@@ -1,15 +1,43 @@
-<div fxLayout="column" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <div></div>
+    <div>
+        <input #fileInput type="file" multiple (change)="fileChangeEvent($event)" class="custom-file-input" />
+    </div>
+
+    <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
+        <div *ngFor="let postUploadInfo of postUploadInfos; let i = index;">
+            <div *ngIf="postUploadInfo.postUploadInfoType !== postUploadInfoType.Delete" fxLayout="column" fxLayoutAlign="center cetner" fxLayoutGap="10px">
+                <button md-button class="warn" (click)="onDelPostUploadInfo(i)">x</button>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <img [src]="postUploadInfo.postUploadBlob" width="100" height="100">
+                </div>
+                <div></div>
+                <div>
+                    <md-select placeholder="Upload Categories" [(ngModel)]="postUploadInfo.uploadCategoryType">
+                        <md-option *ngFor="let uploadCategoryType of uploadCategoryTypes let i = index;" [value]="i">
+                            {{ uploadCategoryType }}
+                        </md-option>
+                    </md-select>
+                </div>
+                <div>
+                    <md-input-container>
+                        <textarea mdInput placeholder="Upload Memo" [(ngModel)]="postUploadInfo.memo"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <form [formGroup]="postForm" novalidate>
-        <div fxLayout="column" fxLayoutGap="10px">
+        <div fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center">
             <div>
                 <md-radio-group [value]="postForm.get('accessType').value">
-                    <md-radio-button *ngFor="let accessType of accessTypes; let i = index;" [value]="i" (change)="onChangeAccessType($event)">{{accessType}}</md-radio-button>
+                    <md-radio-button *ngFor="let accessType of accessTypes; let i = index;" [value]="i" (change)="onChangeAccessType($event)">{{accessType}}&nbsp;&nbsp;</md-radio-button>
                 </md-radio-group>
             </div>
 
-            <div>
-                <md-input-container>
+            <div fxFlexFill>
+                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <input mdInput placeholder="Customer" [mdAutocomplete]="auto" formControlName="customer" (ngModelChange)="onChangedCustomer($event)">
                 </md-input-container>
 
@@ -25,79 +53,82 @@
                 name required
             </small>-->
             </div>
-            <div>
-                <md-input-container>
+
+            <div fxFlexFill>
+                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" formControlName="date">
                     <button mdSuffix [mdDatepickerToggle]="picker"></button>
                 </md-input-container>
                 <md-datepicker #picker></md-datepicker>
             </div>
 
-            <div>
-                <md-input-container>
-                    <textarea mdInput placeholder="Memo" formControlName="memo"></textarea>
-                </md-input-container>
-            </div>
-
-            <div>
-                <label>Hair Menues</label>
-                <div fxLayout="row" fxLayoutWrap>
-                    <md-button-toggle #hairMenusButtonToggle *ngFor="let hairMenu of hairMenus; let i=index" [value]="hairMenu.hairMenuId" [checked]="hairMenu.isChecked" (change)="onChangeHairMenus($event)">{{hairMenu.name}}</md-button-toggle>
-                </div>
-                <!-- {{hairMenus | json}} -->
-            </div>
-
-            <div></div>
-            <div>
-                gallery
-            </div>
-            <div></div>
-
-            <div>
-                <label>Hair Types</label>
-                <div fxLayout="row" fxLayoutWrap>
+            <div fxFlexFill fxLayout="column" fxLayoutAlign="start start">
+                <label fxFlexOffset.xs="5" fxFlexOffset="20">Hair Types</label>
+                <div fxFlexOffset.xs="5" fxFlexOffset="20" fxLayoutWrap>
                     <md-button-toggle #hairTypesButtonToggle *ngFor="let hairType of hairTypes; let i=index" [value]="hairType.hairTypeId" [checked]="hairType.isChecked" (change)="onChangeHairTypes($event)">{{hairType.name}}</md-button-toggle>
                 </div>
             </div>
 
-            <div>
-                <md-input-container>
+            <div fxFlexFill>
+                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <textarea mdInput placeholder="HairType Memo" formControlName="hairTypeMemo"></textarea>
                 </md-input-container>
             </div>
 
-            <div *ngIf="existsHairMenusColor">
-                <label>information for color</label>
-                <md-select placeholder="Color" formControlName="hairSubMenuColor" name="food">
-                    <md-option *ngFor="let color of hairSubMenuColors" [value]="color.hairSubMenuId">
-                        {{color.name}}
-                    </md-option>
-                </md-select>
+            <div fxFlexFill fxLayout="column" fxLayoutAlign="start start">
+                <label fxFlexOffset.xs="5" fxFlexOffset="20">Hair Menues</label>
+                <div fxFlexOffset.xs="5" fxFlexOffset="20" fxLayoutWrap>
+                    <md-button-toggle #hairMenusButtonToggle *ngFor="let hairMenu of hairMenus; let i=index" [value]="hairMenu.hairMenuId" [checked]="hairMenu.isChecked" (change)="onChangeHairMenus($event)">{{hairMenu.name}}</md-button-toggle>
+                </div>
             </div>
 
-            <div *ngIf="existsHairMenusColor">
-                <md-input-container>
-                    <textarea mdInput placeholder="Hair Color Memo" formControlName="hairSubMenuColorMemo"></textarea>
+            <div *ngIf="existsHairMenusColor" fxFlexFill fxLayout="column" fxLayoutAlign="center center">
+                <div fxLayout="column" fxLayoutGap="50px">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div fxFlexFill>
+                    <md-select placeholder="Color Type" formControlName="hairSubMenuColor" name="food" fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                        <md-option *ngFor="let color of hairSubMenuColors" [value]="color.hairSubMenuId">
+                            {{color.name}}
+                        </md-option>
+                    </md-select>
+                </div>
+                <div fxFlexFill>
+                    <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                        <textarea mdInput placeholder="Color Memo" formControlName="hairSubMenuColorMemo"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div *ngIf="existsHairMenusPerm" fxFlexFill fxLayout="column" fxLayoutAlign="center center">
+                <div fxLayout="column" fxLayoutGap="50px">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div fxFlexFill>
+                    <md-select placeholder="Perm Type" formControlName="hairSubMenuPerm" name="food" fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                        <md-option *ngFor="let perm of hairSubMenuPerms" [value]="perm.hairSubMenuId">
+                            {{perm.name}}
+                        </md-option>
+                    </md-select>
+                </div>
+
+                <div fxFlexFill>
+                    <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                        <textarea mdInput placeholder="Perm Memo" formControlName="hairSubMenuPermMemo"></textarea>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div fxFlexFill>
+                <div fxLayout="column" fxLayoutGap="50px">
+                    <div></div>
+                    <div></div>
+                </div>
+                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                    <textarea mdInput placeholder="Memo" formControlName="memo"></textarea>
                 </md-input-container>
-            </div>
-
-            <div *ngIf="existsHairMenusPerm">
-                <label>information for perm</label>
-                <md-select placeholder="Perm" formControlName="hairSubMenuPerm" name="food">
-                    <md-option *ngFor="let perm of hairSubMenuPerms" [value]="perm.hairSubMenuId">
-                        {{perm.name}}
-                    </md-option>
-                </md-select>
-            </div>
-
-            <div *ngIf="existsHairMenusPerm">
-                <md-input-container>
-                    <textarea mdInput placeholder="Hair Perm Memo" formControlName="hairSubMenuPermMemo"></textarea>
-                </md-input-container>
-            </div>
-
-            <div>
-                <input #fileInput type="file" multiple (change)="fileChangeEvent($event)" class="custom-file-input" />
             </div>
 
             <div fxLayout="row" fxLayoutGap="20px">
@@ -112,22 +143,8 @@
         </div>
     </form>
 
-    <div fxLayout="row" fxFlexFill>
-        <div *ngFor="let postUploadInfo of postUploadInfos; let i = index;">
-            <div *ngIf="postUploadInfo.postUploadInfoType !== postUploadInfoType.Delete" fxLayout="column">
-                <img [src]="postUploadInfo.postUploadBlob" width="100" height="100">
-                <md-select placeholder="Upload Categories" [(ngModel)]="postUploadInfo.uploadCategoryType">
-                    <md-option *ngFor="let uploadCategoryType of uploadCategoryTypes let i = index;" [value]="i">
-                        {{ uploadCategoryType }}
-                    </md-option>
-                </md-select>
-                <md-input-container>
-                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="postUploadInfo.memo"></textarea>
-                </md-input-container>
-                <button md-button class="warn" (click)="onDelPostUploadInfo(i)">x</button>
-            </div>
-        </div>
-    </div>
+    <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>
+
     <!--<p>{{postForm.status}}</p>-->
     <!-- <p>{{postForm.value | json}}</p> -->
 
