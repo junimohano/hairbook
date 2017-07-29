@@ -1,10 +1,11 @@
 <md-toolbar color="primary" class="unicorn-dark-theme">
 
-    <button md-button [routerLink]="['/explorers']" mdTooltip="Explorers">Hairbook</button>
+    <button md-button [routerLink]="['/users/', userName]" mdTooltip="Users">Hairbook</button>
 
     <span class="fill-remaining-space"></span>
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-        <button md-button [routerLink]="['/posts']" mdTooltip="New"><md-icon>note</md-icon></button>
+        <button md-button [routerLink]="['/explorers']" mdTooltip="Explorers"><md-icon>explore</md-icon></button>
+        <button md-button [routerLink]="['/posts']" mdTooltip="New"><md-icon>note_add</md-icon></button>
         <button md-button [routerLink]="['/friends', 'search']" mdTooltip="Friends"><md-icon>search</md-icon></button>
         <button md-button [routerLink]="['/users', userName]" mdTooltip="Users"><md-icon>person</md-icon></button>
         <button md-button [routerLink]="['/login']" mdTooltip="Logout"><md-icon>clear</md-icon></button>
@@ -15,7 +16,8 @@
 
 </md-toolbar>
 <md-menu x-position="before" #menu="mdMenu">
-    <button md-menu-item [routerLink]="['/posts']"><md-icon>note</md-icon>New</button>
+    <button md-menu-item [routerLink]="['/explorers']"><md-icon>explore</md-icon>Explorers</button>
+    <button md-menu-item [routerLink]="['/posts']"><md-icon>note_add</md-icon>New</button>
     <button md-menu-item [routerLink]="['/friends', 'search']"><md-icon>search</md-icon>Friends</button>
     <button md-menu-item [routerLink]="['/users/', userName]"><md-icon>person</md-icon>Users</button>
     <button md-menu-item [routerLink]="['/login']"><md-icon>clear</md-icon>Logout</button>

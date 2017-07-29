@@ -16,9 +16,9 @@
             <div><span fxHide.xs>{{user?.email}}</span></div>
 
             <div fxLayout="row" fxLayoutGap="10px">
-                <div><span>{{user?.totalUserPosts}} posts</span></div>
-                <div (click)="onClickFollowers()"><span>{{user?.totalUserFollowers}} followers</span></div>
-                <div (click)="onClickFollowing()"><span>{{user?.totalUserFollowing}} following</span></div>
+                <div><span><strong>{{user?.totalUserPosts}}</strong> posts</span></div>
+                <div (click)="onClickFollowers()"><span><strong>{{user?.totalUserFollowers}}</strong> followers</span></div>
+                <div (click)="onClickFollowing()"><span><strong>{{user?.totalUserFollowing}}</strong> following</span></div>
             </div>
 
         </div>
