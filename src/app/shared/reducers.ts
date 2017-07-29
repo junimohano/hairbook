@@ -100,7 +100,9 @@ export function sharedPostSearchType(state: State): PostSearchType {
 export function friendUserFriends(state: State): UserFriend[] {
   return state.friend.userFriends;
 }
-
+export function friendUsers(state: State): User[] {
+  return state.friend.users;
+}
 export function friendFriendSearchInfo(state: State): FriendSearchInfo {
   return state.friend.friendSearchInfo;
 }

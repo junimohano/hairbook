@@ -1,7 +1,10 @@
-<md-list>
-    <h3 md-subheader>Following</h3>
+<md-list fxFlexOffset.gt-md="30" fxFlex.gt-md="40">
+    <!-- <h3 md-subheader>Following</h3> -->
     <md-list-item *ngFor="let userFriend of userFriends$ | async" (click)="onNavUser(userFriend.friend.userName)">
-        <md-icon md-list-icon>folder</md-icon>
+        <!-- <md-icon md-list-icon>folder</md-icon> -->
+        <div *ngIf="userFriend.friend.image">
+            <img md-card-avatar [src]="userFriend.friend.image | imagePath" width="50" height="50">
+        </div>
         <h4 md-line> {{userFriend.friend.userName}}</h4>
         <p md-line> {{userFriend.friend.name}} </p>
     </md-list-item>

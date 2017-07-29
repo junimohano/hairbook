@@ -17,11 +17,15 @@ import { FriendSearchType } from './shared/friend-search-type';
 })
 export class FriendsComponent implements OnInit, OnDestroy {
 
+  isProgressSpinner$: Observable<boolean>;
+
   scrollFlag = true;
   friendSearchInfoSubscription: Subscription;
   friendSearchInfo: FriendSearchInfo;
 
   constructor(private store: Store<Reducers.State>) {
+    this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
+
     this.friendSearchInfoSubscription = store.select(Reducers.friendFriendSearchInfo).subscribe(x => {
       this.friendSearchInfo = x;
     });

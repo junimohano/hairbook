@@ -28,6 +28,8 @@ export class PostListAllComponent implements OnInit {
   @Output() addPostEvalution = new EventEmitter<PostEvaluation>();
   @Output() delPostEvalution = new EventEmitter<number>();
   @Output() clickUser = new EventEmitter<string>();
+  @Output() editPost = new EventEmitter<number>();
+  @Output() delPost = new EventEmitter<number>();
 
   @ViewChild('commentBox') commentBox;
 
@@ -99,4 +101,5 @@ export class PostListAllComponent implements OnInit {
   onClickUser(userName: string) {
     this.clickUser.emit(userName);
   }
+
 }

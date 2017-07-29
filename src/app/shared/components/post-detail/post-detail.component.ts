@@ -162,4 +162,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.closeDialog.emit();
   }
 
+  onClickUser(userName: string) {
+    this.store.dispatch(new SharedActions.NavUsers(userName));
+  }
+
 }

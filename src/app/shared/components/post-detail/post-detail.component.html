@@ -1,23 +1,28 @@
 <div *ngIf="post" fxLayout="row" fxLayoutWrap class="no-scroll">
 
-    <div fxLayout="column" fxFlex="60" fxFlex.xs="100" class="no-scroll" fxLayoutAlign="start center">
-        <div fxLayout="row">
-            <div *ngIf="post.createdUser.image">
-                <img md-card-avatar [src]="post.createdUser.image | imagePath" width="50" height="50">
-            </div>
-            <div>
-                {{post.createdUser.userName}}
+    <div fxLayout="column" fxFlex="60" fxFlex.xs="100" class="no-scroll" fxLayoutAlign="start start">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <md-card-header>
+                <div *ngIf="post.createdUser.image" md-card-avatar class="example-header-image">
+                    <img md-card-avatar [src]="post.createdUser.image | imagePath" (click)="onClickUser(post.createdUser.userName)">
+                </div>
+                <md-card-title>{{post.createdUser.userName}}</md-card-title>
+                <md-card-subtitle>{{post.createdDate | timeAgo}}</md-card-subtitle>
+            </md-card-header>
+
+            <div fxLayout="row">
+                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onPrevious(this.post.postId)"><</button>
+                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onNext(this.post.postId)">></button>
             </div>
         </div>
         <div *ngFor="let upload of post?.postUploads; let uploadIndex = index;">
             <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100%" fxFlex="90%" fxLayout="column">
                 <img (swipeleft)="onSwipe($event.type)" (swiperight)="onSwipe($event.type)" [src]="upload.path | imagePath" width="100%">
-                <p>{{uploadCategories[upload.uploadCategoryType + 3]}} - {{upload.memo}}</p>
+                <h3>{{uploadCategories[upload.uploadCategoryType + 3]}}</h3>
+                <md-input-container>
+                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="upload.memo" readonly></textarea>
+                </md-input-container>
             </div>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="center stretch">
-            <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onPrevious(this.post.postId)"><</button>
-            <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onNext(this.post.postId)">></button>
         </div>
     </div>
 
@@ -33,7 +38,7 @@
                 <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
             </md-input-container>
 
-            <p>{{post.customerId}}</p>
+            <p>({{post.customerId}})</p>
         </div>
 
         <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">

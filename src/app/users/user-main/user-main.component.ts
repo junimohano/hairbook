@@ -155,4 +155,12 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.store.dispatch(new SharedActions.SetUsersTabIndex(event));
   }
 
+  editPost(postId: number) {
+this.store.dispatch(new SharedActions.NavPosts(String(postId)));
+  }
+
+  delPost(postId: number) {
+    this.store.dispatch(new SharedActions.DelPost(postId));
+  }
+
 }

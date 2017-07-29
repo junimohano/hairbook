@@ -17,12 +17,12 @@ export class FriendService {
   constructor(private authHttp: AuthHttp, private http: Http) {
   }
 
-  getFriends(index: number, friendSearchType: FriendSearchType, userId: number, search: string): Observable<UserFriend[]> {
+  getUserFriends(index: number, friendSearchType: FriendSearchType, userId: number, search: string): Observable<UserFriend[]> {
     return this.authHttp.get(`${environment.webApiUrl}/api/v1/UserFriends?index=${index}&userId=${userId}&friendSearchType=${friendSearchType}&search=${search}`)
       .map(res => res.json());
   }
 
-  followFriend(userId: number, friendId: number) {
+  followUserFriend(userId: number, friendId: number) {
     const userFriend = <UserFriend>{
       createdUserId: userId,
       friendId: friendId
@@ -31,8 +31,13 @@ export class FriendService {
       .map(res => res.json());
   }
 
-  unFollowFriend(userFriend: UserFriend) {
+  unFollowUserFriend(userFriend: UserFriend) {
     return this.authHttp.delete(`${environment.webApiUrl}/api/v1/UserFriends/${userFriend.userFriendId}`)
+      .map(res => res.json());
+  }
+
+  getUsers(index: number, search: string): Observable<User[]> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/Users?index=${index}&search=${search}`)
       .map(res => res.json());
   }
 

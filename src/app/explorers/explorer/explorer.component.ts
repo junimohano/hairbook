@@ -127,4 +127,12 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
   }
 
+  editPost(postId: number) {
+    this.store.dispatch(new SharedActions.NavPosts(String(postId)));
+  }
+
+  delPost(postId: number) {
+    this.store.dispatch(new SharedActions.DelPost(postId));
+  }
+
 }

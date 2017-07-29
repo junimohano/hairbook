@@ -19,7 +19,7 @@
             <md-icon>view_stream</md-icon>
         </ng-template>
         <hb-post-list-all [posts]="posts$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)"
-            (clickUser)="clickUser($event)"></hb-post-list-all>
+            (clickUser)="clickUser($event)" (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
     </md-tab>
 </md-tab-group>
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>

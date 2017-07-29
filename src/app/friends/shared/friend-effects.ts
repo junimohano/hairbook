@@ -1,3 +1,4 @@
+import { FriendSearchType } from './friend-search-type';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/withLatestFrom';
@@ -22,22 +23,42 @@ export class FriendEffects {
     .map((action: FriendActions.SearchFriends) => action.payload)
     .debounceTime(50)
     .withLatestFrom(this.store, (payload, state) => {
-      const totalFriends = state.friend.userFriends.length;
+      let totalFriends = 0;
+      if (state.friend.friendSearchInfo.friendSearchType === FriendSearchType.Search) {
+        totalFriends = state.friend.users.length;
+      } else {
+        totalFriends = state.friend.userFriends.length;
+      }
+
       if (totalFriends === 0) {
         this.store.dispatch(new SharedActions.SetProgressBar(true));
       } else {
         this.store.dispatch(new SharedActions.SetProgressSpinner(true));
       }
+
       return ({ currentTotalUserFriends: totalFriends, friendSearchInfo: state.friend.friendSearchInfo })
     })
-    .switchMap((results) => this.friendService.getFriends(results.currentTotalUserFriends, results.friendSearchInfo.friendSearchType, this.auth.userId, results.friendSearchInfo.search)
-      .map(userFriends => {
-        console.log(FriendActions.SEARCH_FRIENDS, userFriends);
-        this.store.dispatch(new SharedActions.SetProgressBar(false));
-        return new FriendActions.SearchFriendsSuccess(userFriends);
-      })
-      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
-    );
+    .switchMap((results) => {
+      if (results.friendSearchInfo.friendSearchType === FriendSearchType.Search) {
+        return this.friendService.getUsers(results.currentTotalUserFriends, results.friendSearchInfo.search)
+          .map(users => {
+            console.log(FriendActions.SEARCH_FRIENDS, users);
+            this.store.dispatch(new SharedActions.SetProgressBar(false));
+            this.store.dispatch(new SharedActions.SetProgressSpinner(false));
+            return new FriendActions.SearchFriendsSearchSuccess(users);
+          })
+          .catch((res: Response) => of(new SharedActions.SetSnackBar(res)));
+      } else {
+        return this.friendService.getUserFriends(results.currentTotalUserFriends, results.friendSearchInfo.friendSearchType, this.auth.userId, results.friendSearchInfo.search)
+          .map(userFriends => {
+            console.log(FriendActions.SEARCH_FRIENDS, userFriends);
+            this.store.dispatch(new SharedActions.SetProgressBar(false));
+            this.store.dispatch(new SharedActions.SetProgressSpinner(false));
+            return new FriendActions.SearchFriendsFollowingAndFollowersSuccess(userFriends);
+          })
+          .catch((res: Response) => of(new SharedActions.SetSnackBar(res)));
+      }
+    });
 
   constructor(private actions$: Actions,
     private auth: Auth,

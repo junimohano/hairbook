@@ -107,6 +107,10 @@ export class PostComponent implements OnInit, OnDestroy {
       hairSubMenuPermMemo: ''
     }, { validator: customWatcher });
 
+    this.store.dispatch(new PostActions.GetHairMenus());
+    this.store.dispatch(new PostActions.GetHairTypes());
+    this.store.dispatch(new PostActions.GetCustomers(this.auth.userId));
+
     this.hairMenusSubscription = this.store.select(Reducers.postHairMenus).subscribe(x => {
       if (x) {
         this.hairMenus = x;
@@ -278,11 +282,7 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch(new PostActions.GetHairMenus());
-    this.store.dispatch(new PostActions.GetHairTypes());
-    this.store.dispatch(new PostActions.GetCustomers(this.auth.userId));
-
-    // This page is not reloaded
+      // This page is not reloaded
     if (performance.navigation.type !== 1) {
       // prevent search again when I go back to users or explorers.
     }
