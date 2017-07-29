@@ -15,10 +15,24 @@
             <div><strong>{{user?.name}}</strong></div>
             <div><span fxHide.xs>{{user?.email}}</span></div>
 
+            <div fxHide.xs></div>
+
             <div fxLayout="row" fxLayoutGap="10px">
-                <div><span><strong>{{user?.totalUserPosts}}</strong> posts</span></div>
-                <div (click)="onClickFollowers()"><span><strong>{{user?.totalUserFollowers}}</strong> followers</span></div>
-                <div (click)="onClickFollowing()"><span><strong>{{user?.totalUserFollowing}}</strong> following</span></div>
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.gt-xs="10px">
+                    <strong>{{user?.totalUserPosts}}</strong>
+                    <span fxHide.xs>posts</span>
+                    <small fxShow.xs fxHide>posts</small>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.gt-xs="10px" (click)="onClickFollowers()">
+                    <strong>{{user?.totalUserFollowers}}</strong>
+                    <span fxHide.xs>followers</span>
+                    <small fxShow.xs fxHide>followers</small>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.gt-xs="10px" (click)="onClickFollowing()">
+                    <strong>{{user?.totalUserFollowing}}</strong>
+                    <span fxHide.xs>following</span>
+                    <small fxShow.xs fxHide>following</small>
+                </div>
             </div>
 
         </div>
