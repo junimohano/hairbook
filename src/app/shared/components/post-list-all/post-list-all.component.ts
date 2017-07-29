@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Rx';
-import { PostSearchType } from '../../models/enums/post-search-type';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
@@ -10,6 +8,7 @@ import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 
 import * as Reducers from '../../../shared/reducers';
+import { PostSearchType } from '../../models/enums/post-search-type';
 
 @Component({
   selector: 'hb-post-list-all',
@@ -20,7 +19,7 @@ import * as Reducers from '../../../shared/reducers';
 export class PostListAllComponent implements OnInit {
 
   @Input() posts: Post[];
-  postSearchType$: Observable<PostSearchType>;
+  @Input() postSearchType: PostSearchType;
 
   @Output() showMoreComments = new EventEmitter<Post>();
   @Output() addPostComment = new EventEmitter<PostComment>();
@@ -37,7 +36,6 @@ export class PostListAllComponent implements OnInit {
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
 
   constructor(public auth: Auth, private store: Store<Reducers.State>) {
-    this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
   }
 

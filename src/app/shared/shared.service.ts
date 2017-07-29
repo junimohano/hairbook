@@ -1,3 +1,4 @@
+import { UserFavorite } from './models/user-favorite';
 import { PostSearchType } from './models/enums/post-search-type';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
@@ -20,17 +21,17 @@ export class SharedService {
   getPosts(index: number, postSearchType: PostSearchType, userName: string, userNameParam: string, search: string): Observable<Post[]> {
     return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&userNameParam=${userNameParam}&postSearchType=${postSearchType}&search=${search}`)
       .map(res => res.json());
-      // .map((results: Post[]) => {
-      //   results.forEach((p: Post) => {
-      //     p.postUploads.forEach(u => {
-      //       u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
-      //     });
-      //     if (p.createdUser.image && !p.createdUser.image.startsWith('http')) {
-      //       p.createdUser.image = `${environment.webApiUrl}/${p.createdUser.image.split('\\').join('/')}`;
-      //     }
-      //   });
-      //   return results;
-      // });
+    // .map((results: Post[]) => {
+    //   results.forEach((p: Post) => {
+    //     p.postUploads.forEach(u => {
+    //       u.path = `${environment.webApiUrl}/${u.path.split('\\').join('/')}`;
+    //     });
+    //     if (p.createdUser.image && !p.createdUser.image.startsWith('http')) {
+    //       p.createdUser.image = `${environment.webApiUrl}/${p.createdUser.image.split('\\').join('/')}`;
+    //     }
+    //   });
+    //   return results;
+    // });
   }
 
   getPost(postId: number): Observable<Post> {
@@ -65,6 +66,21 @@ export class SharedService {
 
   getPostComments(index: number, postId: number): Observable<PostComment[]> {
     return this.authHttp.get(`${environment.webApiUrl}/api/v1/PostComments?index=${index}&postId=${postId}`)
+      .map(res => res.json());
+  }
+
+  getUserFavorites(index: number, userId: number): Observable<Post[]> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userId=${userId}`)
+      .map(res => res.json());
+  }
+
+  addUserFavorite(userFavorite: UserFavorite): Observable<PostEvaluation> {
+    return this.authHttp.post(`${environment.webApiUrl}/api/v1/UserFavorites/`, userFavorite, { headers: this.headers })
+      .map(res => res.json());
+  }
+
+  delUserFavorite(userFavoriteId: number): Observable<PostEvaluation> {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/UserFavorites/${userFavoriteId}`)
       .map(res => res.json());
   }
 

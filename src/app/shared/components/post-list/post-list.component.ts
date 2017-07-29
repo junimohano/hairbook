@@ -3,17 +3,18 @@ import { MdDialog } from '@angular/material';
 import { PostDetailComponent } from 'app/shared/components/post-detail/post-detail.component';
 import { Post } from 'app/shared/models/post';
 
+import { PostSearchType } from '../../models/enums/post-search-type';
+
 @Component({
   selector: 'hb-post-list',
   templateUrl: './post-list.component.html',
   styleUrls: ['./post-list.component.scss']
 })
 export class PostListComponent implements OnInit {
-  @Input()
-  posts: Post[];
+  @Input() posts: Post[];
+  @Input() postSearchType: PostSearchType;
 
-  @Output()
-  goDetail = new EventEmitter<Post>();
+  @Output() goDetail = new EventEmitter<Post>();
 
   constructor(public dialog: MdDialog) {
   }

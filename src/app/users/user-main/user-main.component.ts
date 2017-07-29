@@ -37,6 +37,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   isProgressSpinner$: Observable<boolean>;
   user$: Observable<User>;
   sharedUsersTabIndex$: Observable<number>;
+  postSearchType$: Observable<PostSearchType>;
   isMe = false;
 
   postSearchInfoSubscription: Subscription;
@@ -57,6 +58,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.user$ = store.select(Reducers.userUser);
     this.sharedUsersTabIndex$ = store.select(Reducers.sharedUsersTabIndex);
+    this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
 
     this.postSearchInfoSubscription = this.postSearchInfo$.subscribe(x => {
       if (x) {
@@ -156,7 +158,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   editPost(postId: number) {
-this.store.dispatch(new SharedActions.NavPosts(String(postId)));
+    this.store.dispatch(new SharedActions.NavPosts(String(postId)));
   }
 
   delPost(postId: number) {

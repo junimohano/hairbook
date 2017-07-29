@@ -7,15 +7,22 @@
         <ng-template md-tab-label>
             <md-icon>view_module</md-icon>
         </ng-template>
-        <hb-post-list [posts]="posts$ | async" (goDetail)="goDetail($event)"></hb-post-list>
+        <hb-post-list [posts]="posts$ | async" [postSearchType]="postSearchType$ | async" (goDetail)="goDetail($event)"></hb-post-list>
     </md-tab>
 
     <md-tab>
         <ng-template md-tab-label>
             <md-icon>view_stream</md-icon>
         </ng-template>
-        <hb-post-list-all [posts]="posts$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)" (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
+        <hb-post-list-all [posts]="posts$ | async" [postSearchType]="postSearchType$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)"
+            (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
     </md-tab>
+
+    <!-- <md-tab>
+        <ng-template md-tab-label>
+            <md-icon>done_all</md-icon>
+        </ng-template>
+    </md-tab> -->
 </md-tab-group>
 
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>
