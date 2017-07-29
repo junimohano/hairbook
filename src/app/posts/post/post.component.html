@@ -96,7 +96,7 @@
                 </div>
                 <div fxFlexFill>
                     <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
-                        <textarea mdInput placeholder="Color Memo" formControlName="hairSubMenuColorMemo"></textarea>
+                        <textarea mdInput placeholder="Color Formula" formControlName="hairSubMenuColorMemo"></textarea>
                     </md-input-container>
                 </div>
             </div>
@@ -127,11 +127,11 @@
                     <div></div>
                 </div>
                 <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
-                    <textarea mdInput placeholder="Memo" formControlName="memo"></textarea>
+                    <textarea mdInput placeholder="Memo (public)" formControlName="memo"></textarea>
                 </md-input-container>
             </div>
 
-            <div fxLayout="row" fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutGap="50px">
                 <div class="form-group">
                     <button md-raised-button color="primary" type="submit" [disabled]="!postForm.valid" (click)="onSubmit()">Save</button>
                 </div>

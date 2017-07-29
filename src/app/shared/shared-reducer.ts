@@ -47,12 +47,13 @@ export function reducer(state = initialState, action: Actions.All): State {
         }
         if (state.postSearchInfo.postSearchType !== action.payload.postSearchType) {
           state.posts = [];
-          action.payload.search = '';
+          // search seperate between Users and modules of Explorers
+          if (((state.postSearchInfo.postSearchType === PostSearchType.ExplorersAll || state.postSearchInfo.postSearchType === PostSearchType.ExplorersFollowingOnly) && action.payload.postSearchType === PostSearchType.Users) ||
+            (state.postSearchInfo.postSearchType === PostSearchType.Users && (action.payload.postSearchType === PostSearchType.ExplorersAll || action.payload.postSearchType === PostSearchType.ExplorersFollowingOnly))) {
+            action.payload.search = '';
+          }
           state.isPreventRefreshingPosts = false;
         }
-        // if (action.payload === null) {
-        //   action.payload.search = state.postSearchInfo.search;
-        // }
       }
       const postSearchInfo = <PostSearchInfo>{
         search: action.payload.search,

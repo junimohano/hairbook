@@ -33,7 +33,6 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   nextSubscription: Subscription;
 
   postSearchInfo: PostSearchInfo;
-  search: string;
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {
@@ -45,16 +44,16 @@ export class ExplorerComponent implements OnInit, OnDestroy {
 
     this.postSearchInfoSubscription = this.postSearchInfo$.subscribe(x => {
       if (x) {
-        this.search = x.search;
+        this.postSearchInfo = <PostSearchInfo>{
+          search: x.search,
+          userNameParam: x.userNameParam,
+          postSearchType: x.postSearchType === PostSearchType.Users ? PostSearchType.ExplorersFollowingOnly : x.postSearchType
+        }
       }
     });
   }
 
   ngOnInit() {
-    this.postSearchInfo = <PostSearchInfo>{
-      search: this.search,
-      postSearchType: PostSearchType.ExplorersMeAndFollowing
-    }
     this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
   }
 
@@ -121,4 +120,11 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   onSelectedIndexChange(event) {
     this.store.dispatch(new SharedActions.SetExplorersTabIndex(event));
   }
+
+  onChangePostSearchType(event) {
+    console.log('Post Search Type : ', event.value);
+    this.postSearchInfo.postSearchType = event.value;
+    this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
+  }
+
 }

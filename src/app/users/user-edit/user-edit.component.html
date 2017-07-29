@@ -15,9 +15,11 @@
             <div>updated date : {{auth.userProfile.updated_at | date}}</div>
         </div>-->
     </div>
+
     <div fxLayout="row" fxLayoutAlign="center ceter">
         <input #fileInput type="file" (change)="onChangeImage()" class="custom-file-input" />
     </div>
+
     <div fxLayout="row" fxLayoutAlign="center ceter">
 
         <form [formGroup]="editForm" novalidate>
@@ -65,7 +67,13 @@
                     </md-option>
                 </md-select>
             </div>
-            <div fxLayout="row" fxLayoutGap="20px">
+
+            <div fxLayout="column" fxLayoutGap="30px">
+                <div></div>
+                <div></div>
+            </div>
+
+            <div fxLayout="row" fxLayoutGap="50px">
                 <div class="form-group">
                     <button md-raised-button color="primary" type="submit" [disabled]="!editForm.valid" (click)="onSubmit()">Save</button>
                 </div>

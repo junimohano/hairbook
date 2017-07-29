@@ -24,7 +24,7 @@
         <div fxFlex="30" fxFlex.xs="100">
             <md-card-content>
 
-                <div fxLayout="row">
+                <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
                     <md-input-container fxFlexFill>
                         <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
                     </md-input-container>
@@ -32,7 +32,7 @@
                     <p>{{post.customerId}}</p>
                 </div>
 
-                <div fxLayout="row">
+                <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
                     <md-input-container fxFlexFill>
                         <input mdInput [mdDatepicker]="" placeholder="When" [(ngModel)]="post.date" readonly>
                         <button mdSuffix [mdDatepickerToggle]=""></button>
@@ -51,7 +51,7 @@
                     </md-chip-list>
                 </div>
 
-                <div>
+                <div *ngIf="(postSearchType$ | async) === 2">
                     <div fxLayout="column" fxLayoutGap="10px">
                         <div></div>
                         <div></div>
@@ -72,14 +72,14 @@
                     </md-chip-list>
                 </div>
 
-                <div fxLayout="column" *ngIf="post.postMenuColor">
+                <div fxLayout="column" *ngIf="post.postMenuColor && (postSearchType$ | async) === 2">
                     <h4>{{post.postMenuColor.hairSubMenu?.name}}</h4>
                     <md-input-container>
-                        <textarea mdInput placeholder="Color Memo" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
+                        <textarea mdInput placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
-                <div fxLayout="column" *ngIf="post?.postMenuPerm">
+                <div fxLayout="column" *ngIf="post?.postMenuPerm && (postSearchType$ | async) === 2">
                     <h4>{{post.postMenuPerm.hairSubMenu?.name}}</h4>
                     <md-input-container>
                         <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
@@ -87,7 +87,7 @@
                 </div>
 
                 <div>
-                    <div fxLayout="column" fxLayoutGap="10px">
+                    <div fxLayout="column" fxLayoutGap="30px">
                         <div></div>
                         <div></div>
                     </div>

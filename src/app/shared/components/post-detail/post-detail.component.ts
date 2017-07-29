@@ -1,3 +1,5 @@
+import { PostSearchType } from '../../models/enums/post-search-type';
+import { Observable } from 'rxjs/Rx';
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -22,8 +24,7 @@ import * as SharedActions from '../../shared-actions';
 export class PostDetailComponent implements OnInit, OnDestroy {
 
   post: Post;
-  // postMenuColor: PostHairMenu;
-  // postMenuPerm: PostHairMenu;
+  postSearchType$: Observable<PostSearchType>;
 
   @ViewChild('commentBox') commentBox;
   @Output() closeDialog = new EventEmitter();
@@ -36,6 +37,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   comment: string;
 
   constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, public auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
+    this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
 
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
     // console.log(this.uploadCategories);

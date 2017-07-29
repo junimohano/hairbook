@@ -1,5 +1,5 @@
 export enum AccessType {
-  OnlyMe,
-  Public
+  Public,
+  OnlyMe
 }
 

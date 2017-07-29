@@ -1,7 +1,11 @@
 <div fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="column" fxLayoutGap="10px">
+        <div></div>
+        <div></div>
+    </div>
     <md-radio-group [value]="postSearchType$ | async">
-        <md-radio-button [value]="0">All</md-radio-button>
-        <md-radio-button [value]="1">Me & Following</md-radio-button>
+        <md-radio-button [value]="0" (change)="onChangePostSearchType($event)">All &nbsp;</md-radio-button>
+        <md-radio-button [value]="1" (change)="onChangePostSearchType($event)">Following only &nbsp;</md-radio-button>
     </md-radio-group>
     <hb-post-search [search]="(postSearchInfo$ | async)?.search" (searchChange)="searchChange($event)"></hb-post-search>
 </div>

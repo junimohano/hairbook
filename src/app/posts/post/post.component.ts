@@ -88,13 +88,13 @@ export class PostComponent implements OnInit, OnDestroy {
     });
 
     Object.keys(UploadCategoryType).forEach((x, i) => {
-      if (i > 1) {
+      if (i > 2) {
         this.uploadCategoryTypes.push(x);
       }
     });
 
     this.postForm = this.fb.group({
-      accessType: [2, Validators.required],
+      accessType: [0, Validators.required],
       customer: ['', Validators.required],
       date: [new Date().toLocaleDateString(), Validators.required],
       memo: '',
