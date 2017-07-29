@@ -27,6 +27,10 @@
             <hb-post-menu (editPost)="editPost()" (deletePost)="deletePost()"></hb-post-menu>
         </div>
 
+        <div>
+            <p>{{post.accessType}}</p>
+        </div>
+
         <div fxLayout="row">
             <md-input-container fxFlexFill>
                 <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>

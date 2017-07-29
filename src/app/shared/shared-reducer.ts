@@ -1,3 +1,4 @@
+import { PostSearchType } from './models/enums/post-search-type';
 import { PostEvaluation } from './models/post-evaluation';
 import { Post } from 'app/shared/models/post';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
@@ -19,7 +20,7 @@ const initialState: State = {
   isProgressBar: false,
   isProgressSpinner: false,
   postSearchInfo: <PostSearchInfo>{
-    isUserPost: true
+    postSearchType: PostSearchType.Users
   },
   posts: [],
   selectedPost: null,
@@ -44,7 +45,7 @@ export function reducer(state = initialState, action: Actions.All): State {
         if (state.postSearchInfo.search !== action.payload.search && action.payload !== null) {
           state.posts = [];
         }
-        if (state.postSearchInfo.isUserPost !== action.payload.isUserPost) {
+        if (state.postSearchInfo.postSearchType !== action.payload.postSearchType) {
           state.posts = [];
           action.payload.search = '';
           state.isPreventRefreshingPosts = false;
@@ -56,7 +57,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       const postSearchInfo = <PostSearchInfo>{
         search: action.payload.search,
         userNameParam: action.payload.userNameParam,
-        isUserPost: action.payload.isUserPost
+        postSearchType: action.payload.postSearchType
       }
 
       return { ...state, postSearchInfo: postSearchInfo };

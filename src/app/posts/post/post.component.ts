@@ -82,13 +82,13 @@ export class PostComponent implements OnInit, OnDestroy {
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
 
     Object.keys(AccessType).forEach((x, i) => {
-      if (i > 2) {
+      if (i > 1) {
         this.accessTypes.push(x);
       }
     });
 
     Object.keys(UploadCategoryType).forEach((x, i) => {
-      if (i > 2) {
+      if (i > 1) {
         this.uploadCategoryTypes.push(x);
       }
     });

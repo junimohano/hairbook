@@ -1,7 +1,5 @@
-import { SocialUser } from 'angular4-social-login/dist';
-import { FriendSearchInfo } from '../friends/shared/friend-search-info';
-import { UserFriend } from './models/user-friend';
 import * as fromRouter from '@ngrx/router-store';
+import { SocialUser } from 'angular4-social-login/dist';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { Customer } from 'app/shared/models/customer';
 import { HairMenu } from 'app/shared/models/hair-menu';
@@ -10,11 +8,14 @@ import { Post } from 'app/shared/models/post';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { User } from 'app/shared/models/user';
 
+import * as FriendReducer from '../friends/shared/friend-reducer';
+import { FriendSearchInfo } from '../friends/shared/friend-search-info';
 import * as LoginReducer from '../logins/shared/login-reducer';
 import * as PostReducer from '../posts/shared/post-reducer';
 import * as UserReducer from '../users/shared/user-reducer';
+import { PostSearchType } from './models/enums/post-search-type';
+import { UserFriend } from './models/user-friend';
 import * as SharedReducer from './shared-reducer';
-import * as FriendReducer from '../friends/shared/friend-reducer';
 
 export interface State {
   router: fromRouter.RouterReducerState;
@@ -90,6 +91,9 @@ export function sharedUsersTabIndex(state: State): number {
 }
 export function sharedExplorersTabIndex(state: State): number {
   return state.shared.explorersTabIndex;
+}
+export function sharedPostSearchType(state: State): PostSearchType {
+  return state.shared.postSearchInfo.postSearchType;
 }
 
 // friend

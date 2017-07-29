@@ -115,18 +115,7 @@ export class SharedEffects {
       return ({ currentTotalPosts: totalPosts, postSearchInfo: state.shared.postSearchInfo })
     })
     .switchMap((results) => {
-      let getPostsObservable: Observable<Post[]>;
-
-      // users page
-      if (results.postSearchInfo.isUserPost) {
-        getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Private, String(this.auth.userName), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
-
-        // explorer page
-      } else {
-        getPostsObservable = this.sharedService.getPosts(results.currentTotalPosts, AccessType.Public, '', '', results.postSearchInfo.search);
-      }
-
-      return getPostsObservable
+      return this.sharedService.getPosts(results.currentTotalPosts, results.postSearchInfo.postSearchType, String(this.auth.userName), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
         .map((posts: Post[]) => {
           this.store.dispatch(new SharedActions.SetProgressBar(false));
           this.store.dispatch(new SharedActions.SetProgressSpinner(false));

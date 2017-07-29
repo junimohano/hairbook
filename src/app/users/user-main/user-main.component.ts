@@ -1,3 +1,4 @@
+import { PostSearchType } from '../../shared/models/enums/post-search-type';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -68,7 +69,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
       this.store.dispatch(new UserActions.GetUser(userNameParam));
       this.postSearchInfo = <PostSearchInfo>{
         search: this.search,
-        isUserPost: true,
+        postSearchType: PostSearchType.Users,
         userNameParam: userNameParam
       }
       this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));

@@ -1,4 +1,8 @@
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="column" fxLayoutAlign="center center">
+    <md-radio-group [value]="postSearchType$ | async">
+        <md-radio-button [value]="0">All</md-radio-button>
+        <md-radio-button [value]="1">Me & Following</md-radio-button>
+    </md-radio-group>
     <hb-post-search [search]="(postSearchInfo$ | async)?.search" (searchChange)="searchChange($event)"></hb-post-search>
 </div>
 <md-tab-group [selectedIndex]="sharedExplorersTabIndex$ | async" (selectedIndexChange)="onSelectedIndexChange($event)">

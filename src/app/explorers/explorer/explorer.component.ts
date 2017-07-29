@@ -1,3 +1,4 @@
+import { PostSearchType } from '../../shared/models/enums/post-search-type';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
 import { Router } from '@angular/router';
@@ -25,6 +26,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   posts$: Observable<Post[]>;
   isProgressSpinner$: Observable<boolean>;
   sharedExplorersTabIndex$: Observable<number>;
+  postSearchType$: Observable<PostSearchType>;
 
   postSearchInfoSubscription: Subscription;
   previousSubscription: Subscription;
@@ -39,6 +41,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.posts$ = store.select(Reducers.sharedPosts);
     this.isProgressSpinner$ = store.select(Reducers.sharedIsProgressSpinner);
     this.sharedExplorersTabIndex$ = store.select(Reducers.sharedExplorersTabIndex);
+    this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
 
     this.postSearchInfoSubscription = this.postSearchInfo$.subscribe(x => {
       if (x) {
@@ -50,7 +53,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.postSearchInfo = <PostSearchInfo>{
       search: this.search,
-      isUserPost: false
+      postSearchType: PostSearchType.ExplorersMeAndFollowing
     }
     this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
   }

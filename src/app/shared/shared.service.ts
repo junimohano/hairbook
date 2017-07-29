@@ -1,3 +1,4 @@
+import { PostSearchType } from './models/enums/post-search-type';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt/angular2-jwt';
@@ -16,8 +17,8 @@ export class SharedService {
   constructor(private authHttp: AuthHttp) {
   }
 
-  getPosts(index: number, accessType: AccessType, userName: string, userNameParam: string, search: string): Observable<Post[]> {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&userNameParam=${userNameParam}&accessType=${accessType}&search=${search}`)
+  getPosts(index: number, postSearchType: PostSearchType, userName: string, userNameParam: string, search: string): Observable<Post[]> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&userNameParam=${userNameParam}&postSearchType=${postSearchType}&search=${search}`)
       .map(res => res.json());
       // .map((results: Post[]) => {
       //   results.forEach((p: Post) => {
