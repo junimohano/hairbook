@@ -112,10 +112,29 @@
             </md-card-content>
 
             <md-card-actions>
-                <div fxLayout="row">
-                    <md-icon (click)="onSetPostEvalution(post)">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon> {{post?.postEvaluations?.length}} &nbsp;
-                    <md-icon (click)="onGoToCommentBox()">message</md-icon> {{post?.totalPostComments}}
+
+                <div fxLayout="row" fxLayoutGap.xs="5px" fxLayoutGap="10px">
+                    <div fxLayout="column" fxLayoutAlign="center center">
+                        <div>
+                            <md-icon (click)="onSetPostEvalution(post)">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon>
+                        </div>
+                        <div>
+                            {{post?.postEvaluations?.length}}
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="center center">
+                        <div>
+                            <md-icon (click)="onGoToCommentBox()">message</md-icon>
+                        </div>
+                        <div>
+                            {{post?.totalPostComments}}
+                        </div>
+                    </div>
+                    <div>
+                        <md-icon (click)="onSetPostFavorite(post)">{{post?.isFavorite ? 'bookmark' : 'bookmark_border'}}</md-icon>
+                    </div>
                 </div>
+
                 <md-list>
                     <h3 md-subheader>Comments</h3>
                     <button *ngIf="post?.totalPostComments !== post?.postComments.length" md-button class="primary" (click)="showMoreComments.emit(post)">Show more comments</button>

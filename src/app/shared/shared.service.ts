@@ -1,4 +1,4 @@
-import { UserFavorite } from './models/user-favorite';
+import { PostFavorite } from './models/post-favorite';
 import { PostSearchType } from './models/enums/post-search-type';
 import { Injectable } from '@angular/core';
 import { Headers } from '@angular/http';
@@ -69,18 +69,18 @@ export class SharedService {
       .map(res => res.json());
   }
 
-  getUserFavorites(index: number, userId: number): Observable<Post[]> {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userId=${userId}`)
+  getPostFavorites(index: number, userId: number): Observable<PostFavorite[]> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/postFavorites?index=${index}&userId=${userId}`)
       .map(res => res.json());
   }
 
-  addUserFavorite(userFavorite: UserFavorite): Observable<PostEvaluation> {
-    return this.authHttp.post(`${environment.webApiUrl}/api/v1/UserFavorites/`, userFavorite, { headers: this.headers })
+  addPostFavorite(postFavorite: PostFavorite): Observable<PostFavorite> {
+    return this.authHttp.post(`${environment.webApiUrl}/api/v1/PostFavorites/`, postFavorite, { headers: this.headers })
       .map(res => res.json());
   }
 
-  delUserFavorite(userFavoriteId: number): Observable<PostEvaluation> {
-    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/UserFavorites/${userFavoriteId}`)
+  delPostFavorite(postFavoriteId: number): Observable<PostFavorite> {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/PostFavorites/${postFavoriteId}`)
       .map(res => res.json());
   }
 

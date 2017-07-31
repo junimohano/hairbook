@@ -1,7 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule, Http, RequestOptions } from '@angular/http';
+import { Http, HttpModule, RequestOptions } from '@angular/http';
 
 // Auth
 import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
@@ -23,7 +24,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: Http) {
+export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
   // return new TranslateHttpLoader(http, 'i18n/', '.json');
 }

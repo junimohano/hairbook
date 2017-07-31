@@ -1,8 +1,8 @@
 import { Base } from './base';
 import { Post } from './post';
 
-export class UserFavorite extends Base {
-  userFavoriteId: number;
+export class PostFavorite extends Base {
+  postFavoriteId: number;
 
   postId: number;
   post: Post;

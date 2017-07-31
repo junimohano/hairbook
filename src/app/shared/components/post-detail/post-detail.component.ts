@@ -1,3 +1,4 @@
+import { PostFavorite } from '../../models/post-favorite';
 import { PostSearchType } from '../../models/enums/post-search-type';
 import { Observable } from 'rxjs/Rx';
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
@@ -149,6 +150,19 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         createdUserId: this.auth.userId
       };
       this.store.dispatch(new SharedActions.AddPostEvaluation(postEvaluation));
+    }
+  }
+
+  onSetPostFavorite() {
+    if (this.post.isFavorite) {
+      const postFavorite = this.post.postFavorites.find(x => x.createdUserId === this.auth.userId);
+      this.store.dispatch(new SharedActions.DelPostFavorite(postFavorite.postFavoriteId));
+    } else {
+      const postFavorite = <PostFavorite>{
+        postId: this.post.postId,
+        createdUserId: this.auth.userId
+      };
+      this.store.dispatch(new SharedActions.AddPostFavorite(postFavorite));
     }
   }
 

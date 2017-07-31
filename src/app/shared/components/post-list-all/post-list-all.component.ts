@@ -1,3 +1,4 @@
+import { PostFavorite } from '../../models/post-favorite';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
@@ -26,6 +27,8 @@ export class PostListAllComponent implements OnInit {
   @Output() delPostComment = new EventEmitter<number>();
   @Output() addPostEvalution = new EventEmitter<PostEvaluation>();
   @Output() delPostEvalution = new EventEmitter<number>();
+  @Output() addPostFavorite = new EventEmitter<PostFavorite>();
+  @Output() delPostFavorite = new EventEmitter<number>();
   @Output() clickUser = new EventEmitter<string>();
   @Output() editPost = new EventEmitter<number>();
   @Output() delPost = new EventEmitter<number>();
@@ -93,6 +96,19 @@ export class PostListAllComponent implements OnInit {
         createdUserId: this.auth.userId
       };
       this.addPostEvalution.emit(postEvaluation);
+    }
+  }
+
+  onSetPostFavorite(post: Post) {
+    if (post.isFavorite) {
+      const postFavorite = post.postFavorites.find(x => x.createdUserId === this.auth.userId);
+      this.delPostFavorite.emit(postFavorite.postFavoriteId);
+    } else {
+      const postFavorite = <PostFavorite>{
+        postId: post.postId,
+        createdUserId: this.auth.userId
+      };
+      this.addPostFavorite.emit(postFavorite);
     }
   }
 

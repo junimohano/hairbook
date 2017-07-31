@@ -1,3 +1,4 @@
+import { PostFavorite } from './models/post-favorite';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/map';
@@ -162,6 +163,20 @@ export class SharedEffects {
     .map((action: SharedActions.DelPostEvaluation) => action.payload)
     .switchMap((postEvaluationId: number) => this.sharedService.delPostEvaluation(postEvaluationId)
       .map((result: PostEvaluation) => new SharedActions.DelPostEvaluationSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() addPostFavoriteEffect$ = this.actions$.ofType(SharedActions.ADD_POST_FAVORITE)
+    .map((action: SharedActions.AddPostFavorite) => action.payload)
+    .switchMap((postFavorite: PostFavorite) => this.sharedService.addPostFavorite(postFavorite)
+      .map((result: PostFavorite) => new SharedActions.AddPostFavoriteSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
+
+  @Effect() delPostFavoriteEffect$ = this.actions$.ofType(SharedActions.DEL_POST_FAVORITE)
+    .map((action: SharedActions.DelPostFavorite) => action.payload)
+    .switchMap((postFavoriteId: number) => this.sharedService.delPostFavorite(postFavoriteId)
+      .map((result: PostFavorite) => new SharedActions.DelPostFavoriteSuccess(result))
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 

@@ -1,3 +1,4 @@
+import { PostFavorite } from './post-favorite';
 import { Customer } from 'app/shared/models/customer';
 import { Salon } from 'app/shared/models/salon';
 import { HairType } from 'app/shared/models/hair-type';
@@ -25,11 +26,13 @@ export class Post extends Base {
   postEvaluations: PostEvaluation[] | null;
   postComments: PostComment[] | null;
   postUploads: PostUpload[] | null;
+  postFavorites: PostFavorite[] | null;
 
   totalPostComments: number;
   currentUploadIndex: number;
   comment: string;
   isEvaluation: boolean;
+  isFavorite: boolean;
   postMenuColor: PostHairMenu;
   postMenuPerm: PostHairMenu;
 }

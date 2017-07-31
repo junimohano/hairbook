@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { PostFavorite } from 'app/shared/models/post-favorite';
 import { PostSearchInfo } from 'app/shared/models/post-search-info';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -111,6 +112,14 @@ export class ExplorerComponent implements OnInit, OnDestroy {
 
   delPostEvalution(postEvaluationId: number) {
     this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluationId));
+  }
+
+  addPostFavorite(postFavorite: PostFavorite) {
+    this.store.dispatch(new SharedActions.AddPostFavorite(postFavorite));
+  }
+
+  delPostFavorite(postFavoriteId: number) {
+    this.store.dispatch(new SharedActions.DelPostFavorite(postFavoriteId));
   }
 
   clickUser(userName: string) {

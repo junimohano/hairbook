@@ -1,4 +1,4 @@
-import { UserFavorite } from './models/user-favorite';
+import { PostFavorite } from './models/post-favorite';
 import { Action } from '@ngrx/store';
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
@@ -41,12 +41,12 @@ export const DEL_POST_SUCCESS = '[Shared] DEL_POST_SUCCESS';
 export const SET_IS_PREVENT_REFRESHING_POSTS = '[Shared] SET_IS_PREVENT_REFRESHING_POSTS';
 export const SET_USERS_TAB_INDEX = '[Shared] SET_USERS_TAB_INDEX';
 export const SET_EXPLORERS_TAB_INDEX = '[Shared] SET_EXPLORERS_TAB_INDEX';
-export const GET_USER_FAVORITES = '[Shared] GET_USER_FAVORITES';
-export const GET_USER_FAVORITES_SUCCESS = '[Shared] GET_USER_FAVORITES_SUCCESS';
-export const ADD_USER_FAVORITE = '[Shared] ADD_USER_FAVORITE';
-export const ADD_USER_FAVORITE_SUCCESS = '[Shared] ADD_USER_FAVORITE_SUCCESS';
-export const DEL_USER_FAVORITE = '[Shared] DEL_USER_FAVORITE';
-export const DEL_USER_FAVORITE_SUCCESS = '[Shared] DEL_USER_FAVORITE_SUCCESS';
+export const GET_POST_FAVORITES = '[Shared] GET_POST_FAVORITES';
+export const GET_POST_FAVORITES_SUCCESS = '[Shared] GET_POST_FAVORITES_SUCCESS';
+export const ADD_POST_FAVORITE = '[Shared] ADD_POST_FAVORITE';
+export const ADD_POST_FAVORITE_SUCCESS = '[Shared] ADD_POST_FAVORITE_SUCCESS';
+export const DEL_POST_FAVORITE = '[Shared] DEL_POST_FAVORITE';
+export const DEL_POST_FAVORITE_SUCCESS = '[Shared] DEL_POST_FAVORITE_SUCCESS';
 
 export class NoAction implements Action {
   readonly type = NO_ACTION;
@@ -223,34 +223,34 @@ export class SetExplorersTabIndex implements Action {
   constructor(public payload: number) { }
 }
 
-export class GetUserFavorites implements Action {
-  readonly type = GET_USER_FAVORITES;
+export class GetPostFavorites implements Action {
+  readonly type = GET_POST_FAVORITES;
   constructor(public payload: PostSearchInfo) { }
 }
 
-export class GetUserFavoritesSuccess implements Action {
-  readonly type = GET_USER_FAVORITES_SUCCESS;
-  constructor(public payload: UserFavorite[]) { }
+export class GetPostFavoritesSuccess implements Action {
+  readonly type = GET_POST_FAVORITES_SUCCESS;
+  constructor(public payload: PostFavorite[]) { }
 }
 
-export class AddUserFavorite implements Action {
-  readonly type = ADD_USER_FAVORITE;
-  constructor(public payload: UserFavorite) { }
+export class AddPostFavorite implements Action {
+  readonly type = ADD_POST_FAVORITE;
+  constructor(public payload: PostFavorite) { }
 }
 
-export class AddUserFavoriteSuccess implements Action {
-  readonly type = ADD_USER_FAVORITE_SUCCESS;
-  constructor(public payload: UserFavorite) { }
+export class AddPostFavoriteSuccess implements Action {
+  readonly type = ADD_POST_FAVORITE_SUCCESS;
+  constructor(public payload: PostFavorite) { }
 }
 
-export class DelUserFavorite implements Action {
-  readonly type = DEL_USER_FAVORITE;
+export class DelPostFavorite implements Action {
+  readonly type = DEL_POST_FAVORITE;
   constructor(public payload: number) { }
 }
 
-export class DelUserFavoriteSuccess implements Action {
-  readonly type = DEL_USER_FAVORITE_SUCCESS;
-  constructor(public payload: UserFavorite) { }
+export class DelPostFavoriteSuccess implements Action {
+  readonly type = DEL_POST_FAVORITE_SUCCESS;
+  constructor(public payload: PostFavorite) { }
 }
 
 export type All
@@ -289,10 +289,10 @@ export type All
   | SetIsPreventRefreshingPosts
   | SetUsersTabIndex
   | SetExplorersTabIndex
-  | GetUserFavorites
-  | GetUserFavoritesSuccess
-  | AddUserFavorite
-  | AddUserFavoriteSuccess
-  | DelUserFavorite
-  | DelUserFavoriteSuccess
+  | GetPostFavorites
+  | GetPostFavoritesSuccess
+  | AddPostFavorite
+  | AddPostFavoriteSuccess
+  | DelPostFavorite
+  | DelPostFavoriteSuccess
   ;

@@ -13,15 +13,18 @@
     overflow: hidden;
 }
 
-.example-header-image {
-    // background-image: url('../../../assets/img/examples/shiba1.jpg');
+.post-margin {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.avatar-shape {
     background-size: cover;
 }
 
-.fill-remaining-space {
-    /*This fills the remaining space, by using flexbox.
-  Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
+.no-margin {
+    padding-left: -16px;
+    padding-right: -16px;
 }
 
 .accessType {

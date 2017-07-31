@@ -1,3 +1,4 @@
+import { PostFavorite } from '../../shared/models/post-favorite';
 import { PostSearchType } from '../../shared/models/enums/post-search-type';
 import {
   AfterViewInit,
@@ -151,6 +152,14 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   delPostEvalution(postEvaluationId: number) {
     this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluationId));
+  }
+
+  addPostFavorite(postFavorite: PostFavorite) {
+    this.store.dispatch(new SharedActions.AddPostFavorite(postFavorite));
+  }
+
+  delPostFavorite(postFavoriteId: number) {
+    this.store.dispatch(new SharedActions.DelPostFavorite(postFavoriteId));
   }
 
   onSelectedIndexChange(event) {
