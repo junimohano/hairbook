@@ -13,6 +13,7 @@ export class PostHairMenu extends Base {
   hairSubMenuId: number | null;
   hairSubMenu: HairSubMenu | null;
   memo: string;
+  isMemo: boolean;
   drawing: ByteString;
 }
 

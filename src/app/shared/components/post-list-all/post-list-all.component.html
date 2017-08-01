@@ -64,7 +64,7 @@
                     </md-chip-list>
                 </div>
 
-                <div *ngIf="postSearchType === 2">
+                <div fxLayout="column" *ngIf="post.isHairTypeMemo || postSearchType === 2">
                     <div fxLayout="column" fxLayoutGap="10px">
                         <div></div>
                         <div></div>
@@ -85,21 +85,21 @@
                     </md-chip-list>
                 </div>
 
-                <div fxLayout="column" *ngIf="post.postMenuColor && postSearchType === 2">
+                <div fxLayout="column" *ngIf="post.postMenuColor">
                     <h4>{{post.postMenuColor.hairSubMenu?.name}}</h4>
-                    <md-input-container>
+                    <md-input-container *ngIf="post?.postMenuColor.isMemo || postSearchType === 2">
                         <textarea mdInput placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
-                <div fxLayout="column" *ngIf="post?.postMenuPerm && postSearchType === 2">
+                <div fxLayout="column" *ngIf="post?.postMenuPerm">
                     <h4>{{post.postMenuPerm.hairSubMenu?.name}}</h4>
-                    <md-input-container>
+                    <md-input-container *ngIf="post?.postMenuPerm.isMemo || postSearchType === 2">
                         <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
-                <div>
+                <div *ngIf="post.isMemo || postSearchType === 2">
                     <div fxLayout="column" fxLayoutGap="30px">
                         <div></div>
                         <div></div>

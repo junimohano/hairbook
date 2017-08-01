@@ -103,8 +103,12 @@ export class PostComponent implements OnInit, OnDestroy {
       hairTypeMemo: '',
       hairSubMenuColor: 2,
       hairSubMenuColorMemo: '',
-      hairSubMenuPerm: 8,
-      hairSubMenuPermMemo: ''
+      hairSubMenuPerm: 9,
+      hairSubMenuPermMemo: '',
+      isHairTypeMemo: true,
+      isHairSubMenuColorMemo: true,
+      isHairSubMenuPermMemo: true,
+      isMemo: true
     }, { validator: customWatcher });
 
     this.store.dispatch(new PostActions.GetHairMenus());
@@ -163,13 +167,17 @@ export class PostComponent implements OnInit, OnDestroy {
               },
               date: post.date,
               memo: post.memo,
+              isMemo: post.isMemo,
               hairMenus: post.postHairMenus.length > 0 ? true : false,
               hairTypes: post.postHairTypes.length > 0 ? true : false,
               hairTypeMemo: post.hairTypeMemo,
+              isHairTypeMemo: post.isHairTypeMemo,
               hairSubMenuColor: color === undefined ? 0 : color.hairSubMenuId,
               hairSubMenuColorMemo: color === undefined ? 0 : color.memo,
+              isHairSubMenuColorMemo: color === undefined ? 0 : color.isMemo,
               hairSubMenuPerm: perm === undefined ? 0 : perm.hairSubMenuId,
-              hairSubMenuPermMemo: perm === undefined ? 0 : perm.memo
+              hairSubMenuPermMemo: perm === undefined ? 0 : perm.memo,
+              isHairSubMenuPermMemo: perm === undefined ? 0 : perm.isMemo
             });
 
             this.selectedCustomerId = post.customerId;
@@ -282,7 +290,7 @@ export class PostComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      // This page is not reloaded
+    // This page is not reloaded
     if (performance.navigation.type !== 1) {
       // prevent search again when I go back to users or explorers.
     }
@@ -314,7 +322,9 @@ export class PostComponent implements OnInit, OnDestroy {
         accessType: this.postForm.get('accessType').value,
         date: this.postForm.get('date').value,
         memo: this.postForm.get('memo').value,
+        isMemo: this.postForm.get('isMemo').value,
         hairTypeMemo: this.postForm.get('hairTypeMemo').value,
+        isHairTypeMemo: this.postForm.get('isHairTypeMemo').value,
         postHairMenus: [],
         postHairTypes: [],
         postId: postId,
@@ -345,9 +355,11 @@ export class PostComponent implements OnInit, OnDestroy {
           if (x.name === 'Color') {
             postHairMenu.hairSubMenuId = this.postForm.get('hairSubMenuColor').value;
             postHairMenu.memo = this.postForm.get('hairSubMenuColorMemo').value;
+            postHairMenu.isMemo = this.postForm.get('isHairSubMenuColorMemo').value;
           } else if (x.name === 'Perm') {
             postHairMenu.hairSubMenuId = this.postForm.get('hairSubMenuPerm').value;
             postHairMenu.memo = this.postForm.get('hairSubMenuPermMemo').value;
+            postHairMenu.isMemo = this.postForm.get('isHairSubMenuPermMemo').value;
           }
 
           post.postHairMenus.push(postHairMenu);

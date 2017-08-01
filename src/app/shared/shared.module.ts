@@ -53,7 +53,8 @@ import {
   MdSelectModule,
   MdAutocompleteModule,
   MdButtonToggleModule,
-  MdRadioModule
+  MdRadioModule,
+  MdSlideToggleModule
 } from '@angular/material';
 
 // Flex layout
@@ -110,7 +111,8 @@ const modules = [
   MdSelectModule,
   MdAutocompleteModule,
   MdButtonToggleModule,
-  MdRadioModule
+  MdRadioModule,
+  MdSlideToggleModule
 ];
 
 @NgModule({

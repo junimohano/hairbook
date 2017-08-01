@@ -17,9 +17,11 @@ export class Post extends Base {
   customer: Customer;
   date: string;
   memo: string;
+  isMemo: boolean;
   salonId: number | null;
   salon: Salon | null;
   hairTypeMemo: string;
+  isHairTypeMemo: boolean;
   accessType: AccessType;
   postHairMenus: PostHairMenu[] | null;
   postHairTypes: PostHairType[] | null;
