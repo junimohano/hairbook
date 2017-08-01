@@ -33,7 +33,6 @@ export class FollowersComponent implements OnInit {
       friendSearchType: FriendSearchType.Followers
     }
     this.store.dispatch(new FriendActions.SearchFriends(friendSearchInfo));
-    this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
   }
 
   onNavUser(userName: string) {

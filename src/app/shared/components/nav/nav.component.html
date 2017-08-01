@@ -1,6 +1,7 @@
 <md-toolbar color="primary" class="unicorn-dark-theme">
 
     <button md-button [routerLink]="['/users/', userName]" mdTooltip="Users">Hairbook</button>
+    <button md-button (click)="onClickBack()" mdTooltip="Back" fxHide="true" fxShow.xs><md-icon class="back">undo</md-icon></button>
 
     <span class="fill-remaining-space"></span>
     <div fxLayout="row" fxShow="false" fxShow.gt-sm>

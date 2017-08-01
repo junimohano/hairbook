@@ -91,6 +91,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   }
 
   goDetail(post: Post) {
+    this.store.dispatch(new SharedActions.GetPostSuccess(post));
     this.store.dispatch(new SharedActions.NavExplorersPost(String(post.postId)));
   }
 

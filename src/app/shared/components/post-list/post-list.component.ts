@@ -25,7 +25,6 @@ export class PostListComponent implements OnInit {
 
   onOpenDetail(post: Post) {
     if (window.outerWidth > 600) {
-      // if (1 === 1) {
       const height = window.outerHeight > 768 ? 768 : window.outerHeight;
       const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
 

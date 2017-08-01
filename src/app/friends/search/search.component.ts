@@ -30,7 +30,6 @@ export class SearchComponent implements OnInit {
       friendSearchType: FriendSearchType.Search
     }
     this.store.dispatch(new FriendActions.SearchFriends(friendSearchInfo));
-    this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
   }
 
   onNavUser(userName: string) {

@@ -134,6 +134,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goDetail(post: Post) {
+    this.store.dispatch(new SharedActions.GetPostSuccess(post));
     this.store.dispatch(new SharedActions.NavUsersPost(String(post.postId)));
   }
 

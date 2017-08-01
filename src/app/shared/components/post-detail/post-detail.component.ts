@@ -1,7 +1,17 @@
 import { PostFavorite } from '../../models/post-favorite';
 import { PostSearchType } from '../../models/enums/post-search-type';
 import { Observable } from 'rxjs/Rx';
-import { Component, EventEmitter, Inject, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -41,11 +51,9 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
 
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
-    // console.log(this.uploadCategories);
 
     if (data) {
       this.post = data;
-      // this.setPostData(data);
     } else {
       this.activatedRouteSubscription = activatedRoute.params.subscribe(params => {
         console.log(params);
@@ -54,20 +62,13 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
           if (post) {
             this.post = post;
-            // this.setPostData(post);
+          } else {
+            this.store.dispatch(new SharedActions.GetPost(postId));
           }
         });
-
-        this.store.dispatch(new SharedActions.GetPost(postId));
       });
     }
   }
-
-  // setPostData(post: Post) {
-  //   console.log(post);
-  // this.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
-  // this.postMenuPerm = post.postHairMenus.find(x => x.hairMenuId === 3);
-  // }
 
   ngOnInit() {
     this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));

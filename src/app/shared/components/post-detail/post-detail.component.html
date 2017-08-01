@@ -155,10 +155,10 @@
             </md-list>
 
             <div fxLayout="row">
-                <md-input-container>
+                <md-input-container fxFlex="80">
                     <input mdInput placeholder="Comment" [(ngModel)]="comment" #commentBox>
                 </md-input-container>
-                <button md-button class="warn" (click)="onAddPostComment(comment)">Add</button>
+                <button fxFlex="20" md-button class="warn" (click)="onAddPostComment(comment)">Add</button>
             </div>
         </div>
     </div>

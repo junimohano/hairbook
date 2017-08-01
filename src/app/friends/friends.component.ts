@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs/Rx';
 import { UserFriend } from '../shared/models/user-friend';
 import * as Reducers from '../shared/reducers';
 import * as FriendActions from './shared/friend-actions';
+import * as SharedActions from '../shared/shared-actions';
 import { FriendSearchInfo } from './shared/friend-search-info';
 import { FriendSearchType } from './shared/friend-search-type';
 
@@ -32,6 +33,7 @@ export class FriendsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
   }
 
   public ngOnDestroy(): void {

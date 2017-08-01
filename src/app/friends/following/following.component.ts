@@ -33,7 +33,6 @@ export class FollowingComponent implements OnInit {
       friendSearchType: FriendSearchType.Following
     }
     this.store.dispatch(new FriendActions.SearchFriends(friendSearchInfo));
-    this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
   }
 
   onNavUser(userName: string) {

@@ -1,12 +1,11 @@
 <hb-user-info [isMe]="isMe" [user]="user$ | async"></hb-user-info>
 
-<div fxLayout="row" fxLayoutAlign="center center">
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
     <hb-post-search [search]="(postSearchInfo$ | async)?.search" (searchChange)="searchChange($event)"></hb-post-search>
+    <md-slide-toggle class="example-margin" color="primary" (change)="onFavoriteChange($event)" [checked]="(postSearchInfo$ | async)?.postSearchType == 3 ? true : false">
+        Favorite
+    </md-slide-toggle>
 </div>
-
-<md-slide-toggle class="example-margin" color="primary" (change)="onFavoriteChange($event)" [checked]="(postSearchInfo$ | async)?.postSearchType == 3 ? true : false">
-    Favorite
-</md-slide-toggle>
 
 <md-tab-group [selectedIndex]="sharedUsersTabIndex$ | async" (selectedIndexChange)="onSelectedIndexChange($event)">
     <md-tab>
