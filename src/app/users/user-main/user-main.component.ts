@@ -50,7 +50,6 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   postCommentSubscription: Subscription;
 
   postSearchInfo: PostSearchInfo;
-  search: string;
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute, private router: Router, private cd: ChangeDetectorRef) {
@@ -63,18 +62,21 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.postSearchInfoSubscription = this.postSearchInfo$.subscribe(x => {
       if (x) {
-        this.search = x.search;
+        this.postSearchInfo = <PostSearchInfo>{
+          postSearchType: x.postSearchType,
+          search: x.search,
+          userNameParam: x.userNameParam
+        }
       }
     });
 
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
       const userNameParam = params['userName'];
       this.store.dispatch(new UserActions.GetUser(userNameParam));
-      this.postSearchInfo = <PostSearchInfo>{
-        search: this.search,
-        postSearchType: PostSearchType.Users,
-        userNameParam: userNameParam
+      if (this.postSearchInfo.postSearchType !== PostSearchType.Users && this.postSearchInfo.postSearchType !== PostSearchType.Favorite) {
+        this.postSearchInfo.postSearchType = PostSearchType.Users;
       }
+      this.postSearchInfo.userNameParam = userNameParam;
       this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
     });
 
@@ -89,6 +91,7 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+
     // location.reload();
     // setTimeout(() => {
     //   console.log('done');
@@ -172,6 +175,13 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   delPost(postId: number) {
     this.store.dispatch(new SharedActions.DelPost(postId));
+  }
+
+  onFavoriteChange(event) {
+    if (this.postSearchInfo) {
+      this.postSearchInfo.postSearchType = event.checked ? PostSearchType.Favorite : PostSearchType.Users;
+      this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
+    }
   }
 
 }

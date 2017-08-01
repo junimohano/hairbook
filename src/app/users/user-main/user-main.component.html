@@ -1,7 +1,13 @@
 <hb-user-info [isMe]="isMe" [user]="user$ | async"></hb-user-info>
+
 <div fxLayout="row" fxLayoutAlign="center center">
     <hb-post-search [search]="(postSearchInfo$ | async)?.search" (searchChange)="searchChange($event)"></hb-post-search>
 </div>
+
+<md-slide-toggle class="example-margin" color="primary" (change)="onFavoriteChange($event)" [checked]="(postSearchInfo$ | async)?.postSearchType == 3 ? true : false">
+    Favorite
+</md-slide-toggle>
+
 <md-tab-group [selectedIndex]="sharedUsersTabIndex$ | async" (selectedIndexChange)="onSelectedIndexChange($event)">
     <md-tab>
         <ng-template md-tab-label>
@@ -14,8 +20,8 @@
         <ng-template md-tab-label>
             <md-icon>view_stream</md-icon>
         </ng-template>
-        <hb-post-list-all [posts]="posts$ | async" [postSearchType]="postSearchType$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (addPostFavorite)="addPostFavorite($event)" (delPostFavorite)="delPostFavorite($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)"
-            (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
+        <hb-post-list-all [posts]="posts$ | async" [postSearchType]="postSearchType$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (addPostFavorite)="addPostFavorite($event)"
+            (delPostFavorite)="delPostFavorite($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)" (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
     </md-tab>
 
     <!-- <md-tab>

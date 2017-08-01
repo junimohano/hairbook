@@ -75,7 +75,6 @@ export function reducer(state = initialState, action: Actions.All): State {
         post.currentUploadIndex = 0;
         post.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
         post.postMenuPerm = post.postHairMenus.find(x => x.hairMenuId === 3);
-        // setValidatePost(post);
       });
 
       console.log(`search_post : ${state.posts.length}`);
@@ -108,7 +107,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       action.payload.currentUploadIndex = 0;
       action.payload.postMenuColor = action.payload.postHairMenus.find(x => x.hairMenuId === 2);
       action.payload.postMenuPerm = action.payload.postHairMenus.find(x => x.hairMenuId === 3);
-      // setValidatePost(action.payload);
 
       const postIndex = state.posts.findIndex(x => x.postId === action.payload.postId);
       // add Post
@@ -144,8 +142,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.isEvaluation = true;
-      // post.postEvaluations.push(action.payload);
-      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
@@ -153,8 +149,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.isEvaluation = false;
-      // post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
-      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
@@ -162,8 +156,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.isFavorite = true;
-      // post.postFavorites.push(action.payload);
-      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
@@ -171,8 +163,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.isFavorite = false;
-      // post.postFavorites = post.postFavorites.filter(x => x.postFavoriteId !== action.payload.postFavoriteId);
-      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
