@@ -75,7 +75,7 @@ export function reducer(state = initialState, action: Actions.All): State {
         post.currentUploadIndex = 0;
         post.postMenuColor = post.postHairMenus.find(x => x.hairMenuId === 2);
         post.postMenuPerm = post.postHairMenus.find(x => x.hairMenuId === 3);
-        setValidatePost(post);
+        // setValidatePost(post);
       });
 
       console.log(`search_post : ${state.posts.length}`);
@@ -108,7 +108,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       action.payload.currentUploadIndex = 0;
       action.payload.postMenuColor = action.payload.postHairMenus.find(x => x.hairMenuId === 2);
       action.payload.postMenuPerm = action.payload.postHairMenus.find(x => x.hairMenuId === 3);
-      setValidatePost(action.payload);
+      // setValidatePost(action.payload);
 
       const postIndex = state.posts.findIndex(x => x.postId === action.payload.postId);
       // add Post
@@ -120,7 +120,6 @@ export function reducer(state = initialState, action: Actions.All): State {
       }
 
       console.log(Actions.GET_POST_SUCCESS, action.payload);
-
 
       return { ...state, selectedPost: action.payload };
     }
@@ -144,32 +143,36 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.ADD_POST_EVALUATION_SUCCESS: {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
-      post.postEvaluations.push(action.payload);
-      setValidatePost(post);
+      post.isEvaluation = true;
+      // post.postEvaluations.push(action.payload);
+      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
     case Actions.DEL_POST_EVALUATION_SUCCESS: {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
-      post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
-      setValidatePost(post);
+      post.isEvaluation = false;
+      // post.postEvaluations = post.postEvaluations.filter(x => x.postEvaluationId !== action.payload.postEvaluationId);
+      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
     case Actions.ADD_POST_FAVORITE_SUCCESS: {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
-      post.postFavorites.push(action.payload);
-      setValidatePost(post);
+      post.isFavorite = true;
+      // post.postFavorites.push(action.payload);
+      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 
     case Actions.DEL_POST_FAVORITE_SUCCESS: {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
-      post.postFavorites = post.postFavorites.filter(x => x.postFavoriteId !== action.payload.postFavoriteId);
-      setValidatePost(post);
+      post.isFavorite = false;
+      // post.postFavorites = post.postFavorites.filter(x => x.postFavoriteId !== action.payload.postFavoriteId);
+      // setValidatePost(post);
       return { ...state, selectedPost: post };
     }
 

@@ -1,3 +1,4 @@
+import { User } from '../../shared/models/user';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Rx';
@@ -18,10 +19,12 @@ import { FriendSearchType } from '../shared/friend-search-type';
 })
 export class FollowingComponent implements OnInit {
 
-  userFriends$: Observable<UserFriend[]>;
+  // userFriends$: Observable<UserFriend[]>;
+  users$: Observable<User[]>;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>) {
-    this.userFriends$ = store.select(Reducers.friendUserFriends);
+    // this.userFriends$ = store.select(Reducers.friendUserFriends);
+    this.users$ = store.select(Reducers.friendUsers);
   }
 
   ngOnInit() {

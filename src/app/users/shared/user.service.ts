@@ -15,8 +15,8 @@ export class UserService {
   constructor(private authHttp: AuthHttp) {
   }
 
-  getUser(userName: string): Observable<User> {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/users/GetByUserName/${userName}`)
+  getUser(userName: string, userId: number): Observable<User> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/users/GetByUserName/${userName}?userId=${userId}`)
       .map(res => res.json());
   }
 

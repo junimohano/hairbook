@@ -87,8 +87,7 @@ export class PostListAllComponent implements OnInit {
 
   onSetPostEvalution(post: Post) {
     if (post.isEvaluation) {
-      const postEvaluation = post.postEvaluations.find(x => x.createdUserId === this.auth.userId);
-      this.delPostEvalution.emit(postEvaluation.postEvaluationId);
+      this.delPostEvalution.emit(post.postId);
     } else {
       const postEvaluation = <PostEvaluation>{
         evaluationType: EvaluationType.Like,
@@ -101,8 +100,7 @@ export class PostListAllComponent implements OnInit {
 
   onSetPostFavorite(post: Post) {
     if (post.isFavorite) {
-      const postFavorite = post.postFavorites.find(x => x.createdUserId === this.auth.userId);
-      this.delPostFavorite.emit(postFavorite.postFavoriteId);
+      this.delPostFavorite.emit(post.postId);
     } else {
       const postFavorite = <PostFavorite>{
         postId: post.postId,

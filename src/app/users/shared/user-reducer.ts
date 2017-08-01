@@ -16,6 +16,18 @@ export function reducer(state = initialState, action: Actions.All): State {
     case Actions.GET_USER_SUCCESS:
       return { ...state, user: action.payload };
 
+    case Actions.ADD_USER_FRIEND_SUCCESS: {
+      console.log(action.payload);
+      state.user.isFollowing = true;
+      return { ...state };
+    }
+
+    case Actions.DEL_USER_FRIEND_SUCCESS: {
+      console.log(action.payload);
+      state.user.isFollowing = false;
+      return { ...state };
+    }
+
     default:
       return state;
   }

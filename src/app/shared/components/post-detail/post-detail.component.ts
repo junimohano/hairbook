@@ -139,27 +139,25 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  onSetPostEvalution() {
-    if (this.post.isEvaluation) {
-      const postEvaluation = this.post.postEvaluations.find(x => x.createdUserId === this.auth.userId);
-      this.store.dispatch(new SharedActions.DelPostEvaluation(postEvaluation.postEvaluationId));
+  onSetPostEvalution(post: Post) {
+    if (post.isEvaluation) {
+      this.store.dispatch(new SharedActions.DelPostEvaluation(post.postId));
     } else {
       const postEvaluation = <PostEvaluation>{
         evaluationType: EvaluationType.Like,
-        postId: this.post.postId,
+        postId: post.postId,
         createdUserId: this.auth.userId
       };
       this.store.dispatch(new SharedActions.AddPostEvaluation(postEvaluation));
     }
   }
 
-  onSetPostFavorite() {
-    if (this.post.isFavorite) {
-      const postFavorite = this.post.postFavorites.find(x => x.createdUserId === this.auth.userId);
-      this.store.dispatch(new SharedActions.DelPostFavorite(postFavorite.postFavoriteId));
+  onSetPostFavorite(post: Post) {
+    if (post.isFavorite) {
+      this.store.dispatch(new SharedActions.DelPostFavorite(post.postId));
     } else {
       const postFavorite = <PostFavorite>{
-        postId: this.post.postId,
+        postId: post.postId,
         createdUserId: this.auth.userId
       };
       this.store.dispatch(new SharedActions.AddPostFavorite(postFavorite));

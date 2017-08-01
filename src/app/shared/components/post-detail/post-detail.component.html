@@ -121,7 +121,7 @@
             <div fxLayout="row" fxLayoutGap.xs="5px" fxLayoutGap="10px">
                 <div fxLayout="column" fxLayoutAlign="center center">
                     <div>
-                        <md-icon (click)="onSetPostEvalution()">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon>
+                        <md-icon (click)="onSetPostEvalution(post)">{{post?.isEvaluation ? 'favorite' : 'favorite_border'}}</md-icon>
                     </div>
                     <div>
                         {{post?.postEvaluations?.length}}
@@ -136,7 +136,7 @@
                     </div>
                 </div>
                 <div>
-                    <md-icon (click)="onSetPostFavorite()">{{post?.isFavorite ? 'bookmark' : 'bookmark_border'}}</md-icon>
+                    <md-icon (click)="onSetPostFavorite(post)">{{post?.isFavorite ? 'bookmark' : 'bookmark_border'}}</md-icon>
                 </div>
             </div>
 

@@ -1,3 +1,5 @@
+import { User } from '../../shared/models/user';
+import { Observable } from 'rxjs/Rx';
 import { FriendSearchType } from './friend-search-type';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -23,41 +25,30 @@ export class FriendEffects {
     .map((action: FriendActions.SearchFriends) => action.payload)
     .debounceTime(50)
     .withLatestFrom(this.store, (payload, state) => {
-      let totalFriends = 0;
-      if (state.friend.friendSearchInfo.friendSearchType === FriendSearchType.Search) {
-        totalFriends = state.friend.users.length;
-      } else {
-        totalFriends = state.friend.userFriends.length;
-      }
-
-      if (totalFriends === 0) {
+      if (state.friend.users.length === 0) {
         this.store.dispatch(new SharedActions.SetProgressBar(true));
       } else {
         this.store.dispatch(new SharedActions.SetProgressSpinner(true));
       }
-
-      return ({ currentTotalUserFriends: totalFriends, friendSearchInfo: state.friend.friendSearchInfo })
+      return ({ currentTotalUserFriends: state.friend.users.length, friendSearchInfo: state.friend.friendSearchInfo })
     })
     .switchMap((results) => {
+      let observable: Observable<User[]>;
       if (results.friendSearchInfo.friendSearchType === FriendSearchType.Search) {
-        return this.friendService.getUsers(results.currentTotalUserFriends, results.friendSearchInfo.search)
-          .map(users => {
-            console.log(FriendActions.SEARCH_FRIENDS, users);
-            this.store.dispatch(new SharedActions.SetProgressBar(false));
-            this.store.dispatch(new SharedActions.SetProgressSpinner(false));
-            return new FriendActions.SearchFriendsSearchSuccess(users);
-          })
-          .catch((res: Response) => of(new SharedActions.SetSnackBar(res)));
+        observable = this.friendService.getUsers(results.currentTotalUserFriends, this.auth.userId, results.friendSearchInfo.search);
       } else {
-        return this.friendService.getUserFriends(results.currentTotalUserFriends, results.friendSearchInfo.friendSearchType, this.auth.userId, results.friendSearchInfo.search)
-          .map(userFriends => {
-            console.log(FriendActions.SEARCH_FRIENDS, userFriends);
-            this.store.dispatch(new SharedActions.SetProgressBar(false));
-            this.store.dispatch(new SharedActions.SetProgressSpinner(false));
-            return new FriendActions.SearchFriendsFollowingAndFollowersSuccess(userFriends);
-          })
-          .catch((res: Response) => of(new SharedActions.SetSnackBar(res)));
+        observable = this.friendService.getUserFriends(results.currentTotalUserFriends, results.friendSearchInfo.friendSearchType, this.auth.userId, results.friendSearchInfo.search)
       }
+
+      return observable
+        .map(users => {
+          console.log(FriendActions.SEARCH_FRIENDS, users);
+          this.store.dispatch(new SharedActions.SetProgressBar(false));
+          this.store.dispatch(new SharedActions.SetProgressSpinner(false));
+          return new FriendActions.SearchFriendsSuccess(users);
+        })
+        .catch((res: Response) => of(new SharedActions.SetSnackBar(res)));
+
     });
 
   constructor(private actions$: Actions,

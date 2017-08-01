@@ -1,3 +1,4 @@
+import { UserFriend } from './models/user-friend';
 import { PostFavorite } from './models/post-favorite';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/debounceTime';
@@ -116,7 +117,7 @@ export class SharedEffects {
       return ({ currentTotalPosts: totalPosts, postSearchInfo: state.shared.postSearchInfo })
     })
     .switchMap((results) => {
-      return this.sharedService.getPosts(results.currentTotalPosts, results.postSearchInfo.postSearchType, String(this.auth.userName), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
+      return this.sharedService.getPosts(this.auth.userId, results.currentTotalPosts, results.postSearchInfo.postSearchType, String(this.auth.userName), results.postSearchInfo.userNameParam, results.postSearchInfo.search)
         .map((posts: Post[]) => {
           this.store.dispatch(new SharedActions.SetProgressBar(false));
           this.store.dispatch(new SharedActions.SetProgressSpinner(false));
@@ -130,7 +131,7 @@ export class SharedEffects {
     .switchMap((postId: number) => {
       this.store.dispatch(new SharedActions.SetProgressBar(true));
 
-      return this.sharedService.getPost(postId)
+      return this.sharedService.getPost(postId, this.auth.userId)
         .map((post: Post) => {
           this.store.dispatch(new SharedActions.SetProgressBar(false));
           return new SharedActions.GetPostSuccess(post);
@@ -161,7 +162,7 @@ export class SharedEffects {
 
   @Effect() delPostEvaluationEffect$ = this.actions$.ofType(SharedActions.DEL_POST_EVALUATION)
     .map((action: SharedActions.DelPostEvaluation) => action.payload)
-    .switchMap((postEvaluationId: number) => this.sharedService.delPostEvaluation(postEvaluationId)
+    .switchMap((postId: number) => this.sharedService.delPostEvaluation(postId, this.auth.userId)
       .map((result: PostEvaluation) => new SharedActions.DelPostEvaluationSuccess(result))
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
@@ -175,7 +176,7 @@ export class SharedEffects {
 
   @Effect() delPostFavoriteEffect$ = this.actions$.ofType(SharedActions.DEL_POST_FAVORITE)
     .map((action: SharedActions.DelPostFavorite) => action.payload)
-    .switchMap((postFavoriteId: number) => this.sharedService.delPostFavorite(postFavoriteId)
+    .switchMap((postId: number) => this.sharedService.delPostFavorite(postId, this.auth.userId)
       .map((result: PostFavorite) => new SharedActions.DelPostFavoriteSuccess(result))
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );

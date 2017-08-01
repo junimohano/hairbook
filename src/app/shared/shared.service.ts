@@ -1,3 +1,4 @@
+import { UserFriend } from './models/user-friend';
 import { PostFavorite } from './models/post-favorite';
 import { PostSearchType } from './models/enums/post-search-type';
 import { Injectable } from '@angular/core';
@@ -18,8 +19,8 @@ export class SharedService {
   constructor(private authHttp: AuthHttp) {
   }
 
-  getPosts(index: number, postSearchType: PostSearchType, userName: string, userNameParam: string, search: string): Observable<Post[]> {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?index=${index}&userName=${userName}&userNameParam=${userNameParam}&postSearchType=${postSearchType}&search=${search}`)
+  getPosts(userId: number, index: number, postSearchType: PostSearchType, userName: string, userNameParam: string, search: string): Observable<Post[]> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts?userId=${userId}&index=${index}&userName=${userName}&userNameParam=${userNameParam}&postSearchType=${postSearchType}&search=${search}`)
       .map(res => res.json());
     // .map((results: Post[]) => {
     //   results.forEach((p: Post) => {
@@ -34,8 +35,8 @@ export class SharedService {
     // });
   }
 
-  getPost(postId: number): Observable<Post> {
-    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts/${postId}`)
+  getPost(postId: number, userId: number): Observable<Post> {
+    return this.authHttp.get(`${environment.webApiUrl}/api/v1/posts/${postId}?userId=${userId}`)
       .map(res => res.json());
   }
 
@@ -59,8 +60,8 @@ export class SharedService {
       .map(res => res.json());
   }
 
-  delPostEvaluation(postEvaluationId: number): Observable<PostEvaluation> {
-    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/PostEvaluations/${postEvaluationId}`)
+  delPostEvaluation(postId: number, userId: number): Observable<PostEvaluation> {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/PostEvaluations?postId=${postId}&userId=${userId}`)
       .map(res => res.json());
   }
 
@@ -79,8 +80,18 @@ export class SharedService {
       .map(res => res.json());
   }
 
-  delPostFavorite(postFavoriteId: number): Observable<PostFavorite> {
-    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/PostFavorites/${postFavoriteId}`)
+  delPostFavorite(postId: number, userId: number): Observable<PostFavorite> {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/PostFavorites?postId=${postId}&userId=${userId}`)
+      .map(res => res.json());
+  }
+
+  addUserFriend(userFriend: UserFriend): Observable<UserFriend> {
+    return this.authHttp.post(`${environment.webApiUrl}/api/v1/UserFriends/`, userFriend, { headers: this.headers })
+      .map(res => res.json());
+  }
+
+  delUserFriend(userId: number, friendId: number): Observable<UserFriend> {
+    return this.authHttp.delete(`${environment.webApiUrl}/api/v1/UserFriends?userId=${userId}&friendId=${friendId}`)
       .map(res => res.json());
   }
 

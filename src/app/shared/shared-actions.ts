@@ -1,3 +1,4 @@
+import { UserFriend } from './models/user-friend';
 import { PostFavorite } from './models/post-favorite';
 import { Action } from '@ngrx/store';
 import { Post } from 'app/shared/models/post';

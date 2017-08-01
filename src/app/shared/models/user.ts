@@ -1,3 +1,5 @@
+import { UserFriend } from './user-friend';
+import { PostFavorite } from './post-favorite';
 import { Salon } from 'app/shared/models/salon';
 import { GenderType } from 'app/shared/models/enums/gender-type';
 import { Base } from 'app/shared/models/base';
@@ -17,7 +19,12 @@ export class User extends Base {
   salonId: number | null;
   salon: Salon | null;
 
+  postFavorites: PostFavorite[];
+  userFollowing: User[];
+  userfollowers: User[];
+
   totalUserFollowing: number;
   totalUserFollowers: number;
   totalUserPosts: number;
+  isFollowing: boolean;
 }

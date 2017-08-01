@@ -1,3 +1,5 @@
+import { UserFriend } from '../../shared/models/user-friend';
+import { Auth } from '../../shared/auth/auth.service';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -20,7 +22,7 @@ export class UserEffects {
 
   @Effect() getUserEffect$ = this.actions$.ofType(UserActions.GET_USER)
     .map((action: UserActions.GetUser) => action.payload)
-    .switchMap((userName: string) => this.userService.getUser(userName)
+    .switchMap((userName: string) => this.userService.getUser(userName, this.auth.userId)
       .map((user: User) => new UserActions.GetUserSuccess(user))
       .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
@@ -47,10 +49,27 @@ export class UserEffects {
           return new UserActions.GetUserSuccess(x)
         })
         .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
-    }
+    });
+
+  @Effect() addUserFriendEffect$ = this.actions$.ofType(UserActions.ADD_USER_FRIEND)
+    .map((action: UserActions.AddUserFriend) => action.payload)
+    .switchMap((userFriend: UserFriend) => this.sharedService.addUserFriend(userFriend)
+      .map((result: UserFriend) => new UserActions.AddUserFriendSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
     );
 
-  constructor(private actions$: Actions, private userService: UserService, private sharedService: SharedService, private store: Store<Reducers.State>, private location: Location) {
+  @Effect() delUserFriendEffect$ = this.actions$.ofType(UserActions.DEL_USER_FRIEND)
+    .map((action: UserActions.DelUserFriend) => action.payload)
+    .switchMap((friendId: number) => this.sharedService.delUserFriend(this.auth.userId, friendId)
+      .map((result: UserFriend) => new UserActions.DelUserFriendSuccess(result))
+      .catch((res: Response) => of(new SharedActions.SetSnackBar(res)))
+    );
 
+  constructor(private actions$: Actions,
+    private userService: UserService,
+    private auth: Auth,
+    private sharedService: SharedService,
+    private store: Store<Reducers.State>,
+    private location: Location) {
   }
 }
