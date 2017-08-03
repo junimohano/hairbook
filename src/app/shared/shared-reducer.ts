@@ -142,6 +142,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.isEvaluation = true;
+      post.totalPostEvaluations++;
       return { ...state, selectedPost: post };
     }
 
@@ -149,6 +150,7 @@ export function reducer(state = initialState, action: Actions.All): State {
       console.log(action.payload);
       const post = state.posts.find(x => x.postId === action.payload.postId);
       post.isEvaluation = false;
+      post.totalPostEvaluations--;
       return { ...state, selectedPost: post };
     }
 

@@ -31,6 +31,7 @@ export class Post extends Base {
   postFavorites: PostFavorite[] | null;
 
   totalPostComments: number;
+  totalPostEvaluations: number;
   currentUploadIndex: number;
   comment: string;
   isEvaluation: boolean;
