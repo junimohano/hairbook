@@ -1,3 +1,4 @@
+import { UploadFileRotation } from './enums/upload-file-rotation';
 import { Post } from 'app/shared/models/post';
 import { User } from 'app/shared/models/user';
 import { UploadFileType } from 'app/shared/models/enums/upload-file-type';

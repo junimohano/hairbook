@@ -1,3 +1,4 @@
+import { UserUploadInfoType } from '../shared/user-upload-info-type';
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -9,9 +10,11 @@ import { User } from 'app/shared/models/user';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Auth } from '../../shared/auth/auth.service';
+import { UploadFileRotation } from '../../shared/models/enums/upload-file-rotation';
 import * as Reducers from '../../shared/reducers';
 import * as UserActions from '../shared/user-actions';
-import { UserInfo } from '../shared/user-info';
+import { UserUploadInfo } from '../shared/user-upload-info';
+import { ImagePathPipe } from 'app/shared/pipes/image-path.pipe';
 
 // import { myConfig } from '../../shared/auth/auth.config';
 function customWatcher(c: AbstractControl) {
@@ -43,6 +46,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   genderKeys: any[];
 
   userSubscription: Subscription;
+  userUploadInfoType = UserUploadInfoType;
 
   constructor(private fb: FormBuilder, public auth: Auth, private authHttp: AuthHttp, private router: Router, private store: Store<Reducers.State>, private location: Location) {
     this.genderKeys = Object.keys(this.genders).filter(Number);
@@ -72,6 +76,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
           }
           this.editForm.get('phone').setValue(this.user.phone);
           this.editForm.get('gender').setValue(String(this.user.gender));
+
+          const imagePathPipe = new ImagePathPipe();
+          this.user.userUploadInfo = new UserUploadInfo({
+            userUploadBlob: imagePathPipe.transform(x.image, null),
+            uploadFileRotation: UploadFileRotation.Rotation0,
+            userUploadInfoType: UserUploadInfoType.Update
+          });
+
         }
       });
   }
@@ -99,6 +111,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         password: this.user.password,
         email: this.editForm.get('email').value,
         image: this.user.image,
+
         name: this.editForm.get('name').value,
 
         gender: this.editForm.get('gender').value,
@@ -106,6 +119,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         phone: this.editForm.get('phone').value,
 
         // salonId: number | null;
+        userUploadInfo: this.user.userUploadInfo
       };
       const p1 = this.editForm.get('password').value;
       const p2 = this.editForm.get('password_confirm').value;
@@ -117,14 +131,44 @@ export class UserEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeImage() {
-    const fi = this.fileInput.nativeElement;
-    const userInfo = <UserInfo>{
-      user: this.user,
-      userUpload: fi.files[0]
-    }
+  onRotateImage() {
+    switch (this.user.userUploadInfo.uploadFileRotation) {
+      case UploadFileRotation.Rotation0:
+        this.user.userUploadInfo.uploadFileRotation = UploadFileRotation.Rotation90;
+        break;
 
-    this.store.dispatch(new UserActions.EditUserImage(userInfo));
+      case UploadFileRotation.Rotation90:
+        this.user.userUploadInfo.uploadFileRotation = UploadFileRotation.Rotation180;
+        break;
+
+      case UploadFileRotation.Rotation180:
+        this.user.userUploadInfo.uploadFileRotation = UploadFileRotation.Rotation270;
+        break;
+
+      case UploadFileRotation.Rotation270:
+        this.user.userUploadInfo.uploadFileRotation = UploadFileRotation.Rotation0;
+        break;
+    }
+  }
+
+  fileChangeEvent(fileInput: any) {
+    if (fileInput.target.files) {
+      for (let i = 0; i < fileInput.target.files.length; i++) {
+        const file = fileInput.target.files[i];
+        const reader = new FileReader();
+
+        reader.onload = (event: any) => {
+          this.user.userUploadInfo = new UserUploadInfo({
+            userUploadFile: file,
+            userUploadBlob: event.target.result,
+            uploadFileRotation: UploadFileRotation.Rotation0,
+            userUploadInfoType: UserUploadInfoType.Add
+          });
+        }
+
+        reader.readAsDataURL(file);
+      }
+    }
   }
 
 }

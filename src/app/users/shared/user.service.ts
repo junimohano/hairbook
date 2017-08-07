@@ -5,7 +5,7 @@ import { User } from 'app/shared/models/user';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs/Observable';
 
-import { UserInfo } from './user-info';
+import { UserUploadInfo } from './user-upload-info';
 
 @Injectable()
 export class UserService {
@@ -25,10 +25,11 @@ export class UserService {
       .map(res => res.json());
   }
 
-  postUserImage(userInfo: UserInfo): Observable<User> {
+  postUserImage(userUploadInfo: UserUploadInfo, userId: number): Observable<User> {
     const input = new FormData();
-    input.append('uploadedFile', userInfo.userUpload);
-    return this.authHttp.post(`${environment.webApiUrl}/api/v1/users/PostUserImage/${userInfo.user.userId}`, input)
+    input.append('uploadedFile', userUploadInfo.userUploadFile);
+    input.append('uploadFileRotation', String(userUploadInfo.uploadFileRotation));
+    return this.authHttp.post(`${environment.webApiUrl}/api/v1/users/PostUserImage/${userId}`, input)
       .map(res => res.json());
   }
 

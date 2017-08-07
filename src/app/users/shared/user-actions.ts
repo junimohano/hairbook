@@ -1,14 +1,13 @@
-import { UserFriend } from '../../shared/models/user-friend';
 import { Action } from '@ngrx/store';
 import { User } from 'app/shared/models/user';
 
-import { UserInfo } from './user-info';
+import { UserFriend } from '../../shared/models/user-friend';
+import { UserUploadInfo } from './user-upload-info';
 
 export const GET_USER = '[Users]GET_USER';
 export const GET_USER_SUCCESS = '[Users] GET_USER_SUCCESS';
 export const EDIT_USER = '[Users] EDIT_USER';
 export const EDIT_USER_IMAGE = '[Users] EDIT_USER_IMAGE';
-export const EDIT_USER_IMAGE_SUCCESS = '[Users] EDIT_USER_IMAGE_SUCCESS';
 export const ADD_USER_FRIEND = '[Shared] ADD_USER_FRIEND';
 export const ADD_USER_FRIEND_SUCCESS = '[Shared] ADD_USER_FRIEND_SUCCESS';
 export const DEL_USER_FRIEND = '[Shared] DEL_USER_FRIEND';
@@ -31,7 +30,7 @@ export class EditUser implements Action {
 
 export class EditUserImage implements Action {
   readonly type = EDIT_USER_IMAGE;
-  constructor(public payload: UserInfo) { }
+  constructor(public payload: UserUploadInfo) { }
 }
 
 export class AddUserFriend implements Action {

@@ -1,3 +1,5 @@
+import { UserUploadInfo } from '../../users/shared/user-upload-info';
+import { UploadFileRotation } from './enums/upload-file-rotation';
 import { UserFriend } from './user-friend';
 import { PostFavorite } from './post-favorite';
 import { Salon } from 'app/shared/models/salon';
@@ -27,4 +29,6 @@ export class User extends Base {
   totalUserFollowers: number;
   totalUserPosts: number;
   isFollowing: boolean;
+
+  userUploadInfo: UserUploadInfo;
 }

@@ -25,8 +25,11 @@ export class PostListComponent implements OnInit {
 
   onOpenDetail(post: Post) {
     if (window.outerWidth > 600) {
-      const height = window.outerHeight > 768 ? 768 : window.outerHeight;
-      const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
+      // const height = window.outerHeight > 768 ? 768 : window.outerHeight;
+      // const width = window.outerWidth > 1024 ? 1024 : window.outerWidth;
+
+      const height = window.outerHeight > 900 ? 900 : window.outerHeight;
+      const width = window.outerWidth > 1200 ? 1200 : window.outerWidth;
 
       const dialogRef = this.dialog.open(PostDetailComponent, {
         height: `${height}px`,

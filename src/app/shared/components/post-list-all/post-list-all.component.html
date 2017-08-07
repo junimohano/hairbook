@@ -10,8 +10,9 @@
                     <md-card-subtitle>{{post.createdDate | timeAgo}}</md-card-subtitle>
                 </md-card-header>
 
-                <div fxLayout="row">
+                <div fxLayout="row" fxLayoutAlign="center center">
                     <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onPrevious(post.postId)"><</button>
+                    <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
                     <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onNext(post.postId)">></button>
                 </div>
             </div>

@@ -33,3 +33,15 @@
 .custom-file-input:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
+
+.rotation90 {
+    transform: rotate(90deg);
+}
+
+.rotation180 {
+    transform: rotate(180deg);
+}
+
+.rotation270 {
+    transform: rotate(270deg);
+}

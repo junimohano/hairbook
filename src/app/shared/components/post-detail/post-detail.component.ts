@@ -47,6 +47,14 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   comment: string;
 
+  config: Object = {
+    pagination: '.swiper-pagination',
+    paginationClickable: true,
+    nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
+    spaceBetween: 30
+  };
+
   constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, public auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
     this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
 

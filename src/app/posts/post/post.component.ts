@@ -1,3 +1,4 @@
+import { UploadFileRotation } from '../../shared/models/enums/upload-file-rotation';
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -402,29 +403,10 @@ export class PostComponent implements OnInit, OnDestroy {
             postUploadBlob: event.target.result,
             uploadCategoryType: UploadCategoryType.Before,
             uploadFileType: UploadFileType.Image,
-            postUploadInfoType: PostUploadInfoType.Add
+            postUploadInfoType: PostUploadInfoType.Add,
+            uploadFileRotation: UploadFileRotation.Rotation0
           }));
         }
-
-        // reader.onloadend = function () {
-
-        //   const exif = EXIF.readFromBinaryFile(new BinaryFile(this.result));
-
-        //   switch (exif.Orientation) {
-
-        //     case 8:
-        //       ctx.rotate(90 * Math.PI / 180);
-        //       break;
-        //     case 3:
-        //       ctx.rotate(180 * Math.PI / 180);
-        //       break;
-        //     case 6:
-        //       ctx.rotate(-90 * Math.PI / 180);
-        //       break;
-
-
-        //   }
-        // };
 
         reader.readAsDataURL(file);
       }
@@ -436,6 +418,26 @@ export class PostComponent implements OnInit, OnDestroy {
       this.postUploadInfos.splice(i, 1);
     } else {
       this.postUploadInfos[i].postUploadInfoType = PostUploadInfoType.Delete;
+    }
+  }
+
+  onRotatePostUploadInfo(i: number) {
+    switch (this.postUploadInfos[i].uploadFileRotation) {
+      case UploadFileRotation.Rotation0:
+        this.postUploadInfos[i].uploadFileRotation = UploadFileRotation.Rotation90;
+        break;
+
+      case UploadFileRotation.Rotation90:
+        this.postUploadInfos[i].uploadFileRotation = UploadFileRotation.Rotation180;
+        break;
+
+      case UploadFileRotation.Rotation180:
+        this.postUploadInfos[i].uploadFileRotation = UploadFileRotation.Rotation270;
+        break;
+
+      case UploadFileRotation.Rotation270:
+        this.postUploadInfos[i].uploadFileRotation = UploadFileRotation.Rotation0;
+        break;
     }
   }
 

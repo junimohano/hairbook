@@ -49,6 +49,7 @@ export class PostService {
     input.append('memo', postUploadInfo.memo);
     input.append('uploadCategoryType', String(postUploadInfo.uploadCategoryType));
     input.append('uploadFileType', String(postUploadInfo.uploadFileType));
+    input.append('uploadFileRotation', String(postUploadInfo.uploadFileRotation));
     input.append('userId', String(userId));
     return this.authHttp.post(`${environment.webApiUrl}/api/v1/PostUploads/${postId}`, input)
       .map(res => res.json());

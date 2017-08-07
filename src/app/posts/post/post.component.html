@@ -7,9 +7,13 @@
     <div fxLayout="row" fxFlexFill fxLayoutAlign="center center">
         <div *ngFor="let postUploadInfo of postUploadInfos; let i = index;">
             <div *ngIf="postUploadInfo.postUploadInfoType !== postUploadInfoType.Delete" fxLayout="column" fxLayoutAlign="center cetner" fxLayoutGap="10px">
-                <button md-button class="warn" (click)="onDelPostUploadInfo(i)">x</button>
+
                 <div fxLayout="row" fxLayoutAlign="center center">
-                    <img [src]="postUploadInfo.postUploadBlob" width="100" height="100">
+                    <button md-button class="private" *ngIf="postUploadInfo.postUploadInfoType === postUploadInfoType.Add" (click)="onRotatePostUploadInfo(i)"><md-icon>rotate_right</md-icon></button>
+                    <button md-button class="warn" (click)="onDelPostUploadInfo(i)"><md-icon>close</md-icon></button>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <img [src]="postUploadInfo.postUploadBlob" width="100" height="100" [class.rotation90]="postUploadInfo.uploadFileRotation === 90" [class.rotation180]="postUploadInfo.uploadFileRotation === 180" [class.rotation270]="postUploadInfo.uploadFileRotation === 270">
                 </div>
                 <div></div>
                 <div>

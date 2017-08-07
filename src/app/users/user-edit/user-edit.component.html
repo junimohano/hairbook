@@ -4,7 +4,8 @@
         <div></div>
         <div fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
             <div *ngIf="user?.image" fxFlexFill fxLayout="column">
-                <img class="img-circle" [src]="user?.image | imagePath" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px">
+                <img class="img-circle" [src]="user?.userUploadInfo?.userUploadBlob" alt="" width="100%" fxFlex.xs="90px" fxFlex.sm="110px" fxFlex.md="130px" fxFlex="150px" [class.rotation90]="user?.userUploadInfo?.uploadFileRotation === 90" [class.rotation180]="user?.userUploadInfo?.uploadFileRotation === 180"
+                    [class.rotation270]="user?.userUploadInfo?.uploadFileRotation === 270">
             </div>
         </div>
         <!--<div fxLayout="column" fxLayoutGap="10px">
@@ -17,7 +18,8 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center ceter">
-        <input #fileInput type="file" (change)="onChangeImage()" class="custom-file-input" />
+        <input #fileInput type="file" (change)="fileChangeEvent($event)" class="custom-file-input" />
+        <button md-button class="private" *ngIf="user?.userUploadInfo?.userUploadInfoType === userUploadInfoType.Add" (click)="onRotateImage()"><md-icon>rotate_right</md-icon></button>
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center ceter">

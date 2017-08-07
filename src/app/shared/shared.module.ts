@@ -31,6 +31,8 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 import 'hammerjs/hammer';
 
+import { SwiperModule } from 'angular2-useful-swiper';
+
 // Angular materials
 import {
   MdButtonModule,
@@ -91,6 +93,8 @@ const modules = [
 
   SocialLoginModule,
 
+  SwiperModule,
+
   MdButtonModule,
   MdCheckboxModule,
   MdCardModule,
@@ -125,7 +129,7 @@ const modules = [
         useFactory: HttpLoaderFactory,
         deps: [Http]
       }
-    })
+    }),
   ],
   exports: [
     modules,
@@ -133,7 +137,7 @@ const modules = [
     components
   ],
   declarations: [
-    components,
+    components
   ],
   providers: [
     {
