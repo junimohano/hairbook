@@ -94,7 +94,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         imageSize: NgxGalleryImageSize.Cover,
         imageSwipe: false,
         imageArrows: true,
-        imageArrowsAutoHide: true,
+        imageArrowsAutoHide: false,
         thumbnails: false,
         preview: true,
         previewDescription: true,
