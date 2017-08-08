@@ -14,39 +14,19 @@
                 <md-card-title>{{post.createdUser.userName}}</md-card-title>
                 <md-card-subtitle>{{post.createdDate | timeAgo}}</md-card-subtitle>
             </md-card-header>
-
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onPrevious(this.post.postId)"><</button>
-                <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
-                <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onNext(this.post.postId)">></button>
-            </div>
-
         </div>
 
-        <!-- <swiper [config]="config" fxFlex.xs="100%" fxFlex="90%">
+        <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event)"></ngx-gallery>
 
-            <div class="swiper-wrapper">
-                <img class="swiper-slide" *ngFor="let upload of post?.postUploads; let uploadIndex = index;" [src]="upload.path | imagePath">
-                <h3 class="post-margin">{{uploadCategories[upload.uploadCategoryType + 3]}}</h3>
-                    <md-input-container class="post-margin">
-                        <textarea mdInput placeholder="Upload Memo" [(ngModel)]="upload.memo" readonly></textarea>
-                    </md-input-container>
-            </div>
+        <div>
+            {{post.currentUploadIndex + 1}} / {{post.postUploads.length}}
+        </div>
 
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-
-        </swiper> -->
-
-        <div *ngFor="let upload of post?.postUploads; let uploadIndex = index;">
-            <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100%" fxFlex="90%" fxLayout="column">
-                <img (swipeleft)="onSwipe($event.type)" (swiperight)="onSwipe($event.type)" [src]="upload.path | imagePath" width="100%">
-                <h3 class="post-margin">{{uploadCategories[upload.uploadCategoryType + 3]}}</h3>
-                <md-input-container class="post-margin">
-                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="upload.memo" readonly></textarea>
-                </md-input-container>
-            </div>
+        <div *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
+            <h3 class="post-margin">{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
+            <md-input-container class="post-margin">
+                <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
+            </md-input-container>
         </div>
     </div>
 

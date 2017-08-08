@@ -1,17 +1,4 @@
-import { PostFavorite } from '../../models/post-favorite';
-import { PostSearchType } from '../../models/enums/post-search-type';
-import { Observable } from 'rxjs/Rx';
-import {
-  Component,
-  EventEmitter,
-  HostListener,
-  Inject,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -21,10 +8,15 @@ import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { PostHairMenu } from 'app/shared/models/post-hair-menu';
+import { ImagePathPipe } from 'app/shared/pipes/image-path.pipe';
+import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery/lib';
+import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 
 import * as Reducers from '../../../shared/reducers';
+import { PostSearchType } from '../../models/enums/post-search-type';
+import { PostFavorite } from '../../models/post-favorite';
+import { PostUpload } from '../../models/post-upload';
 import * as SharedActions from '../../shared-actions';
 
 @Component({
@@ -44,16 +36,9 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   postSubscription: Subscription;
   postCommentSubscription: Subscription;
   activatedRouteSubscription: Subscription;
-  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
   comment: string;
 
-  config: Object = {
-    pagination: '.swiper-pagination',
-    paginationClickable: true,
-    nextButton: '.swiper-button-next',
-    prevButton: '.swiper-button-prev',
-    spaceBetween: 30
-  };
+  galleryOptions: NgxGalleryOptions[];
 
   constructor( @Optional() @Inject(MD_DIALOG_DATA) public data: any, public auth: Auth, private store: Store<Reducers.State>, private activatedRoute: ActivatedRoute) {
     this.postSearchType$ = store.select(Reducers.sharedPostSearchType);
@@ -62,6 +47,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
     if (data) {
       this.post = data;
+      this.setPostData();
     } else {
       this.activatedRouteSubscription = activatedRoute.params.subscribe(params => {
         console.log(params);
@@ -70,6 +56,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         this.postSubscription = this.store.select(Reducers.sharedSelectedPost).subscribe(post => {
           if (post) {
             this.post = post;
+            this.setPostData();
           } else {
             this.store.dispatch(new SharedActions.GetPost(postId));
           }
@@ -78,8 +65,55 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  setPostData() {
+    const imagePathPipe = new ImagePathPipe();
+
+    this.post.galleryImages = [];
+    this.post.postUploads.forEach(postUpload => {
+
+      const path = imagePathPipe.transform(postUpload.path, null);
+      console.log(path, postUpload.memo);
+      this.post.galleryImages.push(
+        {
+          small: path,
+          medium: path,
+          big: path,
+          description: '[' + UploadCategoryType[postUpload.uploadCategoryType] + '] - ' + postUpload.memo
+        });
+    });
+  }
+
   ngOnInit() {
     this.store.dispatch(new SharedActions.SetIsPreventRefreshingPosts(true));
+
+    this.galleryOptions = [
+      {
+        width: '100%',
+        height: '600px',
+        image: true,
+        imageSize: NgxGalleryImageSize.Cover,
+        imageSwipe: true,
+        imageArrows: true,
+        thumbnails: false,
+        preview: true,
+        previewDescription: true,
+        previewSwipe: true,
+        previewCloseOnClick: true,
+        previewCloseOnEsc: true,
+        imageAnimation: NgxGalleryAnimation.Slide
+      },
+      // // max-width 800
+      // {
+      //   breakpoint: 800,
+      //   width: '100%',
+      //   height: '600px',
+      // },
+      // // max-width 400
+      // {
+      //   breakpoint: 400,
+      //   preview: false
+      // }
+    ];
   }
 
   ngOnDestroy(): void {
@@ -93,35 +127,6 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       this.activatedRouteSubscription.unsubscribe();
     }
   }
-
-  onPrevious() {
-    if (this.postSubscription) {
-      if (this.post.currentUploadIndex > 0) {
-        this.post.currentUploadIndex--;
-      }
-    } else {
-      this.store.dispatch(new SharedActions.PreviousUploadIndex(this.post.postId));
-    }
-  }
-
-  onNext() {
-    if (this.postSubscription) {
-      if (this.post.currentUploadIndex < this.post.postUploads.length - 1) {
-        this.post.currentUploadIndex++;
-      }
-    } else {
-      this.store.dispatch(new SharedActions.NextUploadIndex(this.post.postId));
-    }
-  }
-
-  onSwipe(action = this.SWIPE_ACTION.RIGHT) {
-    if (action === this.SWIPE_ACTION.LEFT) {
-      this.onNext();
-    } else {
-      this.onPrevious();
-    }
-  }
-
 
   onGoToCommentBox() {
     this.commentBox.nativeElement.focus();
@@ -146,7 +151,6 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   onDelPostComment(postCommentId) {
     this.store.dispatch(new SharedActions.DelPostComment(postCommentId));
   }
-
 
   onSetPostEvalution(post: Post) {
     if (post.isEvaluation) {
@@ -185,6 +189,10 @@ export class PostDetailComponent implements OnInit, OnDestroy {
 
   onClickUser(userName: string) {
     this.store.dispatch(new SharedActions.NavUsers(userName));
+  }
+
+  onChangedImage(event) {
+    this.post.currentUploadIndex = event.index;
   }
 
 }

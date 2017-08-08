@@ -10,6 +10,7 @@ import { PostUpload } from 'app/shared/models/post-upload';
 import { User } from 'app/shared/models/user';
 import { AccessType } from 'app/shared/models/enums/access-type';
 import { Base } from 'app/shared/models/base';
+import { NgxGalleryImage } from 'ngx-gallery/lib';
 
 export class Post extends Base {
   postId: number;
@@ -38,6 +39,8 @@ export class Post extends Base {
   isFavorite: boolean;
   postMenuColor: PostHairMenu;
   postMenuPerm: PostHairMenu;
+
+  galleryImages: NgxGalleryImage[];
 }
 
 

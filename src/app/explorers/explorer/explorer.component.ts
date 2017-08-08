@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs/Rx';
 import { PostSearchType } from '../../shared/models/enums/post-search-type';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
@@ -34,6 +35,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   nextSubscription: Subscription;
 
   postSearchInfo: PostSearchInfo;
+  // postSearchInfo1 = new BehaviorSubject(null);
   scrollFlag = true;
 
   constructor(private auth: Auth, private store: Store<Reducers.State>, public dialog: MdDialog, private router: Router) {

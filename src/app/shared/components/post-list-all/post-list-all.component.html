@@ -9,25 +9,21 @@
                     <md-card-title>{{post.createdUser.userName}}</md-card-title>
                     <md-card-subtitle>{{post.createdDate | timeAgo}}</md-card-subtitle>
                 </md-card-header>
-
-                <div fxLayout="row" fxLayoutAlign="center center">
-                    <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onPrevious(post.postId)"><</button>
-                    <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
-                    <button md-button class="primary" *ngIf="post.postUploads.length > 1" (click)="onNext(post.postId)">></button>
-                </div>
             </div>
 
-            <div>
-                <div *ngFor="let upload of post.postUploads; let uploadIndex = index;">
-                    <div *ngIf="post.currentUploadIndex === uploadIndex" fxFlex.xs="100%" fxFlex="90%" fxLayout="column">
-                        <img md-card-image (swipeleft)="onSwipe(post.postId, $event.type)" (swiperight)="onSwipe(post.postId, $event.type)" [src]="upload.path | imagePath" width="100%">
-                        <h3>{{uploadCategories[upload.uploadCategoryType + 3]}}</h3>
-                        <md-input-container>
-                            <textarea mdInput placeholder="Upload Memo" [(ngModel)]="upload.memo" readonly></textarea>
-                        </md-input-container>
-                    </div>
-                </div>
+            <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event, postIndex)"></ngx-gallery>
+
+            <div fxLayout="row" fxLayoutAlign="center start">
+                <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
             </div>
+
+            <div *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
+                <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
+                <md-input-container>
+                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
+                </md-input-container>
+            </div>
+
         </div>
 
         <div fxFlex="30" fxFlex.xs="100">

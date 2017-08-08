@@ -1,4 +1,3 @@
-import { PostFavorite } from '../../models/post-favorite';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
@@ -7,9 +6,12 @@ import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
+import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery/lib';
 
 import * as Reducers from '../../../shared/reducers';
 import { PostSearchType } from '../../models/enums/post-search-type';
+import { PostFavorite } from '../../models/post-favorite';
+import { ImagePathPipe } from 'app/shared/pipes/image-path.pipe';
 
 @Component({
   selector: 'hb-post-list-all',
@@ -19,7 +21,34 @@ import { PostSearchType } from '../../models/enums/post-search-type';
 })
 export class PostListAllComponent implements OnInit {
 
-  @Input() posts: Post[];
+  private _posts: Post[];
+
+  get posts(): Post[] {
+    return this._posts;
+  }
+
+  @Input()
+  set posts(posts: Post[]) {
+    const imagePathPipe = new ImagePathPipe();
+
+    posts.forEach(post => {
+      post.galleryImages = [];
+      post.postUploads.forEach(postUpload => {
+
+        const path = imagePathPipe.transform(postUpload.path, null);
+        console.log(path, postUpload.memo);
+        post.galleryImages.push(
+          {
+            small: path,
+            medium: path,
+            big: path,
+            description: '[' + UploadCategoryType[postUpload.uploadCategoryType] + '] - ' + postUpload.memo
+          });
+      });
+    });
+    this._posts = posts;
+  }
+
   @Input() postSearchType: PostSearchType;
 
   @Output() showMoreComments = new EventEmitter<Post>();
@@ -36,36 +65,43 @@ export class PostListAllComponent implements OnInit {
   @ViewChild('commentBox') commentBox;
 
   uploadCategories: any[];
-  SWIPE_ACTION = { LEFT: 'swipeleft', RIGHT: 'swiperight' };
+
+  galleryOptions: NgxGalleryOptions[];
 
   constructor(public auth: Auth, private store: Store<Reducers.State>) {
     this.uploadCategories = Object.keys(UploadCategoryType).filter(String);
   }
 
   ngOnInit() {
-
-  }
-
-  onPrevious(postId: Number) {
-    const post = this.posts.find(x => x.postId === postId);
-    if (post.currentUploadIndex > 0) {
-      post.currentUploadIndex--;
-    }
-  }
-
-  onNext(postId: Number) {
-    const post = this.posts.find(x => x.postId === postId);
-    if (post.currentUploadIndex < post.postUploads.length - 1) {
-      post.currentUploadIndex++;
-    }
-  }
-
-  onSwipe(postId: Number, action = this.SWIPE_ACTION.RIGHT) {
-    if (action === this.SWIPE_ACTION.LEFT) {
-      this.onNext(postId);
-    } else {
-      this.onPrevious(postId);
-    }
+    this.galleryOptions = [
+      {
+        width: '95%',
+        height: '600px',
+        image: true,
+        imageSize: NgxGalleryImageSize.Cover,
+        imageSwipe: true,
+        imageArrows: true,
+        thumbnails: false,
+        preview: true,
+        previewDescription: true,
+        previewSwipe: true,
+        previewCloseOnClick: true,
+        previewCloseOnEsc: true,
+        imageAnimation: NgxGalleryAnimation.Slide
+      },
+      // max-width 800
+      {
+        breakpoint: 800,
+        width: '100%',
+        height: '600px',
+      },
+      // // max-width 400
+      // {
+      //   breakpoint: 400,
+      //   width: '100%',
+      //   preview: false
+      // }
+    ];
   }
 
   onGoToCommentBox() {
@@ -112,6 +148,10 @@ export class PostListAllComponent implements OnInit {
 
   onClickUser(userName: string) {
     this.clickUser.emit(userName);
+  }
+
+  onChangedImage(event, postIndex: number) {
+    this.posts[postIndex].currentUploadIndex = event.index;
   }
 
 }

@@ -31,7 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 import 'hammerjs/hammer';
 
-import { SwiperModule } from 'angular2-useful-swiper';
+import { NgxGalleryModule } from 'ngx-gallery';
 
 // Angular materials
 import {
@@ -93,7 +93,7 @@ const modules = [
 
   SocialLoginModule,
 
-  SwiperModule,
+  NgxGalleryModule,
 
   MdButtonModule,
   MdCheckboxModule,
