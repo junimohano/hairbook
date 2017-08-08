@@ -1,7 +1,7 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.xs="5px" fxLayoutGap="20px">
     <md-card *ngFor="let post of posts; let postIndex = index;" fxFlexFill fxLayout="row" fxLayoutWrap.xs fxLayoutAlign="start start">
         <div fxFlex="60" fxFlex.xs="100" fxLayout="column" fxLayoutGap="20px">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="post-padding" fxLayout="row" fxLayoutAlign="space-between center">
                 <md-card-header>
                     <div *ngIf="post.createdUser.image" md-card-avatar class="example-header-image">
                         <img md-card-avatar [src]="post.createdUser.image | imagePath" (click)="onClickUser(post.createdUser.userName)">
@@ -13,11 +13,11 @@
 
             <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event, postIndex)"></ngx-gallery>
 
-            <div fxLayout="row" fxLayoutAlign="center start">
+            <div class="post-padding" fxLayout="row" fxLayoutAlign="center start">
                 <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
             </div>
 
-            <div *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
+            <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
                 <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
                 <md-input-container>
                     <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
@@ -26,7 +26,7 @@
 
         </div>
 
-        <div fxFlex="30" fxFlex.xs="100">
+        <div class="post-padding" fxFlex="30" fxFlex.xs="100">
             <md-card-content>
 
                 <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="postSearchType === 2">

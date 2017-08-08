@@ -36,7 +36,7 @@ export class PostListAllComponent implements OnInit {
       post.postUploads.forEach(postUpload => {
 
         const path = imagePathPipe.transform(postUpload.path, null);
-        console.log(path, postUpload.memo);
+        // console.log(path, postUpload.memo);
         post.galleryImages.push(
           {
             small: path,
@@ -77,10 +77,12 @@ export class PostListAllComponent implements OnInit {
       {
         width: '95%',
         height: '600px',
+        // fullWidth: true,
         image: true,
         imageSize: NgxGalleryImageSize.Cover,
-        imageSwipe: true,
+        imageSwipe: false,
         imageArrows: true,
+        imageArrowsAutoHide: true,
         thumbnails: false,
         preview: true,
         previewDescription: true,

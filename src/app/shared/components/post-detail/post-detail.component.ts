@@ -72,7 +72,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.post.postUploads.forEach(postUpload => {
 
       const path = imagePathPipe.transform(postUpload.path, null);
-      console.log(path, postUpload.memo);
+      // console.log(path, postUpload.memo);
       this.post.galleryImages.push(
         {
           small: path,
@@ -92,8 +92,9 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         height: '600px',
         image: true,
         imageSize: NgxGalleryImageSize.Cover,
-        imageSwipe: true,
+        imageSwipe: false,
         imageArrows: true,
+        imageArrowsAutoHide: true,
         thumbnails: false,
         preview: true,
         previewDescription: true,

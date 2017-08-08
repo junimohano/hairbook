@@ -1,12 +1,12 @@
 <div *ngIf="post" fxLayout="row" fxLayoutWrap fxLayoutGap.xs="0px" fxLayoutGap="10px" class="no-scroll">
 
-    <div fxLayout="column" fxFlex="55" fxFlex.xs="100" class="no-scroll" fxLayoutAlign="start start">
+    <div fxLayout="column" fxFlex="55" fxFlex.xs="100" class="no-scroll">
         <div fxLayout="column" fxLayoutGap="24px">
             <div></div>
             <div></div>
         </div>
 
-        <div class="post-margin" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="post-padding" fxLayout="row" fxLayoutAlign="space-between center">
             <md-card-header>
                 <div *ngIf="post.createdUser.image" md-card-avatar>
                     <img md-card-avatar [src]="post.createdUser.image | imagePath" (click)="onClickUser(post.createdUser.userName)">
@@ -18,19 +18,24 @@
 
         <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event)"></ngx-gallery>
 
-        <div>
-            {{post.currentUploadIndex + 1}} / {{post.postUploads.length}}
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div></div>
+            <div></div>
         </div>
 
-        <div *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
-            <h3 class="post-margin">{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
-            <md-input-container class="post-margin">
+        <div class="post-padding" fxLayout="row" fxLayoutAlign="center center">
+            <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
+        </div>
+
+        <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
+            <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
+            <md-input-container fxFlexFill>
                 <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
             </md-input-container>
         </div>
     </div>
 
-    <div class="post-margin" fxLayout="column" fxFlex="40" fxFlex.xs="100">
+    <div class="post-padding" fxLayout="column" fxFlex="40" fxFlex.xs="100">
 
         <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="(postSearchType$ | async) === 2">
             <md-icon class="accessType">{{post.accessType === 0 ? 'lock_open' : 'lock_outline'}}</md-icon>

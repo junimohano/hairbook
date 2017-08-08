@@ -1,12 +1,17 @@
-// .example-card {
-//     width: 400px;
-// }
 .example-header-image {
-    // background-image: url('../../../assets/img/examples/shiba1.jpg');
     background-size: cover;
 }
 
-// .no-margin {
-//     padding-left: -16px;
-//     padding-right: -16px;
+// .mat-tab-body-content,
+// .ng-trigger,
+// .ng-trigger-translateTab {
+//     transform: none !important;
 // }
+.mat-card {
+    padding: 24px 0px;
+}
+
+.post-padding {
+    padding-left: 16px;
+    padding-right: 16px;
+}
