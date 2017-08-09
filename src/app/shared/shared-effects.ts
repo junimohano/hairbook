@@ -28,10 +28,15 @@ export class SharedEffects {
 
   @Effect() setSnackBarEffect$ = this.actions$.ofType(SharedActions.SET_SNACK_BAR)
     .map((action: SharedActions.SetSnackBar) => {
-      this.snackBar.open(action.payload.statusText, 'close', {
+
+      const message = action.payload.status === 401 ? action.payload.statusText : `${action.payload.text()}`;
+
+      this.snackBar.open(message, 'close', {
         duration: 5000,
       })
+
       console.log(action.payload);
+
       if (action.payload.status === 401) {
         this.store.dispatch(new SharedActions.SetProgressBar(false));
         return new SharedActions.NavLogin();
