@@ -1,9 +1,20 @@
 <hb-user-info [isMe]="isMe" [user]="user$ | async"></hb-user-info>
 
 <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <hb-post-search [search]="(postSearchInfo$ | async)?.search" (searchChange)="searchChange($event)"></hb-post-search>
-    <md-slide-toggle *ngIf="isMe" class="example-margin" color="primary" (change)="onFavoriteChange($event)" [checked]="(postSearchInfo$ | async)?.postSearchType == 3 ? true : false">
-        Favorite
+    <!-- PostSearchType 2 is UsersCustomer -->
+    <!-- PostSearchType 4 is Favorite -->
+    <md-radio-group [value]="(postSearchInfo$ | async)?.postSearchType === 2 ? 0 : 1" [disabled]="(postSearchInfo$ | async)?.postSearchType === 4">
+        <md-radio-button [value]="0" (change)="onChangePostSearchType($event)">Customer &nbsp;</md-radio-button>
+        <md-radio-button [value]="1" (change)="onChangePostSearchType($event)">Title &nbsp;</md-radio-button>
+    </md-radio-group>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <!-- PostSearchType 2 is UsersCustomer -->
+    <hb-post-search [search]="(postSearchInfo$ | async)?.search" [placeholder]="(postSearchInfo$ | async)?.postSearchType === 2 ? 'Search by customer' : 'Search by title'" (searchChange)="searchChange($event)"></hb-post-search>
+    <!-- PostSearchType 4 is Favorite -->
+    <md-slide-toggle *ngIf="isMe" class="example-margin" color="primary" (change)="onFavoriteChange($event)" [checked]="(postSearchInfo$ | async)?.postSearchType === 4 ? true : false">
+        Favorite list
     </md-slide-toggle>
 </div>
 
@@ -23,11 +34,6 @@
             (delPostFavorite)="delPostFavorite($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)" (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
     </md-tab>
 
-    <!-- <md-tab>
-        <ng-template md-tab-label>
-            <md-icon>done_all</md-icon>
-        </ng-template>
-    </md-tab> -->
 </md-tab-group>
 
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>

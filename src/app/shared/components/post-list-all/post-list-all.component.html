@@ -29,12 +29,18 @@
         <div class="post-padding" fxFlex="30" fxFlex.xs="100">
             <md-card-content>
 
-                <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="postSearchType === 2">
+                <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="postSearchType === 2 || postSearchType === 3">
                     <md-icon class="accessType">{{post.accessType === 0 ? 'lock_open' : 'lock_outline'}}</md-icon>
                     <hb-post-menu (editPost)="editPost.emit(post.postId)" (deletePost)="delPost.emit(post.postId)"></hb-post-menu>
                 </div>
 
-                <div fxLayout="row" *ngIf="postSearchType === 2">
+                <div fxLayout="row">
+                    <md-input-container fxFlexFill>
+                        <input mdInput placeholder="Title" value="test" [(ngModel)]="post.title" readonly>
+                    </md-input-container>
+                </div>
+
+                <div fxLayout="row" *ngIf="postSearchType === 2 || postSearchType === 3">
                     <md-input-container fxFlexFill>
                         <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
                     </md-input-container>
@@ -42,7 +48,7 @@
                     <p>({{post.customerId}})</p>
                 </div>
 
-                <div fxLayout="row" *ngIf="postSearchType === 2">
+                <div fxLayout="row" *ngIf="postSearchType === 2 || postSearchType === 3">
                     <md-input-container fxFlexFill>
                         <input mdInput [mdDatepicker]="" placeholder="When" [(ngModel)]="post.date" readonly>
                         <button mdSuffix [mdDatepickerToggle]=""></button>
@@ -61,7 +67,7 @@
                     </md-chip-list>
                 </div>
 
-                <div fxLayout="column" *ngIf="post.isHairTypeMemo || postSearchType === 2">
+                <div fxLayout="column" *ngIf="post.isHairTypeMemo || postSearchType === 2 || postSearchType === 3">
                     <div fxLayout="column" fxLayoutGap="10px">
                         <div></div>
                         <div></div>
@@ -84,19 +90,19 @@
 
                 <div fxLayout="column" *ngIf="post.postMenuColor">
                     <h4>{{post.postMenuColor.hairSubMenu?.name}}</h4>
-                    <md-input-container *ngIf="post?.postMenuColor.isMemo || postSearchType === 2">
+                    <md-input-container *ngIf="post?.postMenuColor.isMemo || postSearchType === 2 || postSearchType === 3">
                         <textarea mdInput placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
                 <div fxLayout="column" *ngIf="post?.postMenuPerm">
                     <h4>{{post.postMenuPerm.hairSubMenu?.name}}</h4>
-                    <md-input-container *ngIf="post?.postMenuPerm.isMemo || postSearchType === 2">
+                    <md-input-container *ngIf="post?.postMenuPerm.isMemo || postSearchType === 2 || postSearchType === 3">
                         <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
-                <div *ngIf="post.isMemo || postSearchType === 2">
+                <div *ngIf="post.isMemo || postSearchType === 2 || postSearchType === 3">
                     <div fxLayout="column" fxLayoutGap="30px">
                         <div></div>
                         <div></div>

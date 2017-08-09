@@ -4,7 +4,7 @@
         <md-radio-button [value]="0" (change)="onChangePostSearchType($event)">All &nbsp;</md-radio-button>
         <md-radio-button [value]="1" (change)="onChangePostSearchType($event)">Following only &nbsp;</md-radio-button>
     </md-radio-group>
-    <hb-post-search [search]="(postSearchInfo$ | async)?.search" (searchChange)="searchChange($event)"></hb-post-search>
+    <hb-post-search [search]="(postSearchInfo$ | async)?.search" placeholder="Search by title" (searchChange)="searchChange($event)"></hb-post-search>
 </div>
 <md-tab-group [selectedIndex]="sharedExplorersTabIndex$ | async" (selectedIndexChange)="onSelectedIndexChange($event)">
     <md-tab>
@@ -18,8 +18,8 @@
         <ng-template md-tab-label>
             <md-icon>view_stream</md-icon>
         </ng-template>
-        <hb-post-list-all [posts]="posts$ | async" [postSearchType]="postSearchType$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)"  (addPostFavorite)="addPostFavorite($event)" (delPostFavorite)="delPostFavorite($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)"
-            (clickUser)="clickUser($event)" (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
+        <hb-post-list-all [posts]="posts$ | async" [postSearchType]="postSearchType$ | async" (addPostComment)="addPostComment($event)" (addPostEvalution)="addPostEvalution($event)" (delPostEvalution)="delPostEvalution($event)" (addPostFavorite)="addPostFavorite($event)"
+            (delPostFavorite)="delPostFavorite($event)" (delPostComment)="delPostComment($event)" (showMoreComments)="showMoreComments($event)" (clickUser)="clickUser($event)" (editPost)="editPost($event)" (delPost)="delPost($event)"></hb-post-list-all>
     </md-tab>
 </md-tab-group>
 <hb-progress-spinner [isProgressSpinner]="isProgressSpinner$ | async"></hb-progress-spinner>

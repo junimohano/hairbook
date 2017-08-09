@@ -50,7 +50,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
         this.postSearchInfo = <PostSearchInfo>{
           search: x.search,
           userNameParam: x.userNameParam,
-          postSearchType: x.postSearchType === PostSearchType.Users ? PostSearchType.ExplorersFollowingOnly : x.postSearchType
+          postSearchType: (x.postSearchType !== PostSearchType.ExplorersAll && x.postSearchType !== PostSearchType.ExplorersFollowingOnly) ? PostSearchType.ExplorersFollowingOnly : x.postSearchType
         }
       }
     });
@@ -135,7 +135,12 @@ export class ExplorerComponent implements OnInit, OnDestroy {
 
   onChangePostSearchType(event) {
     console.log('Post Search Type : ', event.value);
-    this.postSearchInfo.postSearchType = event.value;
+    if (event.value === 0) {
+      this.postSearchInfo.postSearchType = PostSearchType.ExplorersAll;
+    } else {
+      this.postSearchInfo.postSearchType = PostSearchType.ExplorersFollowingOnly;
+    }
+
     this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
   }
 

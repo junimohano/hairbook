@@ -1,6 +1,7 @@
 export enum PostSearchType {
   ExplorersAll,
   ExplorersFollowingOnly,
-  Users,
+  UsersCustomer,
+  UsersTitle,
   Favorite
 }

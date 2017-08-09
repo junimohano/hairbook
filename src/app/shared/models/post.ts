@@ -14,6 +14,7 @@ import { NgxGalleryImage } from 'ngx-gallery/lib';
 
 export class Post extends Base {
   postId: number;
+  title: string;
   customerId: number;
   customer: Customer;
   date: string;

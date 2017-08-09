@@ -96,6 +96,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
     this.postForm = this.fb.group({
       accessType: [0, Validators.required],
+      title: ['', Validators.required],
       customer: ['', Validators.required],
       date: [new Date().toLocaleDateString(), Validators.required],
       memo: '',
@@ -162,6 +163,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
             this.postForm.patchValue({
               accessType: post.accessType,
+              title: post.title,
               customer: {
                 name: post.customer.name,
                 customerId: post.customerId
@@ -317,6 +319,7 @@ export class PostComponent implements OnInit, OnDestroy {
 
       const post = <Post>{
         accessType: this.postForm.get('accessType').value,
+        title: this.postForm.get('title').value,
         date: this.postForm.get('date').value,
         memo: this.postForm.get('memo').value,
         isMemo: this.postForm.get('isMemo').value,

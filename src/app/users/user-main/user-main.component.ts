@@ -1,12 +1,9 @@
-import { PostFavorite } from '../../shared/models/post-favorite';
-import { PostSearchType } from '../../shared/models/enums/post-search-type';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   HostListener,
-  NgZone,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -21,6 +18,8 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Auth } from '../../shared/auth/auth.service';
+import { PostSearchType } from '../../shared/models/enums/post-search-type';
+import { PostFavorite } from '../../shared/models/post-favorite';
 import * as Reducers from '../../shared/reducers';
 import * as SharedActions from '../../shared/shared-actions';
 import * as UserActions from '../shared/user-actions';
@@ -73,8 +72,8 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
     this.activatedRouteSubscription = this.activatedRoute.params.subscribe(params => {
       const userNameParam = params['userName'];
       this.store.dispatch(new UserActions.GetUser(userNameParam));
-      if (this.postSearchInfo.postSearchType !== PostSearchType.Users && this.postSearchInfo.postSearchType !== PostSearchType.Favorite) {
-        this.postSearchInfo.postSearchType = PostSearchType.Users;
+      if (this.postSearchInfo.postSearchType !== PostSearchType.UsersCustomer && this.postSearchInfo.postSearchType !== PostSearchType.UsersTitle && this.postSearchInfo.postSearchType !== PostSearchType.Favorite) {
+        this.postSearchInfo.postSearchType = PostSearchType.UsersCustomer;
       }
       this.postSearchInfo.userNameParam = userNameParam;
       this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
@@ -180,7 +179,20 @@ export class UserMainComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onFavoriteChange(event) {
     if (this.postSearchInfo) {
-      this.postSearchInfo.postSearchType = event.checked ? PostSearchType.Favorite : PostSearchType.Users;
+      this.postSearchInfo.postSearchType = event.checked ? PostSearchType.Favorite : PostSearchType.UsersCustomer;
+      this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
+    }
+  }
+
+  onChangePostSearchType(event) {
+    console.log('Post Search Type : ', event.value);
+    if (this.postSearchInfo && this.postSearchInfo.postSearchType !== PostSearchType.Favorite) {
+      if (event.value === 0) {
+        this.postSearchInfo.postSearchType = PostSearchType.UsersCustomer;
+      } else {
+        this.postSearchInfo.postSearchType = PostSearchType.UsersTitle;
+      }
+
       this.store.dispatch(new SharedActions.SearchPosts(this.postSearchInfo));
     }
   }

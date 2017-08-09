@@ -44,6 +44,12 @@
 
             <div fxFlexFill>
                 <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                    <input mdInput placeholder="Title" formControlName="title">
+                </md-input-container>
+            </div>
+
+            <div fxFlexFill>
+                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <input mdInput placeholder="Customer" [mdAutocomplete]="auto" formControlName="customer" (ngModelChange)="onChangedCustomer($event)">
                 </md-input-container>
 

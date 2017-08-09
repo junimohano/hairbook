@@ -20,7 +20,7 @@ const initialState: State = {
   isProgressBar: false,
   isProgressSpinner: false,
   postSearchInfo: <PostSearchInfo>{
-    postSearchType: PostSearchType.Users
+    postSearchType: PostSearchType.UsersCustomer
   },
   posts: [],
   selectedPost: null,
@@ -48,8 +48,8 @@ export function reducer(state = initialState, action: Actions.All): State {
         if (state.postSearchInfo.postSearchType !== action.payload.postSearchType) {
           state.posts = [];
           // search seperate between Users and modules of Explorers
-          if (((state.postSearchInfo.postSearchType === PostSearchType.ExplorersAll || state.postSearchInfo.postSearchType === PostSearchType.ExplorersFollowingOnly) && action.payload.postSearchType === PostSearchType.Users) ||
-            (state.postSearchInfo.postSearchType === PostSearchType.Users && (action.payload.postSearchType === PostSearchType.ExplorersAll || action.payload.postSearchType === PostSearchType.ExplorersFollowingOnly))) {
+          if (((state.postSearchInfo.postSearchType === PostSearchType.ExplorersAll || state.postSearchInfo.postSearchType === PostSearchType.ExplorersFollowingOnly) && (action.payload.postSearchType === PostSearchType.UsersCustomer || action.payload.postSearchType === PostSearchType.UsersTitle)) ||
+            ((state.postSearchInfo.postSearchType === PostSearchType.UsersCustomer || state.postSearchInfo.postSearchType === PostSearchType.UsersTitle) && (action.payload.postSearchType === PostSearchType.ExplorersAll || action.payload.postSearchType === PostSearchType.ExplorersFollowingOnly))) {
             action.payload.search = '';
           }
           state.isPreventRefreshingPosts = false;

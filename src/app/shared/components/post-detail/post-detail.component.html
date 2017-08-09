@@ -42,6 +42,12 @@
             <hb-post-menu (editPost)="editPost()" (deletePost)="deletePost()"></hb-post-menu>
         </div>
 
+        <div fxLayout="row">
+            <md-input-container fxFlexFill>
+                <input mdInput placeholder="Title" value="test" [(ngModel)]="post.title" readonly>
+            </md-input-container>
+        </div>
+
         <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
             <md-input-container fxFlexFill>
                 <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
