@@ -1,28 +1,24 @@
 # Hairbook
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.1.0.
+“Hairbook” is a social application on the web for hair stylists to manage customer’s hair information when customer came to salon.
+It is like kind of Instagram that can post with customer information, type of hair, hair pictures, and other information that hair stylists want to keep.
+Hairstylist can search someone else’s post if they posted as public as well as comment, like, favorites.
+
+https://hairbookweb.azurewebsites.net/
+
+- Angular 4
+- Angular Material
+- Typescript
+-	Flex layout
+-	Ngrx Store
+- Ngrx Effects
+-	Google, Facebook Login
+- Lazy Modules
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm install`
 
-## Code scaffolding
+Run `ng serve` for a dev server. 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Navigate to `http://localhost:5000/`. The app will automatically reload if you change any of the source files.
