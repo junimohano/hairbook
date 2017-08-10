@@ -9,6 +9,7 @@ Hairstylist can search someone else’s post if they posted as public as well as
 https://hairbookweb.azurewebsites.net/
 
 ## User Cases
+
 -	Sign up
 -	Login
 -	Social Login
