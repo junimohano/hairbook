@@ -4,7 +4,27 @@
 It is like kind of Instagram that can post with customer information, type of hair, hair pictures, and other information that hair stylists want to keep.
 Hairstylist can search someone else’s post if they posted as public as well as comment, like, favorites.
 
+## Website
+
 https://hairbookweb.azurewebsites.net/
+
+## User Cases
+-	Sign up
+-	Login
+-	Social Login
+-	Add Post [Title, Customer, Date, Hair Types, Hair Menus, Memo, Comments, Pictures of hair (Role model, before, after)]
+-	Modify Post
+- Delete Post
+-	List of Posts
+-	Comments on Post
+-	Evaluation on Post
+-	Favorite on Post
+-	Follow Friends
+-	Unfollow Friends
+-	List of Friends
+-	Searching post by Customer’s name or Post's title
+
+## Requirements
 
 - Angular 4
 - Angular Material
