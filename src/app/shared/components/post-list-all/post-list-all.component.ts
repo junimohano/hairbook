@@ -84,7 +84,7 @@ export class PostListAllComponent implements OnInit {
         imageArrows: true,
         imageArrowsAutoHide: false,
         thumbnails: false,
-        preview: false,
+        preview: true,
         previewDescription: true,
         previewSwipe: true,
         previewCloseOnClick: true,
