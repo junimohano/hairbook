@@ -1,17 +1,17 @@
+import { EvaluationType } from '../../models/enums/evaluation-type';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
-import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type';
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
-import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery/lib';
+import { ImagePathPipe } from 'app/shared/pipes/image-path.pipe';
+import { NgxGalleryAnimation, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery/lib';
 
 import * as Reducers from '../../../shared/reducers';
 import { PostSearchType } from '../../models/enums/post-search-type';
 import { PostFavorite } from '../../models/post-favorite';
-import { ImagePathPipe } from 'app/shared/pipes/image-path.pipe';
 
 @Component({
   selector: 'hb-post-list-all',
@@ -77,14 +77,13 @@ export class PostListAllComponent implements OnInit {
       {
         width: '95%',
         height: '600px',
-        // fullWidth: true,
         image: true,
-        imageSize: NgxGalleryImageSize.Contain,
+        imageSize: NgxGalleryImageSize.Cover,
         imageSwipe: false,
         imageArrows: true,
         imageArrowsAutoHide: false,
         thumbnails: false,
-        preview: false,
+        preview: true,
         previewDescription: true,
         previewSwipe: true,
         previewCloseOnClick: true,

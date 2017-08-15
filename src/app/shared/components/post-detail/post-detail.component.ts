@@ -1,22 +1,21 @@
+import { EvaluationType } from '../../models/enums/evaluation-type';
 import { Component, EventEmitter, Inject, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Auth } from 'app/shared/auth/auth.service';
-import { EvaluationType } from 'app/shared/models/enums/evaluation-type';
 import { UploadCategoryType } from 'app/shared/models/enums/upload-category-type';
 import { Post } from 'app/shared/models/post';
 import { PostComment } from 'app/shared/models/post-comment';
 import { PostEvaluation } from 'app/shared/models/post-evaluation';
 import { ImagePathPipe } from 'app/shared/pipes/image-path.pipe';
-import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery/lib';
+import { NgxGalleryAnimation, NgxGalleryImageSize, NgxGalleryOptions } from 'ngx-gallery/lib';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 
 import * as Reducers from '../../../shared/reducers';
 import { PostSearchType } from '../../models/enums/post-search-type';
 import { PostFavorite } from '../../models/post-favorite';
-import { PostUpload } from '../../models/post-upload';
 import * as SharedActions from '../../shared-actions';
 
 @Component({

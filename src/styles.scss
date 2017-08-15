@@ -11,3 +11,8 @@ $hairbook-theme: mat-light-theme($hairbook-primary, $hairbook-accent, $hairbook-
 body {
     font-family: 'Roboto', sans-serif;
 }
+
+.mat-tab-body-content {
+    -webkit-transform: none !important;
+    transform: none !important;
+}
