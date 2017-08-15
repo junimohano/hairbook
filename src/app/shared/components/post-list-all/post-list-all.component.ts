@@ -84,11 +84,12 @@ export class PostListAllComponent implements OnInit {
         imageArrows: true,
         imageArrowsAutoHide: false,
         thumbnails: false,
-        preview: true,
+        preview: false,
         previewDescription: true,
         previewSwipe: true,
         previewCloseOnClick: true,
         previewCloseOnEsc: true,
+        previewFullscreen: false,
         imageAnimation: NgxGalleryAnimation.Slide
       },
       // max-width 800
