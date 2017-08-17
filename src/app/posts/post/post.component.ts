@@ -211,7 +211,7 @@ export class PostComponent implements OnInit, OnDestroy {
               const imagePathPipe = new ImagePathPipe();
               this.postUploadInfos.push(new PostUploadInfo({
                 postUploadId: postUpload.postUploadId,
-                memo: postUpload.memo === undefined ? '' : postUpload.memo,
+                memo: postUpload.memo,
                 postUploadBlob: imagePathPipe.transform(postUpload.path, null),
                 uploadCategoryType: postUpload.uploadCategoryType,
                 postUploadInfoType: PostUploadInfoType.Update
@@ -407,7 +407,8 @@ export class PostComponent implements OnInit, OnDestroy {
             uploadCategoryType: UploadCategoryType.Before,
             uploadFileType: UploadFileType.Image,
             postUploadInfoType: PostUploadInfoType.Add,
-            uploadFileRotation: UploadFileRotation.Rotation0
+            uploadFileRotation: UploadFileRotation.Rotation0,
+            memo: ''
           }));
         }
 

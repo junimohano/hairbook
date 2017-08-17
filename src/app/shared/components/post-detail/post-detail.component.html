@@ -1,19 +1,21 @@
 <div *ngIf="post" fxLayout="row" fxLayoutWrap fxLayoutGap.xs="0px" fxLayoutGap="10px" class="no-scroll">
 
     <div fxLayout="column" fxFlex="55" fxFlex.xs="100" class="no-scroll">
-        <div fxLayout="column" fxLayoutGap="24px">
+        <div fxLayout="column" fxLayoutGap.xs="10px" fxLayoutGap="24px">
             <div></div>
             <div></div>
         </div>
 
         <div class="post-padding" fxLayout="row" fxLayoutAlign="space-between center">
-            <md-card-header>
-                <div *ngIf="post.createdUser.image" md-card-avatar>
-                    <img md-card-avatar [src]="post.createdUser.image | imagePath" (click)="onClickUser(post.createdUser.userName)">
-                </div>
-                <md-card-title>{{post.createdUser.userName}}</md-card-title>
-                <md-card-subtitle>{{post.createdDate | timeAgo}}</md-card-subtitle>
-            </md-card-header>
+            <md-card>
+                <md-card-header>
+                    <div *ngIf="post.createdUser.image" md-card-avatar>
+                        <img md-card-avatar [src]="post.createdUser.image | imagePath" (click)="onClickUser(post.createdUser.userName)">
+                    </div>
+                    <md-card-title>{{post.createdUser.userName}}</md-card-title>
+                    <md-card-subtitle>{{post.createdDate | timeAgo}}</md-card-subtitle>
+                </md-card-header>
+            </md-card>
         </div>
 
         <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event)"></ngx-gallery>
@@ -27,7 +29,7 @@
             <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
         </div>
 
-        <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
+        <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex && post.postUploads[post.currentUploadIndex]" fxLayout="column">
             <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
             <md-input-container fxFlexFill>
                 <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
@@ -49,11 +51,11 @@
         </div>
 
         <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
-            <md-input-container fxFlexFill>
+            <md-input-container fxFlex="85">
                 <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
             </md-input-container>
 
-            <p>({{post.customerId}})</p>
+            <p fxFlex="15" fxLayout="row" fxLayoutAlign="center">({{post.customerId}})</p>
         </div>
 
         <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
@@ -82,7 +84,7 @@
         </div>
 
         <div fxLayout="column" *ngIf="post.isHairTypeMemo || (postSearchType$ | async) === 2">
-            <div fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="column" fxLayoutGap="10px" fxLayoutGap.xs="0px">
                 <div></div>
                 <div></div>
             </div>
@@ -92,7 +94,7 @@
         </div>
 
         <div fxLayout="column" *ngIf="post?.postHairMenus">
-            <h5>Menu Menus</h5>
+            <h5>Hair Menus</h5>
             <md-chip-list>
                 <div *ngFor="let postHairMenu of post?.postHairMenus; let i = index;">
                     <md-chip selected="true" [color]="i % 3 == 0 ? 'primary' : i % 2 == 0 ? 'accent' : 'warn'">
@@ -117,7 +119,7 @@
         </div>
 
         <div fxLayout="column" *ngIf="post.isMemo || (postSearchType$ | async) === 2">
-            <div fxLayout="column" fxLayoutGap="30px">
+            <div fxLayout="column" fxLayoutGap="30px" fxLayoutGap.xs="10px">
                 <div></div>
                 <div></div>
             </div>

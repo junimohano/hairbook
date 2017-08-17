@@ -1,6 +1,6 @@
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap.xs="5px" fxLayoutGap="20px">
     <md-card *ngFor="let post of posts; let postIndex = index;" fxFlexFill fxLayout="row" fxLayoutWrap.xs fxLayoutAlign="start start">
-        <div fxFlex="60" fxFlex.xs="100" fxLayout="column" fxLayoutGap="20px">
+        <div fxFlex="60" fxFlex.xs="100" fxLayout="column" fxLayoutGap="20px" fxLayoutGap.xs="5px">
             <div class="post-padding" fxLayout="row" fxLayoutAlign="space-between center">
                 <md-card-header>
                     <div *ngIf="post.createdUser.image" md-card-avatar class="example-header-image">
@@ -17,7 +17,7 @@
                 <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
             </div>
 
-            <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex" fxLayout="column">
+            <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex && post.postUploads[post.currentUploadIndex]" fxLayout="column">
                 <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
                 <md-input-container>
                     <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
@@ -41,11 +41,11 @@
                 </div>
 
                 <div fxLayout="row" *ngIf="postSearchType === 2 || postSearchType === 3">
-                    <md-input-container fxFlexFill>
+                    <md-input-container fxFlex="85">
                         <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
                     </md-input-container>
 
-                    <p>({{post.customerId}})</p>
+                    <p fxFlex="15" fxLayout="row" fxLayoutAlign="center">({{post.customerId}})</p>
                 </div>
 
                 <div fxLayout="row" *ngIf="postSearchType === 2 || postSearchType === 3">
@@ -103,7 +103,7 @@
                 </div>
 
                 <div *ngIf="post.isMemo || postSearchType === 2 || postSearchType === 3">
-                    <div fxLayout="column" fxLayoutGap="30px">
+                    <div fxLayout="column" fxLayoutGap="30px" fxLayoutGap.xs="10px">
                         <div></div>
                         <div></div>
                     </div>
@@ -115,7 +115,6 @@
             </md-card-content>
 
             <md-card-actions>
-
                 <div fxLayout="row" fxLayoutGap.xs="5px" fxLayoutGap="10px">
                     <div fxLayout="column" fxLayoutAlign="center center">
                         <div>
@@ -127,7 +126,8 @@
                     </div>
                     <div fxLayout="column" fxLayoutAlign="center center">
                         <div>
-                            <md-icon (click)="onGoToCommentBox()">message</md-icon>
+                            <!-- <md-icon (click)="onGoToCommentBox()">message</md-icon> -->
+                            <md-icon>message</md-icon>
                         </div>
                         <div>
                             {{post?.totalPostComments}}
