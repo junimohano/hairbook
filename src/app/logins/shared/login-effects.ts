@@ -1,5 +1,5 @@
 
-import { SocialUser } from 'angular4-social-login/dist';
+import { SocialUser } from 'angular4-social-login';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/withLatestFrom';

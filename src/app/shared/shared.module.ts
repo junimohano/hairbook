@@ -16,7 +16,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 }
 
 // Social Login
-import { SocialLoginModule, AuthServiceConfig } from 'angular4-social-login/dist/a4sl-flat';
+import { SocialLoginModule, AuthServiceConfig } from 'angular4-social-login';
 import { provideConfig } from './auth/auth.config';
 
 // i18n

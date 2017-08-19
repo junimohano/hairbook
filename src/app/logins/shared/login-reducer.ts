@@ -1,4 +1,4 @@
-import { SocialUser } from 'angular4-social-login/dist';
+import { SocialUser } from 'angular4-social-login';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { User } from 'app/shared/models/user';
 

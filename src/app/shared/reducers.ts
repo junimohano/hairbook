@@ -1,5 +1,5 @@
 import * as fromRouter from '@ngrx/router-store';
-import { SocialUser } from 'angular4-social-login/dist';
+import { SocialUser } from 'angular4-social-login';
 import { UserSecret } from 'app/logins/shared/user-secret';
 import { Customer } from 'app/shared/models/customer';
 import { HairMenu } from 'app/shared/models/hair-menu';
