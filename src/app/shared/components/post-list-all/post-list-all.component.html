@@ -11,16 +11,16 @@
                 </md-card-header>
             </div>
 
-            <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event, postIndex)"></ngx-gallery>
+            <ngx-gallery *ngIf="post.postUploads.length > 0" [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event, postIndex)"></ngx-gallery>
 
-            <div class="post-padding" fxLayout="row" fxLayoutAlign="center start">
+            <div class="post-padding" *ngIf="post.postUploads.length > 0" fxLayout="row" fxLayoutAlign="center start">
                 <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
             </div>
 
             <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex && post.postUploads[post.currentUploadIndex]" fxLayout="column">
                 <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
-                <md-input-container>
-                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
+                <md-input-container *ngIf="post.postUploads[post.currentUploadIndex].memo">
+                    <textarea mdInput md-autosize placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
                 </md-input-container>
             </div>
 
@@ -67,13 +67,13 @@
                     </md-chip-list>
                 </div>
 
-                <div fxLayout="column" *ngIf="post.isHairTypeMemo || postSearchType === 2 || postSearchType === 3">
+                <div fxLayout="column" *ngIf="(post.isHairTypeMemo || postSearchType === 2 || postSearchType === 3) && post.hairTypeMemo">
                     <div fxLayout="column" fxLayoutGap="10px">
                         <div></div>
                         <div></div>
                     </div>
                     <md-input-container fxFlexFill>
-                        <textarea mdInput placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
+                        <textarea mdInput md-autosize placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
                     </md-input-container>
                 </div>
 
@@ -90,25 +90,25 @@
 
                 <div fxLayout="column" *ngIf="post.postMenuColor">
                     <h4>{{post.postMenuColor.hairSubMenu?.name}}</h4>
-                    <md-input-container *ngIf="post?.postMenuColor.isMemo || postSearchType === 2 || postSearchType === 3">
-                        <textarea mdInput placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
+                    <md-input-container *ngIf="(post?.postMenuColor.isMemo || postSearchType === 2 || postSearchType === 3) && post.postMenuColor.memo">
+                        <textarea mdInput md-autosize placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
                 <div fxLayout="column" *ngIf="post?.postMenuPerm">
                     <h4>{{post.postMenuPerm.hairSubMenu?.name}}</h4>
-                    <md-input-container *ngIf="post?.postMenuPerm.isMemo || postSearchType === 2 || postSearchType === 3">
-                        <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
+                    <md-input-container *ngIf="(post?.postMenuPerm.isMemo || postSearchType === 2 || postSearchType === 3) && post.postMenuPerm.memo">
+                        <textarea mdInput md-autosize placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 
-                <div *ngIf="post.isMemo || postSearchType === 2 || postSearchType === 3">
+                <div *ngIf="(post.isMemo || postSearchType === 2 || postSearchType === 3) && post.memo">
                     <div fxLayout="column" fxLayoutGap="30px" fxLayoutGap.xs="10px">
                         <div></div>
                         <div></div>
                     </div>
                     <md-input-container fxFlexFill>
-                        <textarea mdInput placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
+                        <textarea mdInput md-autosize placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
                     </md-input-container>
                 </div>
 

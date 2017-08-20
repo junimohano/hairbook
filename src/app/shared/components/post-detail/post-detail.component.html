@@ -18,28 +18,28 @@
             </md-card>
         </div>
 
-        <ngx-gallery [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event)"></ngx-gallery>
+        <ngx-gallery *ngIf="post.postUploads.length > 0" [options]="galleryOptions" [images]="post.galleryImages" (change)="onChangedImage($event)"></ngx-gallery>
 
         <div fxLayout="column" fxLayoutGap="10px">
             <div></div>
             <div></div>
         </div>
 
-        <div class="post-padding" fxLayout="row" fxLayoutAlign="center center">
+        <div class="post-padding" *ngIf="post.postUploads.length > 0" fxLayout="row" fxLayoutAlign="center center">
             <span>{{post.currentUploadIndex + 1}} / {{post.postUploads.length}}</span>
         </div>
 
         <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex && post.postUploads[post.currentUploadIndex]" fxLayout="column">
             <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
-            <md-input-container fxFlexFill>
-                <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
+            <md-input-container fxFlexFill *ngIf="post.postUploads[post.currentUploadIndex].memo">
+                <textarea mdInput md-autosize placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
             </md-input-container>
         </div>
     </div>
 
     <div class="post-padding" fxLayout="column" fxFlex="40" fxFlex.xs="100">
 
-        <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="(postSearchType$ | async) === 2">
+        <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="(postSearchType$ | async) === 2 || (postSearchType$ | async) === 3">
             <md-icon class="accessType">{{post.accessType === 0 ? 'lock_open' : 'lock_outline'}}</md-icon>
             <hb-post-menu (editPost)="editPost()" (deletePost)="deletePost()"></hb-post-menu>
         </div>
@@ -50,7 +50,7 @@
             </md-input-container>
         </div>
 
-        <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
+        <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2 || (postSearchType$ | async) === 3">
             <md-input-container fxFlex="85">
                 <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
             </md-input-container>
@@ -58,7 +58,7 @@
             <p fxFlex="15" fxLayout="row" fxLayoutAlign="center">({{post.customerId}})</p>
         </div>
 
-        <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2">
+        <div fxLayout="row" *ngIf="(postSearchType$ | async) === 2 || (postSearchType$ | async) === 3">
             <md-input-container fxFlexFill>
                 <input mdInput [mdDatepicker]="" placeholder="When" [(ngModel)]="post.date" readonly>
                 <button mdSuffix [mdDatepickerToggle]=""></button>
@@ -83,13 +83,13 @@
             </md-chip-list>
         </div>
 
-        <div fxLayout="column" *ngIf="post.isHairTypeMemo || (postSearchType$ | async) === 2">
+        <div fxLayout="column" *ngIf="(post.isHairTypeMemo || (postSearchType$ | async) === 2 || (postSearchType$ | async) === 3) && post.hairTypeMemo">
             <div fxLayout="column" fxLayoutGap="10px" fxLayoutGap.xs="0px">
                 <div></div>
                 <div></div>
             </div>
             <md-input-container fxFlexFill>
-                <textarea mdInput placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
+                <textarea mdInput md-autosize placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
             </md-input-container>
         </div>
 
@@ -106,25 +106,25 @@
 
         <div fxLayout="column" *ngIf="post?.postMenuColor">
             <h4>{{post?.postMenuColor.hairSubMenu?.name}}</h4>
-            <md-input-container *ngIf="post?.postMenuColor.isMemo || (postSearchType$ | async) === 2">
-                <textarea mdInput placeholder="Color Formula" [(ngModel)]="post?.postMenuColor.memo" readonly></textarea>
+            <md-input-container *ngIf="(post?.postMenuColor.isMemo || (postSearchType$ | async) === 2 || (postSearchType$ | async) === 3) && post?.postMenuColor.memo">
+                <textarea mdInput md-autosize placeholder="Color Formula" [(ngModel)]="post?.postMenuColor.memo" readonly></textarea>
             </md-input-container>
         </div>
 
         <div fxLayout="column" *ngIf="post?.postMenuPerm">
             <h4>{{post?.postMenuPerm.hairSubMenu?.name}}</h4>
-            <md-input-container *ngIf="post?.postMenuPerm.isMemo || (postSearchType$ | async) === 2">
-                <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post?.postMenuPerm.memo" readonly></textarea>
+            <md-input-container *ngIf="(post?.postMenuPerm.isMemo || (postSearchType$ | async) === 2 || (postSearchType$ | async) === 3) && post?.postMenuPerm.memo">
+                <textarea mdInput md-autosize placeholder="Perm Memo" [(ngModel)]="post?.postMenuPerm.memo" readonly></textarea>
             </md-input-container>
         </div>
 
-        <div fxLayout="column" *ngIf="post.isMemo || (postSearchType$ | async) === 2">
+        <div fxLayout="column" *ngIf="(post.isMemo || (postSearchType$ | async) === 2 || (postSearchType$ | async) === 3) && post.memo">
             <div fxLayout="column" fxLayoutGap="30px" fxLayoutGap.xs="10px">
                 <div></div>
                 <div></div>
             </div>
             <md-input-container fxFlexFill>
-                <textarea mdInput placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
+                <textarea mdInput md-autosize placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
             </md-input-container>
         </div>
 

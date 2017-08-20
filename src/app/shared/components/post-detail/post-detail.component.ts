@@ -77,7 +77,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
           small: path,
           medium: path,
           big: path,
-          description: '[' + UploadCategoryType[postUpload.uploadCategoryType] + '] - ' + postUpload.memo
+          description: `[${UploadCategoryType[postUpload.uploadCategoryType]}]${postUpload.memo === null ? '' : ' - ' + postUpload.memo}`
         });
     });
   }
