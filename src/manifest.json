@@ -1,6 +1,6 @@
 {
     "name": "Hairbook",
-    "short_name": "HB",
+    "short_name": "Hairbook",
     "icons": [{
             "src": "assets/icons/android-chrome-192x192.png",
             "sizes": "192x192",
