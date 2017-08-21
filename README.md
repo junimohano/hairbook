@@ -35,11 +35,17 @@ https://hairbookweb.azurewebsites.net/
 - Ngrx Effects
 -	Google, Facebook Login
 - Lazy Modules
+- Progressive Web App (PWA)
 
 ## Development server
 
-Run `npm install`
+Run `ng s` for a dev server.
 
-Run `ng serve` for a dev server. 
+Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Navigate to `http://localhost:5000/`. The app will automatically reload if you change any of the source files.
+## Development server for production
+Run `ng build -prod` for a dev server.
+
+Run `npm run precache`
+
+Deploy to a server.
