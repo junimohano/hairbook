@@ -35,7 +35,8 @@ https://hairbookweb.azurewebsites.net/
 - Ngrx Effects
 -	Google, Facebook Login
 - Lazy Modules
-- Progressive Web App (PWA)
+- Progressive Web App (PWA) 
+  * 100 score on Lighthouse
 
 ## Development server
 
