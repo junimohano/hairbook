@@ -25,9 +25,9 @@
                         </md-select>
                     </div>
                     <div>
-                        <md-input-container>
-                            <textarea mdInput placeholder="Upload Memo" [(ngModel)]="postUploadInfo.memo"></textarea>
-                        </md-input-container>
+                        <md-form-field>
+                            <textarea mdInput mdTextareaAutosize mdAutosizeMinRows="3" placeholder="Upload Memo" [(ngModel)]="postUploadInfo.memo"></textarea>
+                        </md-form-field>
                     </div>
                 </div>
             </div>
@@ -43,15 +43,15 @@
             </div>
 
             <div fxFlexFill>
-                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <input mdInput placeholder="Title" formControlName="title">
-                </md-input-container>
+                </md-form-field>
             </div>
 
             <div fxFlexFill>
-                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <input mdInput placeholder="Customer" [mdAutocomplete]="auto" formControlName="customer" (ngModelChange)="onChangedCustomer($event)">
-                </md-input-container>
+                </md-form-field>
 
                 <md-autocomplete #auto="mdAutocomplete" [displayWith]="onDisplayCustomer">
                     <md-option *ngFor="let customer of filteredCustomers$ | async" [value]="customer" (onSelectionChange)="onSelectCustomer($event)">
@@ -67,10 +67,11 @@
             </div>
 
             <div fxFlexFill>
-                <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
                     <input mdInput [mdDatepicker]="picker" placeholder="Choose a date" formControlName="date">
-                    <button mdSuffix [mdDatepickerToggle]="picker"></button>
-                </md-input-container>
+                    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                </md-form-field>
                 <md-datepicker #picker></md-datepicker>
             </div>
 
@@ -87,9 +88,9 @@
 
             <div fxFlexFill fxLayout="column">
                 <div fxFlexFill>
-                    <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
-                        <textarea mdInput placeholder="HairType Memo" formControlName="hairTypeMemo"></textarea>
-                    </md-input-container>
+                    <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                        <textarea mdInput mdTextareaAutosize mdAutosizeMinRows="3" placeholder="HairType Memo" formControlName="hairTypeMemo"></textarea>
+                    </md-form-field>
                 </div>
                 <div fxFlexFill>
                     <md-slide-toggle fxFlexOffset.xs="5" fxFlexOffset="20" formControlName="isHairTypeMemo" color="accent">
@@ -128,9 +129,9 @@
 
                 <div fxFlexFill fxLayout="column">
                     <div fxFlexFill>
-                        <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
-                            <textarea mdInput placeholder="Color Formula" formControlName="hairSubMenuColorMemo"></textarea>
-                        </md-input-container>
+                        <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                            <textarea mdInput mdTextareaAutosize mdAutosizeMinRows="3" placeholder="Color Formula" formControlName="hairSubMenuColorMemo"></textarea>
+                        </md-form-field>
                     </div>
                     <div fxFlexFill>
                         <md-slide-toggle fxFlexOffset.xs="5" fxFlexOffset="20" formControlName="isHairSubMenuColorMemo" color="primary">
@@ -155,9 +156,9 @@
 
                 <div fxFlexFill fxLayout="column">
                     <div fxFlexFill>
-                        <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
-                            <textarea mdInput placeholder="Perm Memo" formControlName="hairSubMenuPermMemo"></textarea>
-                        </md-input-container>
+                        <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                            <textarea mdInput mdTextareaAutosize mdAutosizeMinRows="3" placeholder="Perm Memo" formControlName="hairSubMenuPermMemo"></textarea>
+                        </md-form-field>
                     </div>
                     <div fxFlexFill>
                         <md-slide-toggle fxFlexOffset.xs="5" fxFlexOffset="20" formControlName="isHairSubMenuPermMemo" color="accent"> Perm Memo on public
@@ -172,9 +173,9 @@
                     <div></div>
                 </div>
                 <div fxFlexFill>
-                    <md-input-container fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
-                        <textarea mdInput placeholder="Comment" formControlName="memo"></textarea>
-                    </md-input-container>
+                    <md-form-field fxFlexOffset.xs="5" fxFlex.xs="90" fxFlexOffset="20" fxFlex="60">
+                        <textarea mdInput mdTextareaAutosize mdAutosizeMinRows="3" placeholder="Comment" formControlName="memo"></textarea>
+                    </md-form-field>
                 </div>
                 <div fxFlexFill>
                     <md-slide-toggle fxFlexOffset.xs="5" fxFlexOffset="20" formControlName="isMemo" color="warn">

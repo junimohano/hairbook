@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common/src/pipes/date_pipe';
 import { UploadFileRotation } from '../../shared/models/enums/upload-file-rotation';
 import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -98,7 +99,7 @@ export class PostComponent implements OnInit, OnDestroy {
       accessType: [0, Validators.required],
       title: ['', Validators.required],
       customer: ['', Validators.required],
-      date: [new Date().toLocaleDateString(), Validators.required],
+      date: [new Date(), Validators.required],
       memo: '',
       hairMenus: [false, Validators.requiredTrue],
       hairTypes: [false, Validators.requiredTrue],
@@ -168,7 +169,7 @@ export class PostComponent implements OnInit, OnDestroy {
                 name: post.customer.name,
                 customerId: post.customerId
               },
-              date: post.date,
+              date: new Date(post.date),
               memo: post.memo,
               isMemo: post.isMemo,
               hairMenus: post.postHairMenus.length > 0 ? true : false,

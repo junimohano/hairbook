@@ -2,29 +2,29 @@
     <h3>Register</h3>
     <form [formGroup]="registerForm" novalidate>
         <div class="form-group">
-            <md-input-container>
+            <md-form-field>
                 <input mdInput type="text" placeholder="Username" formControlName="userName" (ngModelChange)="valueChange($event)">
-            </md-input-container>
+            </md-form-field>
         </div>
         <div class="form-group">
-            <md-input-container>
+            <md-form-field>
                 <input mdInput type="password" placeholder="Password" formControlName="password">
-            </md-input-container>
+            </md-form-field>
         </div>
         <div class="form-group">
-            <md-input-container>
+            <md-form-field>
                 <input mdInput type="password" placeholder="Confirm Password" formControlName="password_confirm">
-            </md-input-container>
+            </md-form-field>
         </div>
         <div class="form-group">
-            <md-input-container>
+            <md-form-field>
                 <input mdInput type="text" placeholder="Name" formControlName="name">
-            </md-input-container>
+            </md-form-field>
         </div>
         <div class="form-group">
-            <md-input-container>
+            <md-form-field>
                 <input mdInput type="email" placeholder="Email" formControlName="email">
-            </md-input-container>
+            </md-form-field>
         </div>
         <div fxLayout="row" fxLayoutGap="20px">
             <div class="form-group">

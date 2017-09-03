@@ -57,7 +57,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
       password_confirm: '',
       email: ['', Validators.compose([Validators.required, Validators.pattern('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$')])],
       name: ['', Validators.required],
-      birthday: '',
+      birthday: null,
       phone: '',
       gender: String(GenderType.Undefined),
       // image: ['', Validators.required],
@@ -72,7 +72,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
           this.editForm.get('email').setValue(this.user.email);
           this.editForm.get('name').setValue(this.user.name);
           if (this.user.birthday !== null) {
-            this.editForm.get('birthday').setValue(new Date(this.user.birthday).toLocaleDateString('en-US'));
+            this.editForm.get('birthday').setValue(new Date(this.user.birthday));
           }
           this.editForm.get('phone').setValue(this.user.phone);
           this.editForm.get('gender').setValue(String(this.user.gender));

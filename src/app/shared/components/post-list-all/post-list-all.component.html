@@ -19,14 +19,14 @@
 
             <div class="post-padding" *ngIf="post.postUploads.length >= post.currentUploadIndex && post.postUploads[post.currentUploadIndex]" fxLayout="column">
                 <h3>{{uploadCategories[post.postUploads[post.currentUploadIndex]?.uploadCategoryType + 3]}}</h3>
-                <md-input-container *ngIf="post.postUploads[post.currentUploadIndex].memo">
-                    <textarea mdInput md-autosize placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
-                </md-input-container>
+                <md-form-field fxFlexFill *ngIf="post.postUploads[post.currentUploadIndex].memo">
+                    <textarea mdInput placeholder="Upload Memo" [(ngModel)]="post.postUploads[post.currentUploadIndex].memo" readonly></textarea>
+                </md-form-field>
             </div>
 
         </div>
 
-        <div class="post-padding" fxFlex="30" fxFlex.xs="100">
+        <div class="post-padding" fxFlex="40" fxFlex.xs="100">
             <md-card-content>
 
                 <div fxLayout="row" fxLayoutAlign="space-between center" *ngIf="postSearchType === 2 || postSearchType === 3">
@@ -35,25 +35,24 @@
                 </div>
 
                 <div fxLayout="row">
-                    <md-input-container fxFlexFill>
+                    <md-form-field fxFlexFill>
                         <input mdInput placeholder="Title" value="test" [(ngModel)]="post.title" readonly>
-                    </md-input-container>
+                    </md-form-field>
                 </div>
 
                 <div fxLayout="row" *ngIf="postSearchType === 2 || postSearchType === 3">
-                    <md-input-container fxFlex="85">
+                    <md-form-field fxFlex="85">
                         <input mdInput placeholder="Customer" value="test" [(ngModel)]="post?.customer.name" readonly>
-                    </md-input-container>
+                    </md-form-field>
 
                     <p fxFlex="15" fxLayout="row" fxLayoutAlign="center">({{post.customerId}})</p>
                 </div>
 
                 <div fxLayout="row" *ngIf="postSearchType === 2 || postSearchType === 3">
-                    <md-input-container fxFlexFill>
-                        <input mdInput [mdDatepicker]="" placeholder="When" [(ngModel)]="post.date" readonly>
-                        <button mdSuffix [mdDatepickerToggle]=""></button>
-                    </md-input-container>
-                    <md-datepicker #picker readonly></md-datepicker>
+                    <md-form-field fxFlexFill>
+                        <input mdInput placeholder="When" [value]="post.date | date:'MM/dd/yyyy'" readonly>
+                        <md-datepicker-toggle mdSuffix [for]="" disabled></md-datepicker-toggle>
+                    </md-form-field>
                 </div>
 
                 <div fxLayout="column">
@@ -72,9 +71,9 @@
                         <div></div>
                         <div></div>
                     </div>
-                    <md-input-container fxFlexFill>
-                        <textarea mdInput md-autosize placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
-                    </md-input-container>
+                    <md-form-field fxFlexFill>
+                        <textarea mdInput placeholder="HairType Memo" [(ngModel)]="post.hairTypeMemo" readonly></textarea>
+                    </md-form-field>
                 </div>
 
                 <div fxLayout="column">
@@ -90,16 +89,16 @@
 
                 <div fxLayout="column" *ngIf="post.postMenuColor">
                     <h4>{{post.postMenuColor.hairSubMenu?.name}}</h4>
-                    <md-input-container *ngIf="(post?.postMenuColor.isMemo || postSearchType === 2 || postSearchType === 3) && post.postMenuColor.memo">
-                        <textarea mdInput md-autosize placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
-                    </md-input-container>
+                    <md-form-field fxFlexFill *ngIf="(post?.postMenuColor.isMemo || postSearchType === 2 || postSearchType === 3) && post.postMenuColor.memo">
+                        <textarea mdInput placeholder="Color Formula" [(ngModel)]="post.postMenuColor.memo" readonly></textarea>
+                    </md-form-field>
                 </div>
 
                 <div fxLayout="column" *ngIf="post?.postMenuPerm">
                     <h4>{{post.postMenuPerm.hairSubMenu?.name}}</h4>
-                    <md-input-container *ngIf="(post?.postMenuPerm.isMemo || postSearchType === 2 || postSearchType === 3) && post.postMenuPerm.memo">
-                        <textarea mdInput md-autosize placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
-                    </md-input-container>
+                    <md-form-field fxFlexFill *ngIf="(post?.postMenuPerm.isMemo || postSearchType === 2 || postSearchType === 3) && post.postMenuPerm.memo">
+                        <textarea mdInput placeholder="Perm Memo" [(ngModel)]="post.postMenuPerm.memo" readonly></textarea>
+                    </md-form-field>
                 </div>
 
                 <div *ngIf="(post.isMemo || postSearchType === 2 || postSearchType === 3) && post.memo">
@@ -107,9 +106,9 @@
                         <div></div>
                         <div></div>
                     </div>
-                    <md-input-container fxFlexFill>
-                        <textarea mdInput md-autosize placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
-                    </md-input-container>
+                    <md-form-field fxFlexFill>
+                        <textarea mdInput placeholder="Memo" [(ngModel)]="post.memo" readonly></textarea>
+                    </md-form-field>
                 </div>
 
             </md-card-content>
@@ -147,9 +146,9 @@
                     </md-list-item>
                 </md-list>
                 <div fxLayout="row">
-                    <md-input-container fxFlex="80">
+                    <md-form-field fxFlex="80">
                         <input mdInput placeholder="Comment" [(ngModel)]="post.comment" #commentBox>
-                    </md-input-container>
+                    </md-form-field>
                     <button fxFlex="20" md-button class="warn" (click)="onAddPostComment(post)">Add</button>
                 </div>
             </md-card-actions>
